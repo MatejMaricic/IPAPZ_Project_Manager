@@ -5,12 +5,14 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ProjectManagerRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class ProjectManager implements UserInterface
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -46,13 +48,19 @@ class ProjectManager implements UserInterface
     private $lastName;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="projectManager", orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Project", inversedBy="users")
      */
-    private $projects;
+    private $project;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Task", inversedBy="users")
+     */
+    private $task;
 
     public function __construct()
     {
-        $this->projects = new ArrayCollection();
+        $this->project = new ArrayCollection();
+        $this->task = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -160,16 +168,15 @@ class ProjectManager implements UserInterface
     /**
      * @return Collection|Project[]
      */
-    public function getProjects(): Collection
+    public function getProject(): Collection
     {
-        return $this->projects;
+        return $this->project;
     }
 
     public function addProject(Project $project): self
     {
-        if (!$this->projects->contains($project)) {
-            $this->projects[] = $project;
-            $project->setProjectManager($this);
+        if (!$this->project->contains($project)) {
+            $this->project[] = $project;
         }
 
         return $this;
@@ -177,12 +184,34 @@ class ProjectManager implements UserInterface
 
     public function removeProject(Project $project): self
     {
-        if ($this->projects->contains($project)) {
-            $this->projects->removeElement($project);
-            // set the owning side to null (unless already changed)
-            if ($project->getProjectManager() === $this) {
-                $project->setProjectManager(null);
-            }
+        if ($this->project->contains($project)) {
+            $this->project->removeElement($project);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Task[]
+     */
+    public function getTask(): Collection
+    {
+        return $this->task;
+    }
+
+    public function addTask(Task $task): self
+    {
+        if (!$this->task->contains($task)) {
+            $this->task[] = $task;
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): self
+    {
+        if ($this->task->contains($task)) {
+            $this->task->removeElement($task);
         }
 
         return $this;

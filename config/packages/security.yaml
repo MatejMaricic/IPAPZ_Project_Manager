@@ -4,6 +4,9 @@ security:
             algorithm: bcrypt
         App\Entity\Developer:
             algorithm: bcrypt
+        App\Entity\User:
+            algorithm: bcrypt
+
 
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
@@ -11,8 +14,9 @@ security:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: App\Entity\Developer
+                class: App\Entity\User
                 property: email
+        # used to reload user from session & other features (e.g. switch_user)
         # used to reload user from session & other features (e.g. switch_user)
     firewalls:
         dev:
@@ -20,6 +24,9 @@ security:
             security: false
         main:
             anonymous: true
+            guard:
+                authenticators:
+                    - App\Security\UserAuthenticator
 
             # activate different ways to authenticate
 

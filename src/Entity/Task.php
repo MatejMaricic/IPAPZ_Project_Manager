@@ -39,9 +39,15 @@ class Task
      */
     private $taskStatuses;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="task")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->taskStatuses = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,6 +114,34 @@ class Task
         if ($this->taskStatuses->contains($taskStatus)) {
             $this->taskStatuses->removeElement($taskStatus);
             $taskStatus->removeTask($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addTask($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeTask($this);
         }
 
         return $this;

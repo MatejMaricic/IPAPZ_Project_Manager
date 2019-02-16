@@ -41,15 +41,9 @@ class Project
     private $task;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProjectManager", inversedBy="projects")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="project")
      */
-    private $projectManager;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Developer", mappedBy="projects")
-     */
-    private $developers;
+    private $users;
 
 
 
@@ -59,6 +53,7 @@ class Project
         $this->projectStatus = new ArrayCollection();
         $this->task = new ArrayCollection();
         $this->developers = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,44 +145,34 @@ class Project
         return $this;
     }
 
-    public function getProjectManager(): ?ProjectManager
-    {
-        return $this->projectManager;
-    }
-
-    public function setProjectManager(?ProjectManager $projectManager): self
-    {
-        $this->projectManager = $projectManager;
-
-        return $this;
-    }
-
     /**
-     * @return Collection|Developer[]
+     * @return Collection|User[]
      */
-    public function getDevelopers(): Collection
+    public function getUsers(): Collection
     {
-        return $this->developers;
+        return $this->users;
     }
 
-    public function addDeveloper(Developer $developer): self
+    public function addUser(User $user): self
     {
-        if (!$this->developers->contains($developer)) {
-            $this->developers[] = $developer;
-            $developer->addProject($this);
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addProject($this);
         }
 
         return $this;
     }
 
-    public function removeDeveloper(Developer $developer): self
+    public function removeUser(User $user): self
     {
-        if ($this->developers->contains($developer)) {
-            $this->developers->removeElement($developer);
-            $developer->removeProject($this);
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeProject($this);
         }
 
         return $this;
     }
+
+
 
 }
