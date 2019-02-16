@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Project
 {
@@ -59,6 +60,14 @@ class Project
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function onPrePersist()
+    {
+        $this->createdat = new \DateTime('now');
     }
 
 

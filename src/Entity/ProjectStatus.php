@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProjectStatusRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class ProjectStatus
 {
@@ -19,7 +20,7 @@ class ProjectStatus
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="projectStatus")
+     * @ORM\ManyToMany(targetEntity="App\Entity\project", mappedBy="projectStatus")
      */
     private $projects;
 
@@ -41,6 +42,15 @@ class ProjectStatus
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function onPrePersist()
+    {
+        $this->createdat = new \DateTime('now');
     }
 
     /**

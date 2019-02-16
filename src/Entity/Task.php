@@ -19,7 +19,7 @@ class Task
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="task")
+     * @ORM\ManyToOne(targetEntity="App\Entity\project", inversedBy="task")
      * @ORM\JoinColumn(nullable=false)
      */
     private $project;
