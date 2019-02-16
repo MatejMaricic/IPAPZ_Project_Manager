@@ -1,9 +1,5 @@
 security:
     encoders:
-        App\Entity\ProjectManager:
-            algorithm: bcrypt
-        App\Entity\Developer:
-            algorithm: bcrypt
         App\Entity\User:
             algorithm: bcrypt
 
@@ -24,6 +20,8 @@ security:
             security: false
         main:
             anonymous: true
+            logout:
+                path:   app_logout
             guard:
                 authenticators:
                     - App\Security\UserAuthenticator

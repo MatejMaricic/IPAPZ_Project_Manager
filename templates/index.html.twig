@@ -3,5 +3,13 @@
 Main page
 {% endblock %}
 {% block body %}
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ path('app_logout') }}">Logout</a>
+
+    {% else %}
+    <a href="{{ path('app_register') }}">Register</a>
+    <a href="{{ path('app_login') }}">Login</a>
+    {% endif %}
+
     Test
 {% endblock  %}
