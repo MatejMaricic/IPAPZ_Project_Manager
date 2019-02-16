@@ -34,10 +34,7 @@ class Project
      */
     private $createdat;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Developer", inversedBy="projects")
-     */
-    private $developer;
+
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\ProjectStatus", inversedBy="projects")
@@ -49,11 +46,17 @@ class Project
      */
     private $task;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Developer", mappedBy="project")
+     */
+    private $developers;
+
     public function __construct()
     {
-        $this->developer = new ArrayCollection();
+
         $this->projectStatus = new ArrayCollection();
         $this->task = new ArrayCollection();
+        $this->developers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -178,5 +181,13 @@ class Project
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Developer[]
+     */
+    public function getDevelopers(): Collection
+    {
+        return $this->developers;
     }
 }
