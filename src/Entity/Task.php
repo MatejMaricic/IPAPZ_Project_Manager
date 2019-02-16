@@ -16,8 +16,26 @@ class Task
      */
     private $id;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="task")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $project;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): self
+    {
+        $this->project = $project;
+
+        return $this;
     }
 }
