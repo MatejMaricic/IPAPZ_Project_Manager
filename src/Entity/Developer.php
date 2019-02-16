@@ -5,11 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DeveloperRepository")
  */
-class Developer
+class Developer implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -19,96 +20,44 @@ class Developer
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="developer")
-     */
-    private $projects;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $firstname;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $lastname;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Project", inversedBy="developers")
+     * @ORM\Column(type="json")
      */
-    private $project;
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $createdat;
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $lastName;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Project", inversedBy="developers")
+     */
+    private $projects;
 
     public function __construct()
     {
         $this->projects = new ArrayCollection();
-        $this->project = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection|Project[]
-     */
-    public function getProjects(): Collection
-    {
-        return $this->projects;
-    }
-
-    public function addProject(Project $project): self
-    {
-        if (!$this->projects->contains($project)) {
-            $this->projects[] = $project;
-            $project->addDeveloper($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProject(Project $project): self
-    {
-        if ($this->projects->contains($project)) {
-            $this->projects->removeElement($project);
-            $project->removeDeveloper($this);
-        }
-
-        return $this;
-    }
-
-    public function getFirstname(): ?string
-    {
-        return $this->firstname;
-    }
-
-    public function setFirstname(string $firstname): self
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    public function setLastname(string $lastname): self
-    {
-        $this->lastname = $lastname;
-
-        return $this;
     }
 
     public function getEmail(): ?string
@@ -124,21 +73,112 @@ class Developer
     }
 
     /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
      * @return Collection|Project[]
      */
-    public function getProject(): Collection
+    public function getProjects(): Collection
     {
-        return $this->project;
+        return $this->projects;
     }
 
-    public function getCreatedat(): ?string
+    public function addProject(Project $project): self
     {
-        return $this->createdat;
+        if (!$this->projects->contains($project)) {
+            $this->projects[] = $project;
+        }
+
+        return $this;
     }
 
-    public function setCreatedat(string $createdat): self
+    public function removeProject(Project $project): self
     {
-        $this->createdat = $createdat;
+        if ($this->projects->contains($project)) {
+            $this->projects->removeElement($project);
+        }
 
         return $this;
     }

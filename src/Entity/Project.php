@@ -18,11 +18,6 @@ class Project
      */
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProjectManager", inversedBy="project")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $projectManager;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -33,7 +28,6 @@ class Project
      * @ORM\Column(type="datetime")
      */
     private $createdat;
-
 
 
     /**
@@ -47,9 +41,17 @@ class Project
     private $task;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Developer", mappedBy="project")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ProjectManager", inversedBy="projects")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $projectManager;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Developer", mappedBy="projects")
      */
     private $developers;
+
+
 
     public function __construct()
     {
@@ -64,17 +66,6 @@ class Project
         return $this->id;
     }
 
-    public function getProjectManager(): ?ProjectManager
-    {
-        return $this->projectManager;
-    }
-
-    public function setProjectManager(?ProjectManager $projectManager): self
-    {
-        $this->projectManager = $projectManager;
-
-        return $this;
-    }
 
     public function getName(): ?string
     {
@@ -100,31 +91,7 @@ class Project
         return $this;
     }
 
-    /**
-     * @return Collection|Developer[]
-     */
-    public function getDeveloper(): Collection
-    {
-        return $this->developer;
-    }
 
-    public function addDeveloper(Developer $developer): self
-    {
-        if (!$this->developer->contains($developer)) {
-            $this->developer[] = $developer;
-        }
-
-        return $this;
-    }
-
-    public function removeDeveloper(Developer $developer): self
-    {
-        if ($this->developer->contains($developer)) {
-            $this->developer->removeElement($developer);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|ProjectStatus[]
@@ -183,6 +150,18 @@ class Project
         return $this;
     }
 
+    public function getProjectManager(): ?ProjectManager
+    {
+        return $this->projectManager;
+    }
+
+    public function setProjectManager(?ProjectManager $projectManager): self
+    {
+        $this->projectManager = $projectManager;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Developer[]
      */
@@ -190,4 +169,25 @@ class Project
     {
         return $this->developers;
     }
+
+    public function addDeveloper(Developer $developer): self
+    {
+        if (!$this->developers->contains($developer)) {
+            $this->developers[] = $developer;
+            $developer->addProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeveloper(Developer $developer): self
+    {
+        if ($this->developers->contains($developer)) {
+            $this->developers->removeElement($developer);
+            $developer->removeProject($this);
+        }
+
+        return $this;
+    }
+
 }
