@@ -25,36 +25,5 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProjectController extends AbstractController
 {
 
-    /**
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @param ProjectRepository $projectRepository
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @Route("/project/", name="project_index")
-     */
-  public function newProject(Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository)
-  {
-
-
-
-      $form = $this->createForm(ProjectFormType::class);
-      $form->handleRequest($request);
-      if ($this->isGranted('ROLE_MANAGER') && $form->isSubmitted() && $form->isValid()) {
-          /** @var Project $project */
-          $project = $form->getData();
-          $project->addUser($this->getUser());
-          $entityManager->persist($project);
-          $entityManager->flush();
-          $this->addFlash('success', 'New project created!');
-          return $this->redirectToRoute('index_page');
-      }
-
-
-      return $this->render('project/project.html.twig' , [
-          'form' => $form->createView(),
-
-      ]);
-  }
-
 
 }
