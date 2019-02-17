@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,8 +24,12 @@ class IndexController extends AbstractController
      * @return Response
      */
 
-    public function index(Request $request)
+    public function index(Request $request,  ProjectRepository $projectRepository)
     {
-    return $this->render('index.html.twig');
+
+
+        return $this->render('index.html.twig', [
+            'user' => $this->getUser()
+        ]);
     }
 }

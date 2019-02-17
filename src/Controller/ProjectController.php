@@ -34,7 +34,7 @@ class ProjectController extends AbstractController
      */
   public function newProject(Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository)
   {
-      $userId = $this->getUser()->getId();
+
 
 
       $form = $this->createForm(ProjectFormType::class);
@@ -46,12 +46,15 @@ class ProjectController extends AbstractController
           $entityManager->persist($project);
           $entityManager->flush();
           $this->addFlash('success', 'New project created!');
-          return $this->redirectToRoute('project_index');
+          return $this->redirectToRoute('index_page');
       }
 
 
       return $this->render('project/project.html.twig' , [
-          'form' => $form->createView()
+          'form' => $form->createView(),
+
       ]);
   }
+
+
 }
