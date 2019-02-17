@@ -46,6 +46,11 @@ class Project
      */
     private $users;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $deadline;
+
 
 
     public function __construct()
@@ -178,6 +183,18 @@ class Project
             $this->users->removeElement($user);
             $user->removeProject($this);
         }
+
+        return $this;
+    }
+
+    public function getDeadline(): ?\DateTimeInterface
+    {
+        return $this->deadline;
+    }
+
+    public function setDeadline(\DateTimeInterface $deadline): self
+    {
+        $this->deadline = $deadline;
 
         return $this;
     }

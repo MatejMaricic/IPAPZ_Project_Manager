@@ -3,12 +3,52 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
+    <body>
+    <div id="login-page">
+        <div class="container">
+            <form class="form-login" method="post">
 
-        <button class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                <h2 class="form-login-heading">register now</h2>
+                <div class="login-wrap">
+                    {{ form_start(registrationForm) }}
+                    {{ form_row(registrationForm.firstName, {'attr':{class: 'form-control'}}) }}
+                    {{ form_row(registrationForm.lastName, {'attr':{class: 'form-control'}}) }}
+                    {{ form_row(registrationForm.email, {'attr':{class: 'form-control'}}) }}
+                    {{ form_row(registrationForm.plainPassword.first, {'attr':{class: 'form-control'}}) }}
+                    {{ form_row(registrationForm.plainPassword.second, {'attr':{class: 'form-control'}}) }}
+
+
+
+                    {{ form_row(registrationForm.plainPassword) }}
+
+                    <button class="btn">Register</button>
+                    {{ form_end(registrationForm) }}
+                    <hr>
+
+                    <div class="registration">
+                        You already have account?<br/>
+                        <a class="" href="{{ path('app_login')}}">
+                            Sign in here
+                        </a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="lib/jquery/jquery.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <!--BACKSTRETCH-->
+    <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
+    <script type="text/javascript" src="lib/jquery.backstretch.min.js"></script>
+    <script>
+        $.backstretch("img/login-bg.jpg", {
+            speed: 500
+        });
+    </script>
+    </body>
+
+    </html>
 {% endblock %}

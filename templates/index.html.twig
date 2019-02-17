@@ -10,6 +10,7 @@ Main page
 {% endblock %}
 {% block body %}
     {% if not app.user %}
+
         <a class="logout" href="{{ path('app_login') }}"> <h1>You are not logged in</h1></a>
 
     {% else %}
