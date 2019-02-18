@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Project;
+use App\Entity\ProjectStatus;
 use App\Form\ProjectFormType;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManager;
@@ -44,7 +45,10 @@ class IndexController extends AbstractController
           /** @var Project $project */
           $project = $form->getData();
           $project->addUser($this->getUser());
+          $project->addProjectStatus($project->getName());
           $entityManager->persist($project);
+          $entityManager->flush();
+
           $entityManager->flush();
           $this->addFlash('success', 'New project created!');
           return $this->redirectToRoute('index_page');

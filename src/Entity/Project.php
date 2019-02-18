@@ -129,6 +129,14 @@ class Project
     }
 
     /**
+     * @param mixed $projectStatus
+     */
+    public function setProjectStatus($projectStatus): void
+    {
+        $this->projectStatus = $projectStatus;
+    }
+
+    /**
      * @return Collection|Task[]
      */
     public function getTask(): Collection
