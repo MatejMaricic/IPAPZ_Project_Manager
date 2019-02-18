@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+
+
+
+
+{% block title %}
+    Project page
+{% endblock %}
+{% block body %}
+Project test
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+    <button type="submit" class="btn" formnovalidate>Save</button>
+    {{ form_end(form) }}
+{% endblock %}

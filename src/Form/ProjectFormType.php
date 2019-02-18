@@ -10,13 +10,13 @@ namespace App\Form;
 
 use App\Entity\Project;
 use App\Entity\ProjectStatus;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use PhpParser\Node\Expr\Array_;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class ProjectFormType extends AbstractType
@@ -30,11 +30,7 @@ class ProjectFormType extends AbstractType
             ])
             ->add('deadline', DateType::class, [
                 'label' => 'Deadline for project'
-            ])
-           ->add('project_status', ProjectStatusFormType::class)
-
-        ;
-
+            ]);
     }
     public function configureOptions(OptionsResolver $resolver)
     {
