@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpParser\Node\Expr\Array_;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,12 +33,21 @@ class ProjectFormType extends AbstractType
             ->add('deadline', DateType::class, [
                 'label' => 'Deadline for project'
             ])
-            ->add('projectStatus', EntityType::class,[
-                'class' =>ProjectStatus::class,
-                'choice_label'=> 'name',
-                'multiple' => true,
-                'expanded' => true
-            ])
+//            ->add('projectStatus', EntityType::class, [
+//                'class' => ProjectStatus::class,
+//                'choice_label' => 'name',
+//                'multiple' => true,
+//                'expanded' => true
+//            ])
+
+            ->add('projectStatus',CollectionType::class,[
+                    'label' =>false,
+                    'entry_type' => ProjectStatusFormType::class,
+                    'allow_add' => true,
+                    'by_reference' => false
+                ]
+
+            )
         ;
     }
     public function configureOptions(OptionsResolver $resolver)

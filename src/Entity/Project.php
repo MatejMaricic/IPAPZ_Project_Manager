@@ -33,7 +33,7 @@ class Project
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ProjectStatus", inversedBy="projects")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ProjectStatus", inversedBy="projects", cascade={"persist"})
      */
     private $projectStatus;
 

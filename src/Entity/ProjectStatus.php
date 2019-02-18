@@ -20,7 +20,7 @@ class ProjectStatus
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\project", mappedBy="projectStatus")
+     * @ORM\ManyToMany(targetEntity="App\Entity\project", mappedBy="projectStatus", cascade={"persist"})
      */
     private $projects;
 

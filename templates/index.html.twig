@@ -259,21 +259,47 @@ Main page
                             <span aria-hidden="true">&times;</span>
                             <span class="sr-only">Close</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
+                        <h4 class="modal-title" id="myModalLabel">Add New Project</h4>
                     </div>
 
                     <!-- Modal Body -->
                     <div class="modal-body">
-                        <p class="statusMsg"></p>
-                        {{ form_start(form) }}
-                        <button type="submit" class="btn" formnovalidate>Save</button>
-                        {{ form_end(form) }}
+                       <div class="container-fluid">
+                           {{ form_start(form) }}
+                           <div class="col-md-6">
+                               <div class="row">
+                                   <p>{{ form_label(form.name) }}</p>
+                                   {{ form_widget(form.name) }}
+
+                               </div>
+                               <br>
+                               <div class="row">
+
+                                   {{ form_row(form.deadline) }}
+                               </div>
+                           </div>
+                           <div class="col-md-6">
+                               <div class="row">
+                                   <div class="row js-project-status-wrapper"
+                                        data-prototype="{{ form_widget(form.projectStatus.vars.prototype)|e('html_attr') }}"
+                                        data-index="{{ form.projectStatus|length }}">
+
+                                       <a href="#" class="js-project-status-add">
+                                           <span class="fa fa-plus-circle"></span>
+                                           Add  Project Status
+                                       </a>
+                                   </div>
+                               </div>
+
+                           </div>
+                       </div>
                     </div>
 
                     <!-- Modal Footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary submitBtn" onclick="submitContactForm()">SUBMIT</button>
+                        <button type="submit" class="btn" formnovalidate>Add</button>
+                        {{ form_end(form) }}
                     </div>
                 </div>
             </div>
