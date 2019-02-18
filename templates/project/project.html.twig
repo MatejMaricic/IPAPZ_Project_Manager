@@ -13,4 +13,9 @@ Project test
     {{ form_row(form.name) }}
     <button type="submit" class="btn" formnovalidate>Save</button>
     {{ form_end(form) }}
+
+    {% for projectStatus in project.projectStatus %}
+        {{ projectStatus.name }}
+        {{ projectStatus.id }}
+    {% endfor %}
 {% endblock %}

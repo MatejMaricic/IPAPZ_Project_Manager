@@ -103,12 +103,10 @@ class Project
 
 
 
-    /**
-     * @return Collection|ProjectStatus[]
-     */
-    public function getProjectStatus(): Collection
+
+    public function getProjectStatus()
     {
-        return $this->projectStatus = new ArrayCollection();
+        return $this->projectStatus;
     }
 
     public function addProjectStatus(ProjectStatus $projectStatus): self
