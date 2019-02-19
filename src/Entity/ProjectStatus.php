@@ -34,9 +34,15 @@ class ProjectStatus
      */
     private $createdat;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Task", mappedBy="projectStatuses")
+     */
+    private $tasks;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -101,6 +107,34 @@ class ProjectStatus
     public function setCreatedat(\DateTimeInterface $createdat): self
     {
         $this->createdat = $createdat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Task[]
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): self
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks[] = $task;
+            $task->addProjectStatus($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): self
+    {
+        if ($this->tasks->contains($task)) {
+            $this->tasks->removeElement($task);
+            $task->removeProjectStatus($this);
+        }
 
         return $this;
     }

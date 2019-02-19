@@ -14,6 +14,7 @@ use App\Form\ProjectFormType;
 use App\Entity\ProjectStatus;
 use App\Form\ProjectStatusFormType;
 use App\Form\RegistrationFormType;
+use App\Form\TaskFormType;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -66,4 +67,5 @@ class ProjectController extends AbstractController
 
         ]);
     }
+
 }

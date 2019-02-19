@@ -214,9 +214,15 @@
                         <p class="centered"><a href="profile.html"><img src="img/ui-sam.jpg" class="img-circle" width="80"></a></p>
                         <h5 class="centered">{{ user.firstName }} {{ user.lastName }}</h5>
                         <li class="mt">
-                            <a class="active btn btn-success btn-lg"  data-toggle="modal" data-target="#projectForm">
+                            <a class="active btn btn-success btn-lg"  data-toggle="modal" data-target="#devForm">
                                 <i class="fa fa-plus-circle"></i>
                                 <span>Add Developer</span>
+                            </a>
+                        </li>
+                        <li class="mt">
+                            <a class="active btn btn-success btn-lg"  data-toggle="modal" data-target="#taskForm">
+                                <i class="fa fa-plus-circle"></i>
+                                <span>Add New Task</span>
                             </a>
                         </li>
 
@@ -245,7 +251,7 @@
 
 
 
-            <div class="modal fade" id="projectForm" role="dialog">
+            <div class="modal fade" id="devForm" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <!-- Modal Header -->
@@ -272,6 +278,33 @@
                             {{ form_row(form.plainPassword) }}
                             <button class="btn">Register</button>
                             {{ form_end(form) }}
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn" formnovalidate>Add</button>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="taskForm" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span>
+                                <span class="sr-only">Close</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">Add New Project</h4>
+                        </div>
+
+                        <!-- Modal Body -->
+                        <div class="modal-body">
+
                         </div>
 
                         <!-- Modal Footer -->
