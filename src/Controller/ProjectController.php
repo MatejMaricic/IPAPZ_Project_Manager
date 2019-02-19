@@ -13,6 +13,7 @@ use App\Entity\User;
 use App\Form\ProjectFormType;
 use App\Entity\ProjectStatus;
 use App\Form\ProjectStatusFormType;
+use App\Form\RegistrationFormType;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,6 +24,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ProjectController extends AbstractController
 {
@@ -32,26 +34,35 @@ class ProjectController extends AbstractController
      * @param Project $project
      * @param Request $request
      * @param EntityManagerInterface $entityManager
-     * @param ProjectRepository $projectRepository
+     * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
      */
-    public function showProject(Project $project, Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository)
+
+    public function addDeveloper(Project $project, Request $request, EntityManagerInterface $entityManager,  UserPasswordEncoderInterface $passwordEncoder)
     {
 
-        $form = $this->createForm(ProjectStatusFormType::class);
+        $form = $this->createForm(RegistrationFormType::class);
         $form->handleRequest($request);
         if ($this->isGranted('ROLE_MANAGER') && $form->isSubmitted() && $form->isValid()){
-        /**@var ProjectStatus $projectStatus */
-        $projectStatus = $form->getData();
-        $project->addProjectStatus($projectStatus);
-        $entityManager->persist($projectStatus);
-        $entityManager->flush();
+            /**@var User $user */
+
+            $user = $form->getData();
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            $user ->setRoles(array('ROLE_USER'));
+            $user ->addProject($project);
+            $entityManager->persist($user);
+            $entityManager->flush();
         }
         return $this->render('project/project.html.twig', [
-            'project' => $project,
-            'form' => $form->createView()
+
+            'form' => $form->createView(),
+            'user' => $this->getUser()
 
         ]);
     }
-
 }

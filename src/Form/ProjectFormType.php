@@ -10,6 +10,8 @@ namespace App\Form;
 
 use App\Entity\Project;
 use App\Entity\ProjectStatus;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpParser\Node\Expr\Array_;
@@ -33,12 +35,17 @@ class ProjectFormType extends AbstractType
             ->add('deadline', DateType::class, [
                 'label' => 'Deadline for project'
             ])
-//            ->add('projectStatus', EntityType::class, [
-//                'class' => ProjectStatus::class,
-//                'choice_label' => 'name',
-//                'multiple' => true,
-//                'expanded' => true
-//            ])
+            ->add('users', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'email',
+                'multiple' => true,
+                'expanded' => true,
+//                'query_builder' => function(UserRepository $userRepository){
+//                return $userRepository->findAllDevelopers();
+//                }
+
+
+            ])
 
             ->add('projectStatus',CollectionType::class,[
                     'label' =>false,

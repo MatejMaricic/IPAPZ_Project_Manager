@@ -98,7 +98,10 @@ class User implements UserInterface
      */
     public function setRolesValue()
     {
-        $this->roles =['ROLE_MANAGER'];
+        if (!$this->roles){
+            $this->roles =['ROLE_MANAGER'];
+        }
+
     }
 
     /**
