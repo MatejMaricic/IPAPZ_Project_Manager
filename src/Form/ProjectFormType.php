@@ -40,9 +40,9 @@ class ProjectFormType extends AbstractType
                 'choice_label' => 'email',
                 'multiple' => true,
                 'expanded' => true,
-//                'query_builder' => function(UserRepository $userRepository){
-//                return $userRepository->findAllDevelopers();
-//                }
+                'query_builder' => function(UserRepository $userRepository){
+                return $userRepository->findAllDevelopers();
+                }
 
 
             ])

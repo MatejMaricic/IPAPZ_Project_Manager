@@ -19,28 +19,17 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-//
-//    public function findAllDevelopers()
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.roles = :val')
-//            ->setParameter('val', 'ROLE_USER')
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//
-//        ;
-//    }
 
-
-    /*
-    public function findOneBySomeField($value): ?User
+    public function findAllDevelopers()
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
+            ->where('u.roles LIKE :val')
+            ->setParameter('val', "%ROLE_USER%")
+            ->orderBy('u.id', 'ASC')
+            ->setMaxResults(10)
         ;
     }
-    */
+
+
+
 }
