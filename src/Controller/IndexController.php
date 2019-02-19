@@ -14,6 +14,7 @@ use App\Entity\ProjectStatus;
 use App\Form\ProjectStatusFormType;
 use App\Form\ProjectFormType;
 use App\Repository\ProjectRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,9 +36,10 @@ class IndexController extends AbstractController
      * @Route("/", name="index_page")
      * @param EntityManagerInterface $entityManager
      * @param ProjectRepository $projectRepository
+     * @param UserRepository $userRepository
      * @return Response
      */
-  public function newProject(Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository)
+  public function newProject(Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository, UserRepository $userRepository)
   {
 
 
@@ -61,7 +63,8 @@ class IndexController extends AbstractController
       return $this->render('index.html.twig' , [
           'form' => $form->createView(),
           'projects' => $projectRepository->findAll(),
-          'user' => $this->getUser()
+          'user' => $this->getUser(),
+          'users' => $userRepository->findAllDevelopersArray()
 
       ]);
   }

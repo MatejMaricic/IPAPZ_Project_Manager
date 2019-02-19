@@ -320,17 +320,21 @@
                             <!-- USERS ONLINE SECTION -->
                             <h4 class="centered mt">TEAM MEMBERS ONLINE</h4>
                             <!-- First Member -->
-                            <div class="desc">
-                                <div class="thumb">
-                                    <img class="img-circle" src="img/ui-divya.jpg" width="35px" height="35px" align="">
+                            {% for user in project.users %}
+                                <div class="desc">
+                                    <div class="thumb">
+                                        <img class="img-circle" src="img/ui-divya.jpg" width="35px" height="35px" align="">
+                                    </div>
+                                    <div class="details">
+                                        <p>
+                                            {{ user.firstName }} {{ user.lastName }}
+
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="details">
-                                    <p>
-                                        <a href="#">DIVYA MANIAN</a><br/>
-                                        <muted>Available</muted>
-                                    </p>
-                                </div>
-                            </div>
+
+                            {% endfor %}
+
 
                         </div>
                         <!-- /col-lg-3 -->

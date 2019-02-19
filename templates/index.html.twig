@@ -343,19 +343,36 @@ Main page
                         </div>
 
                         <!-- USERS ONLINE SECTION -->
-                        <h4 class="centered mt">TEAM MEMBERS ONLINE</h4>
-                        <!-- First Member -->
+                        <h4 class="centered mt">PROJECT MANAGER </h4>
+
                         <div class="desc">
                             <div class="thumb">
                                 <img class="img-circle" src="img/ui-divya.jpg" width="35px" height="35px" align="">
                             </div>
                             <div class="details">
                                 <p>
-                                    <a href="#">DIVYA MANIAN</a><br/>
-                                    <muted>Available</muted>
+                                  {{ user.firstName }} {{ user.lastName }}
+
                                 </p>
+
                             </div>
                         </div>
+                        <h4 class="centered mt">DEVELOPERS </h4>
+                        <!-- First Member -->
+                        {% for singleUser in users %}
+                            {{ singleUser.firstName }} {{ singleUser.lastName }}
+                        <div class="desc">
+                            <div class="thumb">
+                                <img class="img-circle" src="img/ui-divya.jpg" width="35px" height="35px" align="">
+                            </div>
+                            <div class="details">
+                                <p>
+                                    {{ singleUser.firstName }} {{ singleUser.lastName }}
+                                </p>
+
+                            </div>
+                        </div>
+                        {% endfor %}
 
                     </div>
                     <!-- /col-lg-3 -->

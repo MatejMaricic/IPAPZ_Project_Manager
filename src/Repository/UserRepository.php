@@ -23,11 +23,25 @@ class UserRepository extends ServiceEntityRepository
     public function findAllDevelopers()
     {
         return $this->createQueryBuilder('u')
+            ->select('u')
             ->where('u.roles LIKE :val')
             ->setParameter('val', "%ROLE_USER%")
             ->orderBy('u.id', 'ASC')
             ->setMaxResults(10)
         ;
+    }
+
+    public function findAllDevelopersArray()
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u')
+            ->where('u.roles LIKE :val')
+            ->setParameter('val', "%ROLE_USER%")
+            ->orderBy('u.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
 
