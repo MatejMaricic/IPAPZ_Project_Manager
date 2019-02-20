@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block title %}
-    Main page
+    Project page
 {% endblock %}
 {% block body %}
 
@@ -28,6 +28,7 @@
                         </div>
                     </div>
                 </div>
+            <a href="{{  path('task_view', {'id': project.id}) }}">Add Task</a>
 
         </div>
     </div>

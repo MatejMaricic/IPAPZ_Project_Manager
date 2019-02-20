@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Task
 {
@@ -46,6 +47,11 @@ class Task
      */
     private $status;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $content;
+
 
 
     public function __construct()
@@ -55,6 +61,14 @@ class Task
         $this->projectStatuses = new ArrayCollection();
     }
 
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function onPrePersist()
+    {
+        $this->createdat = new \DateTime('now');
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -186,6 +200,18 @@ class Task
     public function setStatus(?ProjectStatus $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(string $content): self
+    {
+        $this->content = $content;
 
         return $this;
     }

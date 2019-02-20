@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\User;
+use App\Entity\Task;
 use App\Form\ProjectFormType;
 use App\Entity\ProjectStatus;
 use App\Form\ProjectStatusFormType;
@@ -68,8 +69,37 @@ class ProjectController extends AbstractController
         ]);
     }
 
-    public function addTask()
+    /**
+     * @Route("/task/{id}", name="task_view")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param Project $project
+     * @return Response
+     */
+
+    public function addTask(Request $request, EntityManagerInterface $entityManager, Project $project)
     {
 
+        $taskForm = $this->createForm(TaskFormType::class);
+        $taskForm ->handleRequest($request);
+        if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()){
+        /**@var Task $task */
+        $task = $taskForm->getData();
+
+        $task->setProject($project);
+        $entityManager->persist($task);
+        $entityManager->flush();
+
+        }
+        return $this->render('project/task.html.twig', [
+
+            'taskForm' => $taskForm->createView(),
+            'user' => $this->getUser(),
+            'project' => $project
+
+
+
+        ]);
     }
+
 }
