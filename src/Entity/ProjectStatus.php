@@ -35,9 +35,11 @@ class ProjectStatus
     private $createdat;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Task", mappedBy="projectStatuses")
+     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="status")
      */
     private $tasks;
+
+
 
     public function __construct()
     {

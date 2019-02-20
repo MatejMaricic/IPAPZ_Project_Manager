@@ -41,9 +41,12 @@ class Task
     private $users;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ProjectStatus", inversedBy="tasks")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ProjectStatus", inversedBy="tasks")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $projectStatuses;
+    private $status;
+
+
 
     public function __construct()
     {
@@ -171,6 +174,18 @@ class Task
         if ($this->projectStatuses->contains($projectStatus)) {
             $this->projectStatuses->removeElement($projectStatus);
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?ProjectStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?ProjectStatus $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

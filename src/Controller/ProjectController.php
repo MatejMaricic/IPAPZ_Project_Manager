@@ -68,4 +68,8 @@ class ProjectController extends AbstractController
         ]);
     }
 
+    public function addTask()
+    {
+
+    }
 }

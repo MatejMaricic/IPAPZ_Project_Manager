@@ -2,49 +2,42 @@
 
 {% block title %}Log in!{% endblock %}
 
-{% block body %}
+{% block loginRegister %}
 
-    <body>
-    <div id="login-page">
-        <div class="container">
-            <form class="form-login" method="post">
-                {% if error %}
-                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
-                <h2 class="form-login-heading">sign in now</h2>
-                <div class="login-wrap">
-                    <label for="inputEmail" class="sr-only">Email</label>
-                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
-                    <label for="inputPassword" class="sr-only">Password</label>
-                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    <button class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-lock"></i> SIGN IN</button>
-                    <hr>
-
-                    <div class="registration">
-                        Don't have an account yet?<br/>
-                        <a class="" href="{{ path('app_register')}}">
-                            Create an account
-                        </a>
-                    </div>
+    <body id="LoginForm">
+    <div class="container">
+        <div class="login-form">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <div class="main-div">
+                <div class="panel">
+                    <h2>Login</h2>
+                    <p>Please enter your email and password</p>
                 </div>
+                <form class="form-login" method="post">
 
-            </form>
+                    <div class="form-group">
+                        <input type="email" value="{{ last_username }}"  name="email" class="form-control" id="inputEmail" placeholder="Email Address">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <button class="btn btn-primary" href="index.html" type="submit"><i class="fa fa-lock"></i> SIGN IN</button>
+
+                </form>
+                <hr>
+                <div class="registration">
+                    Don't have an account yet?<br/>
+                    <a class="" href="{{ path('app_register')}}">
+                        Create an account
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-    <!-- js placed at the end of the document so the pages load faster -->
-    <script src="lib/jquery/jquery.min.js"></script>
-    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
-    <!--BACKSTRETCH-->
-    <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
-    <script type="text/javascript" src="lib/jquery.backstretch.min.js"></script>
-    <script>
-        $.backstretch("img/login-bg.jpg", {
-            speed: 500
-        });
-    </script>
     </body>
-
-    </html>
 
 {% endblock %}
