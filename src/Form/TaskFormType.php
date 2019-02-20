@@ -14,6 +14,7 @@ use App\Entity\Task;
 use App\Repository\ProjectStatusRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,7 +35,9 @@ class TaskFormType extends AbstractType
                 'query_builder' => function(ProjectStatusRepository $projectStatusRepository) use ($id){
                     return $projectStatusRepository->findAllForProject($id);
                 }
-            ]);
+            ])
+            ->add('images', FileType::class)
+        ;
 
     }
     public function configureOptions(OptionsResolver $resolver)

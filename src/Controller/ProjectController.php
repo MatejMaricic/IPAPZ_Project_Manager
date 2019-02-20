@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ProjectController extends AbstractController
@@ -63,8 +64,19 @@ class ProjectController extends AbstractController
         $taskForm ->handleRequest($request);
         if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()){
             /**@var Task $task */
+            $file = $request->files->get('task_form')['images'];
+            $uploads_directory = $this->getParameter('uploads_directory');
+
+            $filename = md5(uniqid()) . '.' .$file->guessExtension();
+
+                $file->move(
+                    $uploads_directory,
+                    $filename
+                );
+
 
             $task = $taskForm->getData();
+            $task->setImages($filename);
             $task->setProject($project);
             $entityManager->persist($task);
             $entityManager->flush();

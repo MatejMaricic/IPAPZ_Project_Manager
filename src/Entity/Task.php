@@ -52,6 +52,11 @@ class Task
      */
     private $content;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $images;
+
 
 
     public function __construct()
@@ -212,6 +217,18 @@ class Task
     public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getImages(): ?string
+    {
+        return $this->images;
+    }
+
+    public function setImages(?string $images): self
+    {
+        $this->images = $images;
 
         return $this;
     }
