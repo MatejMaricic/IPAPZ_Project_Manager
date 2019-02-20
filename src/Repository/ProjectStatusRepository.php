@@ -19,32 +19,14 @@ class ProjectStatusRepository extends ServiceEntityRepository
         parent::__construct($registry, ProjectStatus::class);
     }
 
-    // /**
-    //  * @return ProjectStatus[] Returns an array of ProjectStatus objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllForProject($id)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
+        return $this->createQueryBuilder('ps')
+            ->innerJoin('ps.projects', 'p')
+            ->where('p.id = :id')
+            ->setParameter('id', $id)
             ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?ProjectStatus
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ;
     }
-    */
 }

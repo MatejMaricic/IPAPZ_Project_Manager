@@ -23,19 +23,25 @@ class TaskFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $id = $options['project_id'];
         $builder
             ->add('name', TextType::class)
             ->add('content', TextareaType::class)
             ->add('status', EntityType::class,[
                 'class' => ProjectStatus::class,
                 'choice_label' => 'name',
+                'query_builder' => function(ProjectStatusRepository $projectStatusRepository) use ($id){
+                    return $projectStatusRepository->findAllForProject($id);
+                }
             ]);
 
     }
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => null
+            'data_class' => Task::class,
+            'project_id' => null
         ]);
     }
 }
