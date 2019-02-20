@@ -91,6 +91,10 @@ class ProjectController extends AbstractController
         $entityManager->persist($task);
         $entityManager->flush();
 
+        return $this->redirectToRoute('project_view', [
+            'id' => $project->getId()
+        ]);
+
         }
         return $this->render('project/task.html.twig', [
 
