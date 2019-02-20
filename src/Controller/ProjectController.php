@@ -80,12 +80,13 @@ class ProjectController extends AbstractController
     public function addTask(Request $request, EntityManagerInterface $entityManager, Project $project)
     {
 
-        $taskForm = $this->createForm(TaskFormType::class);
+        $taskForm = $this->createForm(TaskFormType::class, array("project_id" => $project->getId() ) );
         $taskForm ->handleRequest($request);
         if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()){
         /**@var Task $task */
-        $task = $taskForm->getData();
 
+
+        $task = $taskForm->getData();
         $task->setProject($project);
         $entityManager->persist($task);
         $entityManager->flush();

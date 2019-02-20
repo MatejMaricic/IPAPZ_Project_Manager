@@ -35,7 +35,7 @@ class TaskFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Task::class,
+            'data_class' => null
         ]);
     }
 }
