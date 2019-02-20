@@ -31,16 +31,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class ProjectController extends AbstractController
 {
 
-    /**
-     * @Route("/project/{id}", name="project_view")
-     * @param Project $project
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     * @return Response
-     */
-
-    public function addDeveloper(Project $project, Request $request, EntityManagerInterface $entityManager,  UserPasswordEncoderInterface $passwordEncoder)
+    private function addDeveloper(Project $project, Request $request, EntityManagerInterface $entityManager,  UserPasswordEncoderInterface $passwordEncoder)
     {
 
         $form = $this->createForm(RegistrationFormType::class);
@@ -60,51 +51,50 @@ class ProjectController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
         }
-        return $this->render('project/project.html.twig', [
-
-            'form' => $form->createView(),
-            'user' => $this->getUser(),
-            'project' =>$project
-
-        ]);
+        return $form;
     }
 
-    /**
-     * @Route("/task/{id}", name="task_view")
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @param Project $project
-     * @return Response
-     */
 
-    public function addTask(Request $request, EntityManagerInterface $entityManager, Project $project)
+
+    private function addTask(Request $request, EntityManagerInterface $entityManager, Project $project)
     {
 
         $taskForm = $this->createForm(TaskFormType::class,$data = null, array("project_id" => $project->getId() ) );
         $taskForm ->handleRequest($request);
         if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()){
-        /**@var Task $task */
+            /**@var Task $task */
 
-
-        $task = $taskForm->getData();
-        $task->setProject($project);
-        $entityManager->persist($task);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('project_view', [
-            'id' => $project->getId()
-        ]);
+            $task = $taskForm->getData();
+            $task->setProject($project);
+            $entityManager->persist($task);
+            $entityManager->flush();
 
         }
-        return $this->render('project/task.html.twig', [
+        return $taskForm;
+    }
+    /**
+     * @Route("/project/{id}", name="project_view")
+     * @param Project $project
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return Response
+     */
+    public function projectHandler(Project $project, Request $request, EntityManagerInterface $entityManager,  UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $form = $this->addDeveloper($project,$request,$entityManager,$passwordEncoder);
+        $taskForm = $this->addTask($request,$entityManager,$project);
 
-            'taskForm' => $taskForm->createView(),
+        return $this->render('project/project.html.twig',[
+            'form' => $form->createView(),
+            'taskForm'=> $taskForm->createView(),
             'user' => $this->getUser(),
             'project' => $project
 
-
-
         ]);
+
     }
 
 }
+
+
