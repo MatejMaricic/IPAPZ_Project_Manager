@@ -10,3 +10,16 @@ $(document).ready(function () {
         })
     });
 });
+
+$(document).ready(function () {
+    $('.removeTask').on('click', function (e) {
+        e.preventDefault();
+        var link = $(e.currentTarget);
+        $.ajax({
+            method: 'POST',
+            url: link.attr('href')
+        }).done(function (data) {
+            jQuery( '#task-'+data.deletedTask ).remove();
+        })
+    });
+});

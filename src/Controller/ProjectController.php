@@ -122,6 +122,32 @@ class ProjectController extends AbstractController
 
     }
 
+    /**
+     * @Route("/project/{id}/delete", name="task_delete", methods={"POST", "GET"})
+     * @param Task $task
+     * @param EntityManagerInterface $entityManager
+     * @return JsonResponse
+     */
+    public function deleteTask(Task $task, EntityManagerInterface $entityManager )
+    {
+
+        $taskId = $task->getId();
+
+        if (!$task) {
+            return new JsonResponse([
+                'msg' => 'Unable to delete'
+            ]);
+        }
+
+        $entityManager->remove($task);
+        $entityManager->flush();
+
+
+        return new JsonResponse([
+            'deletedTask' => $taskId
+        ]);
+    }
+
 }
 
 

@@ -17,7 +17,7 @@
                     <h1>{{ status.name }}</h1>
                     {% for task in project.task %}
                         {% if task.status.id == status.id %}
-                            <div class="card text-white bg-info mb-3">
+                            <div class="card text-white bg-info mb-3" id="task-{{ task.id }}">
                                 {% if task.images is empty %}
                                     <span class="project-icon text-center"><i class="fa fa-tasks"></i></span>
 
@@ -28,6 +28,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">{{ task.name }}</h5>
                                     <p class="card-text">{{ task.content }}</p>
+                                    <a href="{{ path('task_delete', {'id': task.id}) }}" class="btn btn-danger removeTask">
                                     <a href="#" class="btn btn-primary">Open Task</a>
                                 </div>
                             </div>
