@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormTypeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 
@@ -68,6 +68,31 @@ class IndexController extends AbstractController
 
       ]);
   }
+    /**
+     * @Route("/{id}/delete", name="project_delete", methods={"POST", "GET"})
+     * @param Project $project
+     * @param EntityManagerInterface $entityManager
+     * @return JsonResponse
+     */
+    public function deleteProject(Project $project, EntityManagerInterface $entityManager )
+    {
+
+        $projectId = $project->getId();
+
+        if (!$project) {
+            return new JsonResponse([
+                'msg' => 'Unable to delete'
+            ]);
+        }
+
+        $entityManager->remove($project);
+        $entityManager->flush();
+
+
+        return new JsonResponse([
+            'deletedProject' => $projectId
+        ]);
+    }
 
 
 
