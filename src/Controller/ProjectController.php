@@ -77,9 +77,11 @@ class ProjectController extends AbstractController
         if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()){
             /**@var Task $task */
             $task = $taskForm->getData();
-            $file = $request->files->get('task_form')['images'];
+            $files = $request->files->get('task_form')['images'];
 
-            if (isset($file)){
+            if (isset($files)){
+
+                foreach ($files as $file){
             $uploads_directory = $this->getParameter('uploads_directory');
             $filename = md5(uniqid()) . '.' .$file->guessExtension();
                 $file->move(
@@ -87,14 +89,16 @@ class ProjectController extends AbstractController
                     $filename
 
                 );
-            $task->setImages($filename);
+                $images[]= $filename;
                 }
-
+                $task->setImages($images);
+            }
 
 
             $task->setProject($project);
             $entityManager->persist($task);
             $entityManager->flush();
+            unset($task);
 
         }
         return $taskForm;

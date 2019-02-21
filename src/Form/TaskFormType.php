@@ -37,7 +37,8 @@ class TaskFormType extends AbstractType
                 }
             ])
             ->add('images', FileType::class,[
-                'required' => false
+                'required' => false,
+                'multiple' => true
             ])
         ;
 

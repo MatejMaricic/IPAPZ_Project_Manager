@@ -53,9 +53,10 @@ class Task
     private $content;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="array", nullable=true)
      */
-    private $images;
+    private $images = [];
+
 
 
 
@@ -221,15 +222,16 @@ class Task
         return $this;
     }
 
-    public function getImages(): ?string
+    public function getImages(): ?array
     {
         return $this->images;
     }
 
-    public function setImages(?string $images): self
+    public function setImages(?array $images): self
     {
         $this->images = $images;
 
         return $this;
     }
+
 }
