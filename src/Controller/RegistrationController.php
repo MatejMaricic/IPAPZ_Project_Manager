@@ -19,12 +19,27 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator): Response
     {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
 
+        $form = $this->createForm(RegistrationFormType::class);
+        $form->handleRequest($request);
+        /**@var User $user */
+        $user = $form->getData();
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
+
+            $file = $request->files->get('registration_form')['avatar'];
+
+            if (isset($file)){
+                $uploads_directory = $this->getParameter('uploads_directory');
+                $filename = md5(uniqid()) . '.' .$file->guessExtension();
+                $file->move(
+                    $uploads_directory,
+                    $filename
+
+                );
+                $user->setAvatar($filename);
+            }
+
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,

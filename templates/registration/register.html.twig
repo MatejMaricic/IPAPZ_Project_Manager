@@ -12,7 +12,7 @@
                     <h2>Registration</h2>
                     <p>Create new account now!</p>
                 </div>
-                <form class="form-login" method="post">
+
 
                     {{ form_start(registrationForm) }}
                     {{ form_row(registrationForm.firstName, {'attr':{class: 'form-control'}}) }}
@@ -21,11 +21,11 @@
                     {{ form_row(registrationForm.plainPassword.first, {'attr':{class: 'form-control'}}) }}
                     {{ form_row(registrationForm.plainPassword.second, {'attr':{class: 'form-control'}}) }}
                     {{ form_row(registrationForm.plainPassword) }}
+                    {{ form_row(registrationForm.avatar) }}
                     <br><br>
                     <button class="btn btn-primary">Register</button>
                     {{ form_end(registrationForm) }}
 
-                </form>
                 <hr>
                 <div class="registration">
                     You already have account?<br/>
