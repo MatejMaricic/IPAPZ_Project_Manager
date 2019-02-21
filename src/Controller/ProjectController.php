@@ -39,8 +39,20 @@ class ProjectController extends AbstractController
         $form->handleRequest($request);
         if ($this->isGranted('ROLE_MANAGER') && $form->isSubmitted() && $form->isValid()){
             /**@var User $user */
-
             $user = $form->getData();
+            $file = $request->files->get('registration_form')['avatar'];
+
+            if (isset($file)){
+                $uploads_directory = $this->getParameter('uploads_directory');
+                $filename = md5(uniqid()) . '.' .$file->guessExtension();
+                $file->move(
+                    $uploads_directory,
+                    $filename
+
+                );
+                $user->setAvatar($filename);
+            }
+
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,

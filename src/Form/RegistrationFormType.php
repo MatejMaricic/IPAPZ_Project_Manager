@@ -42,7 +42,11 @@ class RegistrationFormType extends AbstractType
                 'required' => true,
                 'first_options'  => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
-            ]);
+            ])
+            ->add('avatar', FileType::class,[
+                'required' => false,
+            ])
+        ;
     }
 
 
