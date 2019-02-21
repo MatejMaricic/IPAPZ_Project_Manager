@@ -64,19 +64,22 @@ class ProjectController extends AbstractController
         $taskForm ->handleRequest($request);
         if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()){
             /**@var Task $task */
+            $task = $taskForm->getData();
             $file = $request->files->get('task_form')['images'];
+
+            if (isset($file)){
             $uploads_directory = $this->getParameter('uploads_directory');
-
             $filename = md5(uniqid()) . '.' .$file->guessExtension();
-
                 $file->move(
                     $uploads_directory,
                     $filename
+
                 );
-
-
-            $task = $taskForm->getData();
             $task->setImages($filename);
+                }
+
+
+
             $task->setProject($project);
             $entityManager->persist($task);
             $entityManager->flush();

@@ -36,7 +36,9 @@ class TaskFormType extends AbstractType
                     return $projectStatusRepository->findAllForProject($id);
                 }
             ])
-            ->add('images', FileType::class)
+            ->add('images', FileType::class,[
+                'required' => false
+            ])
         ;
 
     }

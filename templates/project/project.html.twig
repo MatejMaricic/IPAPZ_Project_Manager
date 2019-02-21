@@ -18,7 +18,13 @@
                     {% for task in project.task %}
                         {% if task.status.id == status.id %}
                             <div class="card text-white bg-info mb-3">
-                                <span class="project-icon text-center"><i class="fa fa-tasks"></i></span>
+                                {% if task.images is empty %}
+                                    <span class="project-icon text-center"><i class="fa fa-tasks"></i></span>
+
+                                    {% else %}
+                                        <img width=100% height="200"  src="{{ asset('uploads/')~task.images }}">
+                                {% endif %}
+
                                 <div class="card-body">
                                     <h5 class="card-title">{{ task.name }}</h5>
                                     <p class="card-text">{{ task.content }}</p>
