@@ -11,98 +11,80 @@ namespace App\Controller;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Entity\Task;
-use App\Form\ProjectFormType;
-use App\Entity\ProjectStatus;
-use App\Form\ProjectStatusFormType;
 use App\Form\RegistrationFormType;
 use App\Form\TaskFormType;
-use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ProjectController extends AbstractController
 {
 
-    private function addDeveloper(Project $project, Request $request, EntityManagerInterface $entityManager,  UserPasswordEncoderInterface $passwordEncoder)
+    private function addDeveloper(Project $project, Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, $form)
     {
+        /**@var User $user */
+        $user = $form->getData();
+        $file = $request->files->get('registration_form')['avatar'];
 
-        $form = $this->createForm(RegistrationFormType::class);
-        $form->handleRequest($request);
-        if ($this->isGranted('ROLE_MANAGER') && $form->isSubmitted() && $form->isValid()){
-            /**@var User $user */
-            $user = $form->getData();
-            $file = $request->files->get('registration_form')['avatar'];
-
-            if (isset($file)){
-                $uploads_directory = $this->getParameter('uploads_directory');
-                $filename = md5(uniqid()) . '.' .$file->guessExtension();
-                $file->move(
-                    $uploads_directory,
-                    $filename
-
-                );
-                $user->setAvatar($filename);
-            }
-
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-            $user ->setRoles(array('ROLE_USER'));
-            $user ->addProject($project);
-            $entityManager->persist($user);
-            $entityManager->flush();
-        }
-        return $form;
-    }
-
-
-
-    private function addTask(Request $request, EntityManagerInterface $entityManager, Project $project)
-    {
-
-        $taskForm = $this->createForm(TaskFormType::class,$data = null, array("project_id" => $project->getId() ) );
-        $taskForm ->handleRequest($request);
-        if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()){
-            /**@var Task $task */
-            $task = $taskForm->getData();
-            $files = $request->files->get('task_form')['images'];
-
-            if (isset($files)){
-
-                foreach ($files as $file){
+        if (isset($file)) {
             $uploads_directory = $this->getParameter('uploads_directory');
-            $filename = md5(uniqid()) . '.' .$file->guessExtension();
+            $filename = md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $uploads_directory,
+                $filename
+
+            );
+            $user->setAvatar($filename);
+        }
+
+        $user->setPassword(
+            $passwordEncoder->encodePassword(
+                $user,
+                $form->get('plainPassword')->getData()
+            )
+        );
+        $user->setRoles(array('ROLE_USER'));
+        $user->addProject($project);
+        $entityManager->persist($user);
+        $entityManager->flush();
+    }
+
+
+    private function addTask(Request $request, EntityManagerInterface $entityManager, Project $project, $taskForm)
+    {
+
+        /**@var Task $task */
+        $task = $taskForm->getData();
+        $files = $request->files->get('task_form')['images'];
+
+        if (isset($files)) {
+
+            foreach ($files as $file) {
+                $uploads_directory = $this->getParameter('uploads_directory');
+                $filename = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move(
                     $uploads_directory,
                     $filename
 
                 );
-                $images[]= $filename;
-                }
-                $task->setImages($images);
+                $images[] = $filename;
             }
-
-
-            $task->setProject($project);
-            $entityManager->persist($task);
-            $entityManager->flush();
-            unset($task);
+            $task->setImages($images);
 
         }
-        return $taskForm;
+
+
+        $task->setProject($project);
+        $entityManager->persist($task);
+        $entityManager->flush();
+
     }
+
+
     /**
      * @Route("/project/{id}", name="project_view")
      * @param Project $project
@@ -111,18 +93,29 @@ class ProjectController extends AbstractController
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
      */
-    public function projectHandler(Project $project, Request $request, EntityManagerInterface $entityManager,  UserPasswordEncoderInterface $passwordEncoder)
+    public function projectHandler(Project $project, Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $form = $this->addDeveloper($project,$request,$entityManager,$passwordEncoder);
-        $taskForm = $this->addTask($request,$entityManager,$project);
+        $form = $this->createForm(RegistrationFormType::class);
+        $taskForm = $this->createForm(TaskFormType::class, $data = null, array("project_id" => $project->getId()));
 
-        return $this->render('project/project.html.twig',[
-            'form' => $form->createView(),
-            'taskForm'=> $taskForm->createView(),
-            'user' => $this->getUser(),
-            'project' => $project
+        $form->handleRequest($request);
+        if ($this->isGranted('ROLE_MANAGER') && $form->isSubmitted() && $form->isValid()) {
+            $this->addDeveloper($project, $request, $entityManager, $passwordEncoder, $form);
+            return $this->redirect($request->getUri());
+        } else {
+            $taskForm->handleRequest($request);
+            if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
+                $this->addTask($request, $entityManager, $project, $taskForm);
+                return $this->redirect($request->getUri());
+            }
+            return $this->render('project/project.html.twig', [
+                'form' => $form->createView(),
+                'taskForm' => $taskForm->createView(),
+                'user' => $this->getUser(),
+                'project' => $project
+            ]);
+        }
 
-        ]);
 
     }
 
@@ -132,7 +125,7 @@ class ProjectController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return JsonResponse
      */
-    public function deleteTask(Task $task, EntityManagerInterface $entityManager )
+    public function deleteTask(Task $task, EntityManagerInterface $entityManager)
     {
 
         $taskId = $task->getId();

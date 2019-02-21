@@ -1,4 +1,3 @@
-
 {% extends 'base.html.twig' %}
 {% block projectSidebar %}
     <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#devForm">Add Developer</a></li>
@@ -20,51 +19,32 @@
                             <div class="card text-white bg-info mb-3" id="task-{{ task.id }}">
                                 {% if task.images is empty %}
                                     <span class="project-icon text-center"><i class="fa fa-tasks"></i></span>
-                                     {% else %}
+                                {% else %}
                                     {% for image in task.images %}
-                                        <img width=100 height="100"  src="{{ asset('uploads/')~image }}">
-                                    {% endfor%}
+                                        <img width=100 height="100" src="{{ asset('uploads/')~image }}">
+                                    {% endfor %}
                                 {% endif %}
 
                                 <div class="card-body">
                                     <h5 class="card-title">{{ task.name }}</h5>
                                     <p class="card-text">{{ task.content }}</p>
-                                    <a href="{{ path('task_delete', {'id': task.id}) }}" class="btn btn-danger removeTask">
+                                    <a href="{{ path('task_delete', {'id': task.id}) }}"
+                                       class="btn btn-danger removeTask">
                                         <i class="fa fa-trash"></i>
-                                    <a href="#" class="btn btn-primary">Open Task</a>
+                                        <a href="#" class="btn btn-primary">Open Task</a>
                                 </div>
                             </div>
                         {% endif %}
                     {% endfor %}
-
-
-
                 </div>
             {% endfor %}
 
         </div>
     </div>
 
-    <div class="container">
-        <div class="row">
 
-                <div class="col-3">
-                    <div class="card text-white bg-info mb-3">
-                        <span class="project-icon text-center"><i class="fa fa-tasks"></i></span>
-                        <div class="card-body">
-                            <h5 class="card-title"></h5>
-                            <p class="card-text"></p>
-                            <a href="#" class="btn btn-primary">Open Task</a>
-
-                        </div>
-                    </div>
-                </div>
-
-
-        </div>
-    </div>
-
-    <div class="modal fade" id="devForm" tabindex="-1" role="dialog" aria-labelledby="projectFormTitle" aria-hidden="true">
+    <div class="modal fade" id="devForm" tabindex="-1" role="dialog" aria-labelledby="projectFormTitle"
+         aria-hidden="true">
         {{ form_start(form) }}
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -98,7 +78,8 @@
         {{ form_end(form) }}
     </div>
 
-    <div class="modal fade" id="taskForm" tabindex="-1" role="dialog" aria-labelledby="projectFormTitle" aria-hidden="true">
+    <div class="modal fade" id="taskForm" tabindex="-1" role="dialog" aria-labelledby="projectFormTitle"
+         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -115,7 +96,6 @@
                                 {{ form_row(taskForm.name) }}
                                 {{ form_row(taskForm.content) }}
                                 {{ form_row(taskForm.status) }}
-
                             </div>
                         </div>
                     </div>
@@ -124,13 +104,8 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add Task</button>
                     {{ form_end(taskForm) }}
-
                 </div>
             </div>
         </div>
-
     </div>
-
-
-
-{% endblock  %}
+{% endblock %}
