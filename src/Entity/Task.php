@@ -57,6 +57,11 @@ class Task
      */
     private $images = [];
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comments", mappedBy="task", orphanRemoval=true)
+     */
+    private $comments;
+
 
 
 
@@ -65,6 +70,7 @@ class Task
         $this->taskStatuses = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->projectStatuses = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
 
@@ -230,6 +236,37 @@ class Task
     public function setImages(?array $images): self
     {
         $this->images = $images;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comments[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setTask($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getTask() === $this) {
+                $comment->setTask(null);
+            }
+        }
 
         return $this;
     }
