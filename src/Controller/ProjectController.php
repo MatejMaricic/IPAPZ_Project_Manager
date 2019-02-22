@@ -8,9 +8,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comments;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Entity\Task;
+use App\Form\CommentFormType;
 use App\Form\RegistrationFormType;
 use App\Form\TaskFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -84,6 +86,17 @@ class ProjectController extends AbstractController
 
     }
 
+    public function addComment(Task $task,  Request $request, EntityManagerInterface $entityManager,$commentForm)
+    {
+        /**@var Comments $comments*/
+        $comments = $commentForm->getData();
+        $comments->setUser($this->getUser());
+        $comments->setTask($task);
+        $entityManager->persist($comments);
+        $entityManager->flush($comments);
+
+    }
+
 
     /**
      * @Route("/project/{id}", name="project_view")
@@ -149,16 +162,22 @@ class ProjectController extends AbstractController
      * @Route("/task/{id}", name="task_view")
      * @param Request $request
      * @param EntityManagerInterface $entityManager
-     * @param UserPasswordEncoderInterface $passwordEncoder
      * @param Task $task
      * @return Response
      */
-    public function taskView(Task $task,  Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function taskView(Task $task,  Request $request, EntityManagerInterface $entityManager)
     {
+        $commentForm = $this->createForm(CommentFormType::class);
+        $commentForm->handleRequest($request);
+        if ($commentForm->isSubmitted() && $commentForm->isValid()){
+            $this->addComment($task,$request,$entityManager,$commentForm);
+            return $this->redirect($request->getUri());
+        }else
 
         return $this->render('project/task.html.twig', [
             'user' => $this->getUser(),
-            'task' => $task
+            'task' => $task,
+            'commentForm' => $commentForm->createView()
         ]);
     }
 

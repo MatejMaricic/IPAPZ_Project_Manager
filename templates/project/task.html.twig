@@ -19,7 +19,20 @@
         <div class="row task-content">
             {{ task.content }}
         </div>
+        <div class="row task comments">
+            <h2>Comments</h2><br>
+            {% if task.comments is not empty %}
+            {% for comment in task.comments %}
+                <div class="comment">
+                    {{ comment.content }}
+                </div>
 
+            {% endfor %}
+            {% endif %}
+        </div>
+        {{ form_start(commentForm) }}
+        <button type="submit" class="btn btn-primary">Add comment</button>
+        {{ form_end(commentForm) }}
     </div>
 
 {% endblock %}
