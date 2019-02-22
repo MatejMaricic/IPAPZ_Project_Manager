@@ -12,6 +12,7 @@ use App\Entity\Comments;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Entity\Task;
+use App\Form\AssignDevFormType;
 use App\Form\CommentFormType;
 use App\Form\TaskFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -56,6 +57,18 @@ class ProjectController extends AbstractController
 
     }
 
+    private function assignDev(Project $project, Request $request, EntityManagerInterface $entityManager, $devForm)
+    {
+        $user = $devForm->getData();
+        foreach ($user as $singleuser){
+            foreach ($singleuser as $item) {
+                $project->addUser($item);
+            }
+        }
+        $entityManager->persist($project);
+        $entityManager->flush();
+    }
+
     public function addComment(Task $task,  Request $request, EntityManagerInterface $entityManager,$commentForm)
     {
         /**@var Comments $comments*/
@@ -79,6 +92,7 @@ class ProjectController extends AbstractController
     public function projectHandler(Project $project, Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
     {
 
+        $devForm = $this->createForm(AssignDevFormType::class);
         $taskForm = $this->createForm(TaskFormType::class, $data = null, array("project_id" => $project->getId()));
 
 
@@ -86,11 +100,19 @@ class ProjectController extends AbstractController
             if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
                 $this->addTask($request, $entityManager, $project, $taskForm);
                 return $this->redirect($request->getUri());
+            }else {
+                $devForm->handleRequest($request);
+                if ($this->isGranted('ROLE_MANAGER') && $devForm->isSubmitted() && $devForm->isValid()){
+                    $this->assignDev($project,$request,$entityManager,$devForm);
+                    return $this->redirect($request->getUri());
+                }
+
             }
             return $this->render('project/project.html.twig', [
                 'taskForm' => $taskForm->createView(),
                 'user' => $this->getUser(),
-                'project' => $project
+                'project' => $project,
+                'devForm' => $devForm->createView()
             ]);
 
     }
