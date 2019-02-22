@@ -61,7 +61,7 @@ class ProjectController extends AbstractController
         $task = $taskForm->getData();
         $files = $request->files->get('task_form')['images'];
 
-        if (isset($files)) {
+        if (!empty($files)) {
 
             foreach ($files as $file) {
                 $uploads_directory = $this->getParameter('uploads_directory');
@@ -142,6 +142,23 @@ class ProjectController extends AbstractController
 
         return new JsonResponse([
             'deletedTask' => $taskId
+        ]);
+    }
+
+    /**
+     * @Route("/task/{id}", name="task_view")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param Task $task
+     * @return Response
+     */
+    public function taskView(Task $task,  Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
+    {
+
+        return $this->render('project/task.html.twig', [
+            'user' => $this->getUser(),
+            'task' => $task
         ]);
     }
 

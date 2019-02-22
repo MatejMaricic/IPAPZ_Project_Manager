@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Task page
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row task-name">
+            {{ task.name }}
+        </div>
+        {% if task.images is empty %}
+        {% else %}
+        <div class="row task-images">
+            {% for image in task.images %}
+                <img width=500 height="500" src="{{ asset('uploads/')~image }}"><br>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="row task-content">
+            {{ task.content }}
+        </div>
+
+    </div>
+
+{% endblock %}
