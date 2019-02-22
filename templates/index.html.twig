@@ -1,4 +1,8 @@
 {% extends 'base.html.twig' %}
+{% block indexSidebar %}
+    <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#projectForm">Add New Project</a></li>
+    <li><i class="fa fa-folder"></i><a href="#" data-toggle="modal" data-target="#devForm">Add New Developer</a></li>
+{% endblock %}
 {% block title %}
     Main page
 {% endblock %}
@@ -7,12 +11,6 @@
         <div class="row">
             <div class="col">
                 <h1>My Projects</h1>
-            </div>
-            <div class="col">
-                <a class="btn btn-success float-right" data-toggle="modal" data-target="#projectForm">
-                    <i class="fa fa-plus-circle"></i>
-                    <span>Add New Project</span>
-                </a>
             </div>
         </div>
     </div>
@@ -26,8 +24,10 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ project.name }}</h5>
                             <p class="card-text">{{ project.createdAt|date }}</p>
-                            <a href="{{ path('project_view', {'id': project.id}) }}" class="btn btn-primary">Open Project</a>
-                            <a href="{{ path('project_delete', {'id': project.id}) }}" class="btn btn-danger removeProject">
+                            <a href="{{ path('project_view', {'id': project.id}) }}" class="btn btn-primary">Open
+                                Project</a>
+                            <a href="{{ path('project_delete', {'id': project.id}) }}"
+                               class="btn btn-danger removeProject">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </div>
@@ -37,7 +37,49 @@
         </div>
     </div>
 
-    <div class="modal fade" id="projectForm" tabindex="-1" role="dialog" aria-labelledby="projectFormTitle" aria-hidden="true">
+    <div class="modal fade" id="projectForm" tabindex="-1" role="dialog" aria-labelledby="projectFormTitle"
+         aria-hidden="true">
+        {{ form_start(projectForm) }}
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Project</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col">
+                                {{ form_widget(projectForm.name) }}
+                                {{ form_row(projectForm.deadline) }}
+                            </div>
+                            <div class="col">
+                                <div class="row js-project-status-wrapper"
+                                     data-prototype="{{ form_widget(projectForm.projectStatus.vars.prototype)|e('html_attr') }}"
+                                     data-index="{{ projectForm.projectStatus|length }}">
+                                    <a href="#" class="js-project-status-add">
+                                        <span class="fa fa-plus-circle"></span>
+                                        Add Project Status
+                                    </a>
+                                </div>
+                                {{ form_row(projectForm.users) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save project</button>
+                </div>
+            </div>
+            {{ form_end(projectForm) }}
+        </div>
+    </div>
+
+    <div class="modal fade" id="devForm" tabindex="-1" role="dialog" aria-labelledby="projectFormTitle"
+         aria-hidden="true">
         {{ form_start(form) }}
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -51,29 +93,26 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col">
-                                {{ form_widget(form.name) }}
-                                {{ form_row(form.deadline) }}
-                            </div>
-                            <div class="col">
-                                <div class="row js-project-status-wrapper"
-                                     data-prototype="{{ form_widget(form.projectStatus.vars.prototype)|e('html_attr') }}"
-                                     data-index="{{ form.projectStatus|length }}">
-                                    <a href="#" class="js-project-status-add">
-                                        <span class="fa fa-plus-circle"></span>
-                                        Add  Project Status
-                                    </a>
-                                </div>
+                                {{ form_row(form.firstName) }}
+                                {{ form_row(form.lastName) }}
+                                {{ form_row(form.email) }}
+                                {{ form_row(form.plainPassword.first) }}
+                                {{ form_row(form.plainPassword.second) }}
+                                {{ form_row(form.plainPassword) }}
+                                {{ form_row(form.avatar) }}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save project</button>
+                    <button type="submit" class="btn btn-primary">Add developer</button>
                 </div>
             </div>
         </div>
         {{ form_end(form) }}
     </div>
 
-{% endblock  %}
+
+
+{% endblock %}
