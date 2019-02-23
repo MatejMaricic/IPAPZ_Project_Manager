@@ -73,6 +73,11 @@ class User implements UserInterface
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $fullName;
+
 
 
     public function __construct()
@@ -116,6 +121,14 @@ class User implements UserInterface
         }
 
     }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setFullNameValue()
+    {
+        $this->fullName = $this->firstName . " " . $this->lastName;
+    }
+
 
     /**
      * A visual identifier that represents this user.
@@ -303,6 +316,18 @@ class User implements UserInterface
                 $comment->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->fullName;
+    }
+
+    public function setFullName(string $fullName): self
+    {
+        $this->fullName = $fullName;
 
         return $this;
     }

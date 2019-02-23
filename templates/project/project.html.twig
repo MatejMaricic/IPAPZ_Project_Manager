@@ -24,7 +24,8 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Title</th>
-                                    <th scope="col">Assigned developer</th>
+                                    <th scope="col">Assigned developers</th>
+                                    <th scope="col">Priority </th>
                                     <th scope="col">Created</th>
                                     <th scope="col"></th>
                                     <th scope="col">Actions</th>
@@ -37,7 +38,12 @@
                                         <tr id="task-{{ task.id }}">
                                             <th scope="row">{{ task.id }}</th>
                                             <td><a href="{{ path('task_view', {'id': task.id}) }}">{{ task.name }}</a></td>
-                                            <td>{{ task.status.name }}</td>
+                                            <td>
+                                                {% for user in task.users %}
+                                                {{ user.fullName }}<br>
+                                                {% endfor %}
+                                            </td>
+                                            <td>{{ task.priority }}</td>
                                             <td>{{ task.createdat|date("F jS \\a\\t g:ia") }}</td>
                                             <td>
                                                 <select class="js-status-change">

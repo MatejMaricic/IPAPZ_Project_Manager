@@ -62,6 +62,11 @@ class Task
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $priority;
+
 
 
 
@@ -267,6 +272,18 @@ class Task
                 $comment->setTask(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPriority(): ?string
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(string $priority): self
+    {
+        $this->priority = $priority;
 
         return $this;
     }
