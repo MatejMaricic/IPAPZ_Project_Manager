@@ -61,10 +61,22 @@ class ProjectController extends AbstractController
 
     }
 
+    private function assignDevToTask(Task $task, Request $request, EntityManagerInterface $entityManager, $devForm)
+    {
+        $user = $devForm->getData();
+        foreach ($user as $singleuser) {
+            foreach ($singleuser as $item) {
+                $task->addUser($item);
+            }
+        }
+        $entityManager->persist($task);
+        $entityManager->flush();
+    }
+
     private function assignDev(Project $project, Request $request, EntityManagerInterface $entityManager, $devForm)
     {
         $user = $devForm->getData();
-        foreach ($user as $singleuser){
+        foreach ($user as $singleuser) {
             foreach ($singleuser as $item) {
                 $project->addUser($item);
             }
@@ -73,9 +85,9 @@ class ProjectController extends AbstractController
         $entityManager->flush();
     }
 
-    public function addComment(Task $task,  Request $request, EntityManagerInterface $entityManager,$commentForm)
+    public function addComment(Task $task, Request $request, EntityManagerInterface $entityManager, $commentForm)
     {
-        /**@var Comments $comments*/
+        /**@var Comments $comments */
         $comments = $commentForm->getData();
 
         $files = $request->files->get('comment_form')['images'];
@@ -120,10 +132,10 @@ class ProjectController extends AbstractController
         if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
             $this->addTask($request, $entityManager, $project, $taskForm);
             return $this->redirect($request->getUri());
-        }else {
+        } else {
             $devForm->handleRequest($request);
-            if ($this->isGranted('ROLE_MANAGER') && $devForm->isSubmitted() && $devForm->isValid()){
-                $this->assignDev($project,$request,$entityManager,$devForm);
+            if ($this->isGranted('ROLE_MANAGER') && $devForm->isSubmitted() && $devForm->isValid()) {
+                $this->assignDev($project, $request, $entityManager, $devForm);
                 return $this->redirect($request->getUri());
             }
         }
@@ -175,10 +187,10 @@ class ProjectController extends AbstractController
 
         $statusId = $request->get('status_id');
 
-        $newStatus = $project_status_repository->find( $statusId);
+        $newStatus = $project_status_repository->find($statusId);
 
         $oldStatusID = $task->getStatus();
-        $task->setStatus( $newStatus );
+        $task->setStatus($newStatus);
         $entityManager->persist($task);
         $entityManager->flush();
 
@@ -206,29 +218,35 @@ class ProjectController extends AbstractController
      * @param Task $task
      * @return Response
      */
-    public function taskView(Task $task,  Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository)
+    public function taskView(Task $task, Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository)
     {
 
-        $id= $task->getProject()->getId();
+        $id = $task->getProject()->getId();
         $project = $projectRepository->find($id);
 
         $commentForm = $this->createForm(CommentFormType::class);
-        $devForm = $this->createForm(AssignDevFormType::class, $task);
+        $devForm = $this->createForm(AssignDevFormType::class);
 
         $commentForm->handleRequest($request);
-        if ($commentForm->isSubmitted() && $commentForm->isValid()){
-            $this->addComment($task,$request,$entityManager,$commentForm);
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $this->addComment($task, $request, $entityManager, $commentForm);
             return $this->redirect($request->getUri());
+        } else {
+            $devForm->handleRequest($request);
+            if ($this->isGranted('ROLE_MANAGER') && $devForm->isSubmitted() && $devForm->isValid()) {
+                $this->assignDevToTask($task, $request, $entityManager, $devForm);
+                return $this->redirect($request->getUri());
+            }
+
+            return $this->render('project/task.html.twig', [
+                'user' => $this->getUser(),
+                'task' => $task,
+                'commentForm' => $commentForm->createView(),
+                'project' => $project,
+                'devForm' => $devForm->createView()
+            ]);
         }
 
-        return $this->render('project/task.html.twig', [
-            'user' => $this->getUser(),
-            'task' => $task,
-            'commentForm' => $commentForm->createView(),
-            'project' => $project,
-            'devForm' => $devForm->createView()
-        ]);
     }
-
 }
 

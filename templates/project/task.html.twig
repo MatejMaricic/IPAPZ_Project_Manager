@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block projectSidebar %}
-    <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#devForm">Add Developer</a></li>
+    <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#devForm">Assign Developer</a></li>
 {% endblock %}
 {% block title %}
     Task page
@@ -8,7 +8,7 @@
 {% block body %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12">
+            <div class="col-9">
                 <div class="card border-dark">
                     <div class="card-header">{{ task.name }}</div>
                     <div class="card-body">
@@ -24,7 +24,19 @@
                 </div>
                 <hr>
             </div>
-            <div class="col-12">
+            <div class="col-3">
+                <h6>Developers working on this task</h6>
+                {% if task.users is empty %}
+                <div>No one is working on this task</div>
+                {% else %}
+            {% for developer in task.users %}
+                <div>
+                    {{ developer.email }}
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="col-9">
                 {% if task.comments is not empty %}
 
                     <div class="card border-light">
@@ -37,9 +49,10 @@
                     </div>
                 {% endif %}
             </div>
+
         </div>
         <div class="row">
-            <div class="col-12">
+            <div class="col-9">
                 {{ form_start(commentForm) }}
                 <div class="card border-success">
                     <div class="card-body">
@@ -59,7 +72,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Task</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Assign Developers for this task</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

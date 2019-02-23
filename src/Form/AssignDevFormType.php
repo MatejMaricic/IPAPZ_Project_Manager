@@ -22,7 +22,7 @@ class AssignDevFormType extends AbstractType
     {
         $builder
             ->add('users', EntityType::class, [
-                'label'=> 'Choose Developers For This Project',
+                'label'=> 'Choose Developers ',
                 'class' => User::class,
                 'choice_label' => 'email',
                 'multiple' => true,
