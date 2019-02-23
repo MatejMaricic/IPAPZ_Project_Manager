@@ -15,6 +15,7 @@ use App\Entity\Task;
 use App\Entity\ProjectStatus;
 use App\Form\AssignDevFormType;
 use App\Form\CommentFormType;
+use App\Form\ProjectStatusFormType;
 use App\Form\TaskFormType;
 use App\Repository\ProjectRepository;
 use App\Repository\ProjectStatusRepository;
@@ -26,6 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Form\NewStatusFormType;
 
 class ProjectController extends AbstractController
 {
@@ -71,6 +73,15 @@ class ProjectController extends AbstractController
         }
         $entityManager->persist($task);
         $entityManager->flush();
+    }
+
+    private function newStatus(Request $request, EntityManagerInterface $entityManager, Project $project, $statusForm)
+    {
+        $status =$statusForm->getData();
+        $project->addProjectStatus($status);
+        $entityManager->persist($project);
+        $entityManager->flush();
+
     }
 
     private function assignDev(Project $project, Request $request, EntityManagerInterface $entityManager, $devForm)
@@ -128,6 +139,8 @@ class ProjectController extends AbstractController
 
         $devForm = $this->createForm(AssignDevFormType::class);
         $taskForm = $this->createForm(TaskFormType::class, $data = null, array("project_id" => $project->getId()));
+        $statusForm = $this->createForm(ProjectStatusFormType::class);
+
         $taskForm->handleRequest($request);
         if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
             $this->addTask($request, $entityManager, $project, $taskForm);
@@ -137,13 +150,21 @@ class ProjectController extends AbstractController
             if ($this->isGranted('ROLE_MANAGER') && $devForm->isSubmitted() && $devForm->isValid()) {
                 $this->assignDev($project, $request, $entityManager, $devForm);
                 return $this->redirect($request->getUri());
+            } else {
+                $statusForm->handleRequest($request);
+                if ($this->isGranted('ROLE_MANAGER') && $statusForm->isSubmitted() && $statusForm->isValid()) {
+                    $this->newStatus($request,$entityManager,$project, $statusForm);
+
+                }
+
             }
         }
         return $this->render('project/project.html.twig', [
             'taskForm' => $taskForm->createView(),
             'user' => $this->getUser(),
             'project' => $project,
-            'devForm' => $devForm->createView()
+            'devForm' => $devForm->createView(),
+            'statusForm' => $statusForm->createView()
         ]);
 
     }
