@@ -1,38 +1,93 @@
 {% extends 'base.html.twig' %}
-
+{% block projectSidebar %}
+    <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#devForm">Add Developer</a></li>
+{% endblock %}
 {% block title %}
     Task page
 {% endblock %}
 {% block body %}
-    <div class="container">
-        <div class="row task-name">
-            {{ task.name }}
-        </div>
-        {% if task.images is empty %}
-        {% else %}
-        <div class="row task-images">
-            {% for image in task.images %}
-                <img width=500 height="500" src="{{ asset('uploads/')~image }}"><br>
-            {% endfor %}
-        </div>
-        {% endif %}
-        <div class="row task-content">
-            {{ task.content }}
-        </div>
-        <div class="row task comments">
-            <h2>Comments</h2><br>
-            {% if task.comments is not empty %}
-            {% for comment in task.comments %}
-                <div class="comment">
-                    {{ comment.content }}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-dark">
+                    <div class="card-header">{{ task.name }}</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            {{ task.content }}
+                        </p>
+                        {% if task.images is not empty %}
+                            {% for image in task.images %}
+                                <img class="img-thumbnail rounded md-3" src="{{ asset('uploads/')~image }}"><br>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                 </div>
+                <hr>
+            </div>
+            <div class="col-12">
+                {% if task.comments is not empty %}
 
-            {% endfor %}
-            {% endif %}
+                    <div class="card border-light">
+                        <div class="card-header">Discussion</div>
+                        <div class="card-body">
+                            {% for comment in task.comments %}
+                                <p class="card-text">{{ comment.user.firstName }} {{ comment.user.lastName }} : {{ comment.content }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
         </div>
-        {{ form_start(commentForm) }}
-        <button type="submit" class="btn btn-primary">Add comment</button>
-        {{ form_end(commentForm) }}
+        <div class="row">
+            <div class="col-12">
+                {{ form_start(commentForm) }}
+                <div class="card border-success">
+                    <div class="card-body">
+                        {{ form_row(commentForm.content, {'attr':{class: 'form-control'}}) }}
+                        {{ form_row(commentForm.images, {'attr':{class: 'form-control'}}) }}
+                    </div>
+                    <div class="card-footer bg-transparent border-success">
+                        <button type="submit" class="btn btn-primary">Add comment</button>
+                    </div>
+                </div>
+                {{ form_end(commentForm) }}
+            </div>
+        </div>
+
+        <div class="modal fade" id="devForm" tabindex="-1" role="dialog" aria-labelledby="devFormTitle"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Task</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col">
+                                    {{ form_start(devForm) }}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Task</button>
+                        {{ form_end(devForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
     </div>
 
 {% endblock %}

@@ -13,8 +13,10 @@ use App\Entity\Project;
 use App\Entity\User;
 use App\Entity\Task;
 use App\Entity\ProjectStatus;
+use App\Form\AssignDevFormType;
 use App\Form\CommentFormType;
 use App\Form\TaskFormType;
+use App\Repository\ProjectRepository;
 use App\Repository\ProjectStatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -59,10 +61,40 @@ class ProjectController extends AbstractController
 
     }
 
+    private function assignDev(Project $project, Request $request, EntityManagerInterface $entityManager, $devForm)
+    {
+        $user = $devForm->getData();
+        foreach ($user as $singleuser){
+            foreach ($singleuser as $item) {
+                $project->addUser($item);
+            }
+        }
+        $entityManager->persist($project);
+        $entityManager->flush();
+    }
+
     public function addComment(Task $task,  Request $request, EntityManagerInterface $entityManager,$commentForm)
     {
         /**@var Comments $comments*/
         $comments = $commentForm->getData();
+
+        $files = $request->files->get('comment_form')['images'];
+
+        if (!empty($files)) {
+
+            foreach ($files as $file) {
+                $uploads_directory = $this->getParameter('uploads_directory');
+                $filename = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move(
+                    $uploads_directory,
+                    $filename
+
+                );
+                $images[] = $filename;
+            }
+            $comments->setImages($images);
+
+        }
         $comments->setUser($this->getUser());
         $comments->setTask($task);
         $entityManager->persist($comments);
@@ -82,18 +114,24 @@ class ProjectController extends AbstractController
     public function projectHandler(Project $project, Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
     {
 
+        $devForm = $this->createForm(AssignDevFormType::class);
         $taskForm = $this->createForm(TaskFormType::class, $data = null, array("project_id" => $project->getId()));
-
-
         $taskForm->handleRequest($request);
         if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
             $this->addTask($request, $entityManager, $project, $taskForm);
             return $this->redirect($request->getUri());
+        }else {
+            $devForm->handleRequest($request);
+            if ($this->isGranted('ROLE_MANAGER') && $devForm->isSubmitted() && $devForm->isValid()){
+                $this->assignDev($project,$request,$entityManager,$devForm);
+                return $this->redirect($request->getUri());
+            }
         }
         return $this->render('project/project.html.twig', [
             'taskForm' => $taskForm->createView(),
             'user' => $this->getUser(),
-            'project' => $project
+            'project' => $project,
+            'devForm' => $devForm->createView()
         ]);
 
     }
@@ -164,12 +202,19 @@ class ProjectController extends AbstractController
      * @Route("/task/{id}", name="task_view")
      * @param Request $request
      * @param EntityManagerInterface $entityManager
+     * @param ProjectRepository $projectRepository
      * @param Task $task
      * @return Response
      */
-    public function taskView(Task $task,  Request $request, EntityManagerInterface $entityManager)
+    public function taskView(Task $task,  Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository)
     {
+
+        $id= $task->getProject()->getId();
+        $project = $projectRepository->find($id);
+
         $commentForm = $this->createForm(CommentFormType::class);
+        $devForm = $this->createForm(AssignDevFormType::class, $task);
+
         $commentForm->handleRequest($request);
         if ($commentForm->isSubmitted() && $commentForm->isValid()){
             $this->addComment($task,$request,$entityManager,$commentForm);
@@ -179,7 +224,9 @@ class ProjectController extends AbstractController
         return $this->render('project/task.html.twig', [
             'user' => $this->getUser(),
             'task' => $task,
-            'commentForm' => $commentForm->createView()
+            'commentForm' => $commentForm->createView(),
+            'project' => $project,
+            'devForm' => $devForm->createView()
         ]);
     }
 
