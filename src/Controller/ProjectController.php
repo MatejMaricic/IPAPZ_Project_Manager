@@ -12,10 +12,12 @@ use App\Entity\Comments;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Entity\Task;
-use App\Form\AssignDevFormType;
+use App\Entity\ProjectStatus;
 use App\Form\CommentFormType;
 use App\Form\TaskFormType;
+use App\Repository\ProjectStatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,18 +59,6 @@ class ProjectController extends AbstractController
 
     }
 
-    private function assignDev(Project $project, Request $request, EntityManagerInterface $entityManager, $devForm)
-    {
-        $user = $devForm->getData();
-        foreach ($user as $singleuser){
-            foreach ($singleuser as $item) {
-                $project->addUser($item);
-            }
-        }
-        $entityManager->persist($project);
-        $entityManager->flush();
-    }
-
     public function addComment(Task $task,  Request $request, EntityManagerInterface $entityManager,$commentForm)
     {
         /**@var Comments $comments*/
@@ -92,28 +82,19 @@ class ProjectController extends AbstractController
     public function projectHandler(Project $project, Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
     {
 
-        $devForm = $this->createForm(AssignDevFormType::class);
         $taskForm = $this->createForm(TaskFormType::class, $data = null, array("project_id" => $project->getId()));
 
 
-            $taskForm->handleRequest($request);
-            if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
-                $this->addTask($request, $entityManager, $project, $taskForm);
-                return $this->redirect($request->getUri());
-            }else {
-                $devForm->handleRequest($request);
-                if ($this->isGranted('ROLE_MANAGER') && $devForm->isSubmitted() && $devForm->isValid()){
-                    $this->assignDev($project,$request,$entityManager,$devForm);
-                    return $this->redirect($request->getUri());
-                }
-
-            }
-            return $this->render('project/project.html.twig', [
-                'taskForm' => $taskForm->createView(),
-                'user' => $this->getUser(),
-                'project' => $project,
-                'devForm' => $devForm->createView()
-            ]);
+        $taskForm->handleRequest($request);
+        if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
+            $this->addTask($request, $entityManager, $project, $taskForm);
+            return $this->redirect($request->getUri());
+        }
+        return $this->render('project/project.html.twig', [
+            'taskForm' => $taskForm->createView(),
+            'user' => $this->getUser(),
+            'project' => $project
+        ]);
 
     }
 
@@ -144,6 +125,42 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @Route("/status_change/{id}/{status_id}", name="status_change", methods={"POST", "GET"})
+     * @param Task $task
+     * @param ProjectStatusRepository $project_status_repository
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function statusChange(Task $task, ProjectStatusRepository $project_status_repository, EntityManagerInterface $entityManager, Request $request)
+    {
+
+        $statusId = $request->get('status_id');
+
+        $newStatus = $project_status_repository->find( $statusId);
+
+        $oldStatusID = $task->getStatus();
+        $task->setStatus( $newStatus );
+        $entityManager->persist($task);
+        $entityManager->flush();
+
+
+        if (!$newStatus->getId()) {
+            return new JsonResponse([
+                'msg' => 'Unable to delete'
+            ]);
+        }
+
+
+        return new JsonResponse([
+            'newStatusID' => $newStatus->getId(),
+            'oldStatusID' => $oldStatusID->getId(),
+            'taskID' => $task->getId()
+        ]);
+    }
+
+
+    /**
      * @Route("/task/{id}", name="task_view")
      * @param Request $request
      * @param EntityManagerInterface $entityManager
@@ -157,7 +174,7 @@ class ProjectController extends AbstractController
         if ($commentForm->isSubmitted() && $commentForm->isValid()){
             $this->addComment($task,$request,$entityManager,$commentForm);
             return $this->redirect($request->getUri());
-        }else
+        }
 
         return $this->render('project/task.html.twig', [
             'user' => $this->getUser(),
@@ -167,5 +184,4 @@ class ProjectController extends AbstractController
     }
 
 }
-
 

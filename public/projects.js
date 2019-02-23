@@ -23,3 +23,21 @@ $(document).ready(function () {
         })
     });
 });
+
+$(document).ready(function () {
+    $('.js-status-change').on('change', function (e) {
+        e.preventDefault();
+        let link = $(this).find(':selected').data('change_status');
+        $.ajax({
+            method: 'POST',
+            url: link
+        }).done(function (data) {
+            console.log(data);
+
+            var rowHtml =  $('#task-'+data.taskID).prop('outerHTML');
+            $('#task-'+data.taskID).remove();
+            $('#js-table-status-'+data.newStatusID ).append(rowHtml);
+        })
+    });
+});
+

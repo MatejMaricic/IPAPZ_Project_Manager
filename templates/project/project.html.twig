@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block projectSidebar %}
-    <li><i class="fa fa-archive"></i><a href="#" data-toggle="modal" data-target="#taskForm">Add Task</a></li>
-    <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#assignDevForm">Assign Developer</a></li>
+    <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#taskForm">Add Task</a></li>
 {% endblock %}
 {% block title %}
     Project page
@@ -9,28 +8,63 @@
 {% block body %}
 
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            {% for status in project.projectStatus %}
-                <div class="col">
-                    <h1>{{ status.name }}</h1>
-                    {% for task in project.task %}
-                        {% if task.status.id == status.id %}
-                            <div class="card text-white bg-info mb-3" id="task-{{ task.id }}">
-                                    <span class="project-icon text-center"><i class="fa fa-tasks"></i></span>
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ task.name }}</h5>
-                                    <p class="card-text">{{ task.content }}</p>
-                                    <a href="{{ path('task_delete', {'id': task.id}) }}"
-                                       class="btn btn-danger removeTask">
-                                        <i class="fa fa-trash"></i>
-                                        <a href="{{ path('task_view', {'id': task.id}) }}" class="btn btn-primary">Open Task</a>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            {% endfor %}
+
+            <div class="col-12">
+                <h1>Tasks</h1>
+                {% for status in project.projectStatus %}
+                    <div class="card border-secondary">
+                        <div class="card-header">{{ status.name }}</div>
+                        <div class="card-body text-secondary">
+                            <table class="table table-hover table-sm" id="js-table-status-{{ status.id }}">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Assigned developer</th>
+                                    <th scope="col">Created</th>
+                                    <th scope="col"></th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for task in project.task %}
+                                    {% if task.status.id == status.id %}
+
+                                        <tr id="task-{{ task.id }}">
+                                            <th scope="row">{{ task.id }}</th>
+                                            <td><a href="{{ path('task_view', {'id': task.id}) }}">{{ task.name }}</a></td>
+                                            <td>{{ task.status.name }}</td>
+                                            <td>{{ task.createdat|date("F jS \\a\\t g:ia") }}</td>
+                                            <td>
+                                                <select class="js-status-change">
+                                                    {% for status in project.projectStatus  %}
+
+                                                        {% set selected = '' %}
+                                                        {% if (status.id == task.status.id) %}
+                                                            {% set selected = 'selected' %}
+                                                        {% endif %}
+                                                        <option {{ selected }} data-change_status="{{ path('status_change', {'id': task.id, 'status_id' : status.id }) }}" value="{{ status.id }}">{{status.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <a href="{{ path('task_delete', {'id': task.id}) }}" class="btn btn-danger removeTask">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+            </div>
+
 
         </div>
     </div>
@@ -64,35 +98,6 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add Task</button>
                     {{ form_end(taskForm) }}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="assignDevForm" tabindex="-1" role="dialog" aria-labelledby="projectFormTitle"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Task</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col">
-                            {{ form_start(devForm) }}
-                                {{ form_row(devForm.users) }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Task</button>
-                    {{ form_end(devForm) }}
                 </div>
             </div>
         </div>
