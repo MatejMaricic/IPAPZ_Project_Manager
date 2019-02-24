@@ -19,8 +19,7 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-
-    public function findAllDevelopers()
+    public function findAllDevelopers($id)
     {
         return $this->createQueryBuilder('u')
             ->select('u')

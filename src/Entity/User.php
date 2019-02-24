@@ -78,6 +78,11 @@ class User implements UserInterface
      */
     private $fullName;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $addedBy;
+
 
 
     public function __construct()
@@ -328,6 +333,18 @@ class User implements UserInterface
     public function setFullName(string $fullName): self
     {
         $this->fullName = $fullName;
+
+        return $this;
+    }
+
+    public function getAddedBy(): ?int
+    {
+        return $this->addedBy;
+    }
+
+    public function setAddedBy(int $addedBy): self
+    {
+        $this->addedBy = $addedBy;
 
         return $this;
     }

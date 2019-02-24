@@ -56,7 +56,7 @@ class IndexController extends AbstractController
             );
             $user->setAvatar($filename);
         }
-
+        $user->setAddedBy($this->getUser()->getId());
         $user->setPassword(
             $passwordEncoder->encodePassword(
                 $user,

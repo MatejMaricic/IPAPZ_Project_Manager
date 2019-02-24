@@ -40,6 +40,7 @@ class RegistrationController extends AbstractController
                 $user->setAvatar($filename);
             }
             $user->setRoles(array('ROLE_MANAGER'));
+            $user->setAddedBy('0');
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
