@@ -320,11 +320,8 @@
     "symfony/yaml": {
         "version": "v4.2.3"
     },
-    "tecnickcom/tc-lib-barcode": {
-        "version": "1.15.4"
-    },
-    "tecnickcom/tc-lib-color": {
-        "version": "1.12.12"
+    "tinymce/tinymce": {
+        "version": "4.0.0"
     },
     "twig/twig": {
         "version": "v2.6.2"
