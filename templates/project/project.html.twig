@@ -45,7 +45,9 @@
                                             </td>
                                             <td>{{ task.priority }}</td>
                                             <td>{{ task.createdat|date("F jS \\a\\t g:ia") }}</td>
+                                            {% if is_granted("ROLE_MANAGER") %}
                                             <td>
+
                                                 <select class="js-status-change">
                                                     {% for status in project.projectStatus  %}
 
@@ -56,12 +58,14 @@
                                                         <option {{ selected }} data-change_status="{{ path('status_change', {'id': task.id, 'status_id' : status.id }) }}" value="{{ status.id }}">{{status.name }}</option>
                                                     {% endfor %}
                                                 </select>
+
                                             </td>
                                             <td>
                                                 <a href="{{ path('task_delete', {'id': task.id}) }}" class="btn btn-danger removeTask">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                             </td>
+                                            {% endif %}
                                         </tr>
                                     {% endif %}
                                 {% endfor %}
