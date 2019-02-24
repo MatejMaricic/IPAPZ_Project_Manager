@@ -2,6 +2,13 @@
 {% block projectSidebar %}
     <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#devForm">Assign Developer</a></li>
 {% endblock %}
+{% block taskNav %}
+    <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a href="{{ path('project_view', {'id':task.project.id}) }}" class="nav-link">Back To Project</a>
+        </li>
+    </ul>
+{% endblock %}
 {% block title %}
     Task page
 {% endblock %}
