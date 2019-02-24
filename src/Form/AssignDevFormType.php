@@ -20,6 +20,7 @@ class AssignDevFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $id = $options['id'];
         $builder
             ->add('users', EntityType::class, [
                 'label'=> 'Choose Developers ',
@@ -27,8 +28,8 @@ class AssignDevFormType extends AbstractType
                 'choice_label' => 'email',
                 'multiple' => true,
                 'expanded' => true,
-                'query_builder' => function(UserRepository $userRepository){
-                    return $userRepository->findAllDevelopers();
+                'query_builder' => function(UserRepository $userRepository) use ($id){
+                    return $userRepository->findAllDevelopers($id);
                 }
 
 
@@ -37,7 +38,8 @@ class AssignDevFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => User::class
+            'class' => User::class,
+            'id' => array()
         ]);
     }
 }

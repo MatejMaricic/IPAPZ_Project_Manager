@@ -24,6 +24,8 @@ class UserRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('u')
             ->select('u')
             ->where('u.roles LIKE :val')
+            ->andWhere('u.addedBy = :id')
+            ->setParameter('id', $id)
             ->setParameter('val', "%ROLE_USER%")
             ->orderBy('u.id', 'ASC')
             ->setMaxResults(10)

@@ -137,7 +137,7 @@ class ProjectController extends AbstractController
     public function projectHandler(Project $project, Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
     {
 
-        $devForm = $this->createForm(AssignDevFormType::class);
+        $devForm = $this->createForm(AssignDevFormType::class, $data=null, array("id"=>$this->getUser()->getId()));
         $taskForm = $this->createForm(TaskFormType::class, $data = null, array("project_id" => $project->getId()));
         $statusForm = $this->createForm(ProjectStatusFormType::class);
 
