@@ -11,11 +11,8 @@
         <script src="{{ absolute_url(asset('custom.js')) }}"></script>
         <script src="{{ absolute_url(asset('projects.js')) }}"></script>
         <script src="{{ absolute_url(asset('../vendor/tinymce/tinymce/tinymce.min.js')) }}"></script>
-        <script type="text/javascript">
-            tinymce.init({
-                selector: '.comment'
-            });
-        </script>
+        <script src="{{ absolute_url(asset('tinymce.js')) }}"></script>
+
     {% endblock %}
 </head>
 <body>

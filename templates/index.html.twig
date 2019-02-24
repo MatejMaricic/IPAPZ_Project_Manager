@@ -18,14 +18,14 @@
     <div class="container">
         <div class="row">
             {% for project in user.project %}
-                <div class="col-3" id="project-{{ project.id }}">
-                    <div class="card text-white bg-info mb-3">
+                <div class="col-4" id="project-{{ project.id }}">
+                    <div class="card text-white bg-info mb-5">
                         <span class="project-icon text-center"><i class="fa fa-tasks"></i></span>
                         <div class="card-body">
                             <h5 class="card-title">{{ project.name }}</h5>
                             <p class="card-text">{{ project.createdAt|date }}</p>
-                            <a href="{{ path('project_view', {'id': project.id}) }}" class="btn btn-primary">Open
-                                Project</a>
+                            <a href="{{ path('project_view', {'id': project.id}) }}" class="btn btn-primary">Open Project</a>
+                            <a href="{{ path('project_edit', {'id': project.id}) }}" class="btn btn-primary">Edit Project</a>
                             <a href="{{ path('project_delete', {'id': project.id}) }}"
                                class="btn btn-danger removeProject">
                                 <i class="fa fa-trash"></i>

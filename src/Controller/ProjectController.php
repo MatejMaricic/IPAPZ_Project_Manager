@@ -10,18 +10,16 @@ namespace App\Controller;
 
 use App\Entity\Comments;
 use App\Entity\Project;
-use App\Entity\User;
 use App\Entity\Task;
-use App\Entity\ProjectStatus;
 use App\Form\AssignDevFormType;
 use App\Form\CommentFormType;
+use App\Form\ProjectFormType;
 use App\Form\ProjectStatusFormType;
 use App\Form\TaskFormType;
 use App\Repository\ProjectRepository;
 use App\Repository\ProjectStatusRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -157,6 +155,7 @@ class ProjectController extends AbstractController
                 $statusForm->handleRequest($request);
                 if ($this->isGranted('ROLE_MANAGER') && $statusForm->isSubmitted() && $statusForm->isValid()) {
                     $this->newStatus($request,$entityManager,$project, $statusForm);
+                    return $this->redirect($request->getUri());
 
                 }
 
@@ -272,6 +271,35 @@ class ProjectController extends AbstractController
             ]);
         }
 
+    }
+    /**
+     * @Route("/project_edit/{id}", name="project_edit")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param Project $project
+     * @return Response
+     */
+    public function projectEditor(Request $request, EntityManagerInterface $entityManager, Project $project)
+    {
+        $projectForm = $this->createForm(ProjectFormType::class, $project);
+        $projectForm->handleRequest($request);
+        if ($this->isGranted('ROLE_MANAGER') && $projectForm->isSubmitted() && $projectForm->isValid()) {
+            $this->editProject($request, $entityManager, $project, $projectForm);
+            return $this->redirectToRoute('index_page');
+        }
+
+
+        return $this->render('project/project_edit.html.twig', [
+            'user' => $this->getUser(),
+            'projectForm' => $projectForm->createView()
+        ]);
+    }
+
+    private function editProject(Request $request, EntityManagerInterface $entityManager, Project $project, $projectForm)
+    {
+        $project = $projectForm->getData();
+        $entityManager->persist($project);
+        $entityManager->flush();
     }
 }
 

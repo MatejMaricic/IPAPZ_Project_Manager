@@ -38,7 +38,8 @@ class ProjectFormType extends AbstractType
                     'label' =>false,
                     'entry_type' => ProjectStatusFormType::class,
                     'allow_add' => true,
-                    'by_reference' => false
+                    'by_reference' => false,
+                    'delete_empty' =>true
                 ]
 
             )
