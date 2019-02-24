@@ -44,6 +44,21 @@ class UserRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+    public function devsOnProject($id)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u')
+            ->innerJoin('u.project', 'up')
+            ->where('up.id = :id')
+            ->andWhere('u.roles LIKE :val')
+            ->setParameter('val', "%ROLE_USER%")
+            ->setParameter('id',$id)
+            ->orderBy('u.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    ;
+    }
 
 
 

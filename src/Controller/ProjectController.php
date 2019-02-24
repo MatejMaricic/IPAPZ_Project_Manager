@@ -19,6 +19,7 @@ use App\Form\ProjectStatusFormType;
 use App\Form\TaskFormType;
 use App\Repository\ProjectRepository;
 use App\Repository\ProjectStatusRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -132,10 +133,12 @@ class ProjectController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param UserRepository $userRepository
      * @return Response
      */
-    public function projectHandler(Project $project, Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function projectHandler(Project $project, Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, UserRepository $userRepository)
     {
+        $devs = $userRepository->devsOnProject($project->getId());
 
         $devForm = $this->createForm(AssignDevFormType::class, $data=null, array("id"=>$this->getUser()->getId()));
         $taskForm = $this->createForm(TaskFormType::class, $data = null, array("project_id" => $project->getId()));
