@@ -167,7 +167,8 @@ class ProjectController extends AbstractController
             'user' => $this->getUser(),
             'project' => $project,
             'devForm' => $devForm->createView(),
-            'statusForm' => $statusForm->createView()
+            'statusForm' => $statusForm->createView(),
+            'devs' => $devs
         ]);
 
     }

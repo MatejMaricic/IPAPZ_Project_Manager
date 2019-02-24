@@ -13,7 +13,7 @@
     <div class="container-fluid">
         <div class="row">
 
-            <div class="col-12">
+            <div class="col-9">
                 <h1>Tasks</h1>
                 {% for status in project.projectStatus %}
                     <div class="card border-secondary">
@@ -72,6 +72,28 @@
                     <hr>
                 {% endfor %}
             </div>
+            <div class="col-3">
+                <h4>People working on this project</h4>
+                {% for dev in devs %}
+                <div class="desc">
+                    <div class="thumb">
+                        <img class="img-circle" src="{{ asset('uploads/')~dev.avatar }}" width="35px" height="35px" align="">
+                    </div>
+                    <div class="details">
+                        <p>
+                            <a href="{{ path('profile_view', {'id': dev.id}) }}">{{ dev.fullName }}</a><br>
+                            <muted>
+
+                                {% for task in dev.task %}
+                                    {{ task.name }}
+                                    {% endfor %}
+                            </muted>
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
 
 
         </div>
