@@ -246,7 +246,7 @@ class ProjectController extends AbstractController
         $project = $projectRepository->find($id);
 
         $commentForm = $this->createForm(CommentFormType::class);
-        $devForm = $this->createForm(AssignDevFormType::class);
+        $devForm = $this->createForm(AssignDevFormType::class, $data=null, array("id"=>$this->getUser()->getId()));
 
         $commentForm->handleRequest($request);
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
