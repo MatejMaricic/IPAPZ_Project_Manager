@@ -65,7 +65,7 @@
                             {% endif %}
                             <li><i class="fa fa-folder"></i><a href="#">My Projects</a></li>
                             <li><i class="fa fa-users"></i><a href="#">My Team</a></li>
-                            <li><i class="fa fa-circle"></i><a href="#">Profile</a></li>
+                            <li><i class="fa fa-circle"></i><a href="{{ path('profile_view', {'id': user.id}) }}">Profile</a></li>
                             <li><i class="fa fa-cogs"></i><a href="#">Settings</a></li>
 
                         </ul>

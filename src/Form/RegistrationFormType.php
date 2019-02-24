@@ -45,6 +45,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('avatar', FileType::class,[
                 'required' => false,
+                'data_class' => null
             ])
         ;
     }
@@ -54,6 +55,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+
         ]);
     }
 }

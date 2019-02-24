@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Entity\Project;
+use App\Entity\User;
 use App\Form\ProjectFormType;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
@@ -127,6 +128,61 @@ class IndexController extends AbstractController
 
             ]);
         }
+
+
+    }
+
+    private function updateUser(Request $request, EntityManagerInterface $entityManager, User $user,$updateForm,$passwordEncoder)
+    {
+        $user = $updateForm->getData();
+        $file = $request->files->get('registration_form')['avatar'];
+
+        if (isset($file)) {
+            $uploads_directory = $this->getParameter('uploads_directory');
+            $filename = md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $uploads_directory,
+                $filename
+            );
+            $user->setAvatar($filename);
+        }
+
+        $user->setPassword(
+            $passwordEncoder->encodePassword(
+                $user,
+                $updateForm->get('plainPassword')->getData()
+            )
+        );
+        $user->setRoles(array('ROLE_USER'));
+        $entityManager->persist($user);
+        $entityManager->flush();
+    }
+
+
+    /**
+     * @Route("/profile/{id}", name="profile_view")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param User $user
+     * @return Response
+     */
+    public function showProfile(Request $request, EntityManagerInterface $entityManager, User $user,UserPasswordEncoderInterface $passwordEncoder )
+    {
+        $updateForm = $this->createForm(RegistrationFormType::class, $user);
+
+        $updateUser = $user->getId();
+        $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
+
+        $updateForm->handleRequest($request);
+        if ($userId === $updateUser || $this->isGranted('ROLE_MANAGER') && $updateForm->isSubmitted() && $updateForm->isValid() ){
+            $this->updateUser($request,$entityManager,$user,$updateForm, $passwordEncoder);
+    }
+        if ($userId === $updateUser|| $this->isGranted('ROLE_MANAGER')){
+            return $this->render('profile.html.twig', [
+                'user'=>$user,
+                'updateForm'=>$updateForm->createView()
+            ]);
+        }return $this->redirectToRoute('index_page');
 
 
     }

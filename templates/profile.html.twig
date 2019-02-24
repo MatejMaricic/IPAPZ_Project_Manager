@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+    Profile page
+{% endblock %}
+{% block body %}
+
+    {{ form_start(updateForm) }}
+    <button type="submit" class="btn btn-primary">Add Task</button>
+    {{ form_end(updateForm) }}
+{% endblock %}
