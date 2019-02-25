@@ -30,7 +30,8 @@ class ProjectFormType extends AbstractType
 
             ])
             ->add('deadline', DateType::class, [
-                'label' => 'Deadline for project'
+                'label' => 'Deadline for project',
+                'data' => new \DateTime()
             ])
 
 

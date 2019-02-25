@@ -4,6 +4,9 @@
     <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#assignDevForm">Assign Developer</a></li>
     <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#addStatusForm">Add New Status</a></li>
 {% endblock %}
+{% block myTasks %}
+    <li><i class="fa fa-folder"></i><a href="{{ path('my_tasks', {'id': project.id}) }}">My Tasks</a></li>
+{% endblock %}
 {% block title %}
     Project page
 {% endblock %}
@@ -40,31 +43,31 @@
                                             <td><a href="{{ path('task_view', {'id': task.id}) }}">{{ task.name }}</a></td>
                                             <td>
                                                 {% for user in task.users %}
-                                                {{ user.fullName }}<br>
+                                                    {{ user.fullName }}<br>
                                                 {% endfor %}
                                             </td>
                                             <td>{{ task.priority }}</td>
                                             <td>{{ task.createdat|date("F jS \\a\\t g:ia") }}</td>
                                             {% if is_granted("ROLE_MANAGER") %}
-                                            <td>
+                                                <td>
 
-                                                <select class="js-status-change">
-                                                    {% for status in project.projectStatus  %}
+                                                    <select class="js-status-change">
+                                                        {% for status in project.projectStatus  %}
 
-                                                        {% set selected = '' %}
-                                                        {% if (status.id == task.status.id) %}
-                                                            {% set selected = 'selected' %}
-                                                        {% endif %}
-                                                        <option {{ selected }} data-change_status="{{ path('status_change', {'id': task.id, 'status_id' : status.id }) }}" value="{{ status.id }}">{{status.name }}</option>
-                                                    {% endfor %}
-                                                </select>
+                                                            {% set selected = '' %}
+                                                            {% if (status.id == task.status.id) %}
+                                                                {% set selected = 'selected' %}
+                                                            {% endif %}
+                                                            <option {{ selected }} data-change_status="{{ path('status_change', {'id': task.id, 'status_id' : status.id }) }}" value="{{ status.id }}">{{status.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
 
-                                            </td>
-                                            <td>
-                                                <a href="{{ path('task_delete', {'id': task.id}) }}" class="btn btn-danger removeTask">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </td>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('task_delete', {'id': task.id}) }}" class="btn btn-danger removeTask">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </td>
                                             {% endif %}
                                         </tr>
                                     {% endif %}
@@ -77,25 +80,23 @@
                 {% endfor %}
             </div>
             <div class="col-3">
-                <h4>People working on this project</h4>
-                {% for dev in devs %}
-                <div class="desc">
-                    <div class="thumb">
-                        <img class="img-circle" src="{{ asset('uploads/')~dev.avatar }}" width="35px" height="35px" align="">
-                    </div>
-                    <div class="details">
-                        <p>
-                            <a href="{{ path('profile_view', {'id': dev.id}) }}">{{ dev.fullName }}</a><br>
-                            <muted>
 
-                                {% for task in dev.task %}
-                                    {{ task.name }}
-                                    {% endfor %}
-                            </muted>
-                        </p>
-                    </div>
-                </div>
-                {% endfor %}
+
+                {% if devs is not empty %}
+                    <h4>People working on this project</h4>
+                    <table class="table table-hover">
+                        {% for dev in devs %}
+                            <tr>
+                                {% if dev.avatar is not empty %}
+                                <td scope="col" width="35"><img class="img-circle" src="{{ asset('uploads/')~dev.avatar }}" width="35px" height="35px" align=""></td>
+                                {% else %}
+                                 <td scope="col" width="35" ><i class="fa fa-user fa-lg"></i></td>
+                                 {% endif %}
+                                <td scope="col"><a href="{{ path('profile_view', {'id': dev.id}) }}">{{ dev.fullName }}</a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
             </div>
 
 
@@ -108,8 +109,9 @@
 
     <div class="modal fade" id="taskForm" tabindex="-1" role="dialog" aria-labelledby="projectFormTitle"
          aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
+                {{ form_start(taskForm) }}
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Add New Task</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -120,10 +122,11 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col">
-                                {{ form_start(taskForm) }}
-                                {{ form_row(taskForm.name) }}
-                                {{ form_row(taskForm.content) }}
-                                {{ form_row(taskForm.status) }}
+                                {{ form_row(taskForm.name, {'attr':{class: 'form-control'}}) }}
+                                {{ form_row(taskForm.content, {'attr':{class: 'form-control'}}) }}
+                                {{ form_row(taskForm.status, {'attr':{class: 'form-control'}}) }}
+                                {{ form_row(taskForm.priority, {'attr':{class: 'form-control'}}) }}
+                                {{ form_row(taskForm.images, {'attr':{class: 'form-control'}}) }}
                             </div>
                         </div>
                     </div>
@@ -131,8 +134,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add Task</button>
-                    {{ form_end(taskForm) }}
                 </div>
+                {{ form_end(taskForm) }}
             </div>
         </div>
     </div>
@@ -141,8 +144,9 @@
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
+                {{ form_start(devForm) }}
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Task</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Assign developer</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -150,18 +154,23 @@
                 <div class="modal-body">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col">
-                                {{ form_start(devForm) }}
+                            <div class="col" id="developer-selection">
+                                <p>
+                                    {% for user in devForm.users %}
+                                        {{ form_row(user) }}
+                                    {% endfor %}
 
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Task</button>
-                    {{ form_end(devForm) }}
+                    <button type="submit" class="btn btn-primary">Assign developer</button>
+
                 </div>
+                {{ form_end(devForm) }}
             </div>
         </div>
     </div>
@@ -181,8 +190,9 @@
                         <div class="row">
                             <div class="col">
                                 {{ form_start(statusForm) }}
-                                    {{ form_row(statusForm.name) }}
-                                     {{ form_row(statusForm._token) }}
+                                Status title:
+                                {{ form_row(statusForm.name) }}
+                                {{ form_row(statusForm._token) }}
                                 {{ form_start(statusForm) }}
                             </div>
                         </div>
@@ -190,7 +200,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Task</button>
+                    <button type="submit" class="btn btn-primary">Add Status</button>
 
                 </div>
             </div>

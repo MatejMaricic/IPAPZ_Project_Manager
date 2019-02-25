@@ -217,3 +217,13 @@ span.user-icon.text-center {
 .card.text-white.bg-dark {
     border-radius: 0;
 }
+
+
+#developer-selection input{
+    float: left;
+    margin-right: 5px;
+}
+.user-avatar{
+    width: 100px;
+    height: 200px;
+}

@@ -20,11 +20,13 @@
                     <div class="card-header">{{ task.name }}</div>
                     <div class="card-body">
                         <p class="card-text">
-                            {{ task.content }}
+                            {{ task.content|raw }}
                         </p>
                         {% if task.images is not empty %}
                             {% for image in task.images %}
-                                <img class="img-thumbnail rounded md-3" src="{{ asset('uploads/')~image }}"><br>
+                                <a href="#" class="pop" >
+                                    <img id="imageresource"  src="{{ asset('uploads/')~image }}" width="200" height="200">
+                                </a>
                             {% endfor %}
                         {% endif %}
                     </div>
@@ -32,16 +34,25 @@
                 <hr>
             </div>
             <div class="col-3">
-                <h6>Developers working on this task</h6>
-                {% if task.users is empty %}
-                <div>No one is working on this task</div>
+
+                {% if task.users is not empty %}
+                    <h4>People working on this project</h4>
+                    <table class="table table-hover">
+                        {% for dev in task.users %}
+                            <tr>
+                                {% if dev.avatar is not empty %}
+                                <td scope="col" width="35"><img class="img-circle" src="{{ asset('uploads/')~dev.avatar }}" width="35px" height="35px" align=""></td>
+                                {% else %}
+                                    <td scope="col" width="35" ><i class="fa fa-user fa-lg"></i></td>
+                                {% endif %}
+                                <td scope="col"><a href="{{ path('profile_view', {'id': dev.id}) }}">{{ dev.fullName }}</a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
                 {% else %}
-            {% for developer in task.users %}
-                <div>
-                    {{ developer.email }}
-                </div>
-                {% endfor %}
+                    <div class="alert alert-warning">No one is working on this task</div>
                 {% endif %}
+
             </div>
             <div class="col-9">
                 {% if task.comments is not empty %}
@@ -52,9 +63,9 @@
                             {% for comment in task.comments %}
                                 <p class="card-text">{{ comment.user.firstName }} {{ comment.user.lastName }} : {{ comment.content|raw }}</p>
                                 {% for image in comment.images %}
-                                 <a href="#" class="pop" >
-                                     <img id="imageresource" src="{{ asset('uploads/')~image }}" width="100" height="100">
-                                 </a>
+                                    <a href="#" class="pop" >
+                                        <img id="imageresource" src="{{ asset('uploads/')~image }}" width="100" height="100">
+                                    </a>
                                 {% endfor %}
                             {% endfor %}
 
@@ -84,6 +95,7 @@
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
+                    {{ form_start(devForm) }}
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">Assign Developers for this task</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -93,18 +105,19 @@
                     <div class="modal-body">
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col">
-                                    {{ form_start(devForm) }}
-
+                                <div class="col" id="developer-selection">
+                                    {% for user in devForm.users %}
+                                        {{ form_row(user) }}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Task</button>
-                        {{ form_end(devForm) }}
+                        <button type="submit" class="btn btn-primary">Assign developer</button>
                     </div>
+                    {{ form_end(devForm) }}
                 </div>
             </div>
         </div>

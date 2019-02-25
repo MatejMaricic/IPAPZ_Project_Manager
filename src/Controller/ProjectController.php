@@ -301,5 +301,20 @@ class ProjectController extends AbstractController
         $entityManager->persist($project);
         $entityManager->flush();
     }
+    /**
+     * @Route("/my_tasks/{id}", name="my_tasks")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param Project $project
+     * @return Response
+     */
+    public function myTasks(Project $project)
+    {
+        return $this->render('project/my_tasks.html.twig', [
+            'user' => $this->getUser(),
+            'project' => $project
+
+        ]);
+    }
 }
 

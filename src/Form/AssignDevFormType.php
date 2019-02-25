@@ -25,7 +25,7 @@ class AssignDevFormType extends AbstractType
             ->add('users', EntityType::class, [
                 'label'=> 'Choose Developers ',
                 'class' => User::class,
-                'choice_label' => 'email',
+                'choice_label' => 'fullName',
                 'multiple' => true,
                 'expanded' => true,
                 'query_builder' => function(UserRepository $userRepository) use ($id){

@@ -146,14 +146,20 @@ class IndexController extends AbstractController
             );
             $user->setAvatar($filename);
         }
-
         $user->setPassword(
             $passwordEncoder->encodePassword(
                 $user,
                 $updateForm->get('plainPassword')->getData()
             )
         );
-        $user->setRoles(array('ROLE_USER'));
+
+        $id = $user->getAddedBy();
+        if ($id == 0){
+            $user->setRoles(array('ROLE_MANAGER'));
+        } else {
+            $user->setRoles(array('ROLE_USER'));
+        }
+
         $entityManager->persist($user);
         $entityManager->flush();
     }

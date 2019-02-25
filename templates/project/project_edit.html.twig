@@ -4,7 +4,24 @@
 {% endblock %}
 {% block body %}
 
+    <h2>Edit project</h2>
+
     {{ form_start(projectForm) }}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                {{ form_row(projectForm.name, {'attr':{class: 'form-control'}}) }}
+                {{ form_row(projectForm.deadline, {'attr':{class: 'form-control'}}) }}
+                Project Status
+                {{ form_row(projectForm.projectStatus) }}
+            </div>
+        </div>
+    </div>
     <button type="submit" class="btn btn-primary">Save project</button>
     {{ form_end(projectForm) }}
+
+
+
+
 {% endblock %}
