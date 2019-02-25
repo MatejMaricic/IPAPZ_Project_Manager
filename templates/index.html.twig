@@ -87,7 +87,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Project</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Developer</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -96,13 +96,13 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col">
-                                {{ form_row(form.firstName) }}
-                                {{ form_row(form.lastName) }}
-                                {{ form_row(form.email) }}
-                                {{ form_row(form.plainPassword.first) }}
-                                {{ form_row(form.plainPassword.second) }}
-                                {{ form_row(form.plainPassword) }}
-                                {{ form_row(form.avatar) }}
+                                {{ form_row(form.firstName, {'attr':{class: 'form-control'}}) }}
+                                {{ form_row(form.lastName, {'attr':{class: 'form-control'}}) }}
+                                {{ form_row(form.email, {'attr':{class: 'form-control'}}) }}
+                                {{ form_row(form.plainPassword.first, {'attr':{class: 'form-control'}}) }}
+                                {{ form_row(form.plainPassword.second, {'attr':{class: 'form-control'}}) }}
+                                {{ form_row(form.plainPassword, {'attr':{class: 'form-control'}}) }}
+                                {{ form_row(form.avatar, {'attr':{class: 'form-control'}}) }}
                             </div>
                         </div>
                     </div>

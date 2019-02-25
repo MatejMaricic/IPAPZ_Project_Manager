@@ -29,7 +29,9 @@ class TaskFormType extends AbstractType
         $id = $options['project_id'];
         $builder
             ->add('name', TextType::class)
-            ->add('content', TextareaType::class)
+            ->add('content', TextareaType::class, [
+                'required'=> false
+            ])
             ->add('status', EntityType::class,[
                 'class' => ProjectStatus::class,
                 'choice_label' => 'name',
