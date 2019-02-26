@@ -164,7 +164,6 @@ class IndexController extends AbstractController
         $entityManager->flush();
     }
 
-
     /**
      * @Route("/profile/{id}", name="profile_view")
      * @param Request $request
@@ -172,24 +171,32 @@ class IndexController extends AbstractController
      * @param User $user
      * @return Response
      */
-    public function showProfile(Request $request, EntityManagerInterface $entityManager, User $user,UserPasswordEncoderInterface $passwordEncoder )
-    {
-        $updateForm = $this->createForm(RegistrationFormType::class, $user);
+    public function showProfile( Request $request, EntityManagerInterface $entityManager, User $user, UserPasswordEncoderInterface $passwordEncoder ) {
+
+        $updateForm = $this->createForm( RegistrationFormType::class, $user );
 
         $updateUser = $user->getId();
-        $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
+        $userId     = $this->get( 'security.token_storage' )
+            ->getToken()
+            ->getUser()
+            ->getId();
 
-        $updateForm->handleRequest($request);
-        if ($userId === $updateUser || $this->isGranted('ROLE_MANAGER') && $updateForm->isSubmitted() && $updateForm->isValid() ){
-            $this->updateUser($request,$entityManager,$user,$updateForm, $passwordEncoder);
-    }
-        if ($userId === $updateUser|| $this->isGranted('ROLE_MANAGER')){
-            return $this->render('profile.html.twig', [
-                'user'=>$user,
-                'updateForm'=>$updateForm->createView()
-            ]);
-        }return $this->redirectToRoute('index_page');
+        if( $userId === $updateUser ){
 
+            $updateForm->handleRequest( $request );
+
+            if ( $updateForm->isSubmitted() && $updateForm->isValid() ) {
+                $this->updateUser( $request, $entityManager, $user, $updateForm, $passwordEncoder );
+            }
+
+            return $this->render( 'profile.html.twig', [
+                'user'       => $user,
+                'updateForm' => $updateForm->createView()
+            ] );
+
+        } else {
+            return $this->redirectToRoute( 'index_page' );
+        }
 
     }
 }
