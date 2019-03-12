@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a514df7d-3dc8-424a-b05f-18139b802102" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ProjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProjectController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Task.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Task.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/project/project.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/project/project.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,22 +47,49 @@
         <item name="zavrsni@localhost" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="zavrsni: schema" type="76f4a085:MysqlImplModel$Schema" />
-        <item name="comments: table" type="285a2a93:MysqlImplModel$Table" />
+        <item name="task: table" type="285a2a93:MysqlImplModel$Table" />
       </path>
     </expand>
     <select />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="383">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Controller/ProjectController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-930">
-              <caret line="28" selection-start-line="28" selection-end-line="28" />
+            <state relative-caret-position="360">
+              <caret line="75" column="52" selection-start-line="75" selection-start-column="52" selection-end-line="75" selection-end-column="52" />
               <folding>
                 <element signature="e#6#86#0#PHP" expanded="true" />
                 <element signature="e#115#139#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/project/task.html.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-30">
+              <caret line="46" column="43" selection-start-line="46" selection-start-column="43" selection-end-line="46" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/project/project.html.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="434">
+              <caret line="74" column="55" selection-start-line="74" selection-start-column="55" selection-end-line="74" selection-end-column="55" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Entity/Task.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-225">
+              <caret line="37" selection-start-line="37" selection-end-line="37" />
             </state>
           </provider>
         </entry>
@@ -85,15 +114,6 @@
               <folding>
                 <element signature="e#115#138#0#PHP" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/index.html.twig">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="73">
-              <caret line="83" column="90" selection-start-line="83" selection-start-column="90" selection-end-line="83" selection-end-column="90" />
             </state>
           </provider>
         </entry>
@@ -124,7 +144,7 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Entity/Comments.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-135" />
@@ -189,7 +209,6 @@
         <option value="$PROJECT_DIR$/public/tinymce.js" />
         <option value="$PROJECT_DIR$/src/Form/AssignDevFormType.php" />
         <option value="$PROJECT_DIR$/public/css/custom.css" />
-        <option value="$PROJECT_DIR$/templates/project/project.html.twig" />
         <option value="$PROJECT_DIR$/templates/project/task.html.twig" />
         <option value="$PROJECT_DIR$/src/Form/ProjectFormType.php" />
         <option value="$PROJECT_DIR$/src/Form/TaskFormType.php" />
@@ -199,9 +218,10 @@
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/public/index.php" />
         <option value="$PROJECT_DIR$/public/info.php" />
-        <option value="$PROJECT_DIR$/src/Controller/ProjectController.php" />
         <option value="$PROJECT_DIR$/templates/index.html.twig" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/templates/project/project.html.twig" />
+        <option value="$PROJECT_DIR$/src/Controller/ProjectController.php" />
       </list>
     </option>
   </component>
@@ -368,6 +388,12 @@
             <path>
               <item name="IPAPZ_Project_Manager" type="b2602c69:ProjectViewProjectNode" />
               <item name="IPAPZ_Project_Manager" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="project" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="IPAPZ_Project_Manager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="IPAPZ_Project_Manager" type="462c0819:PsiDirectoryNode" />
               <item name="vendor" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -449,7 +475,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="239781000" />
+    <option name="totallyTimeSpent" value="240490000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -462,8 +488,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-1" width="1920" height="1040" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18303095" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18303095" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Database Console" order="0" weight="0.32963374" />
@@ -477,7 +504,7 @@
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.4986165" visible="true" weight="0.3569869" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.4986165" visible="true" weight="0.3569869" />
       <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.5010672" side_tool="true" weight="0.32969433" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -511,10 +538,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="das://d8a5e9d4-c0de-447f-8162-be249b53e66f/schema/polaznik09_zavrsni/table/project_status" />
-    <entry file="file://$PROJECT_DIR$/src/Form/ProjectStatusFormType.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/.env.local" />
     <entry file="file://$PROJECT_DIR$/src/Form/RegistrationFormType.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -586,30 +609,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/project/project.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="91" column="3" selection-start-line="91" selection-start-column="3" selection-end-line="93" selection-end-column="44" />
-          <folding>
-            <element signature="e#5857#5864#1#HTML" expanded="true" />
-            <element signature="e#7624#7631#1#HTML" expanded="true" />
-            <element signature="e#9141#9148#1#HTML" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/tinymce.min.js" />
     <entry file="file://$PROJECT_DIR$/public/tinymce.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="3" column="7" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/project/task.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-345">
-          <caret line="46" column="43" selection-start-line="46" selection-start-column="43" selection-end-line="46" selection-end-column="43" />
         </state>
       </provider>
     </entry>
@@ -746,27 +750,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/IndexController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="122" column="7" selection-start-line="122" selection-start-column="7" selection-end-line="122" selection-end-column="7" />
-          <folding>
-            <element signature="e#115#138#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/ProjectController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-930">
-          <caret line="28" selection-start-line="28" selection-end-line="28" />
-          <folding>
-            <element signature="e#6#86#0#PHP" expanded="true" />
-            <element signature="e#115#139#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Form/CommentFormType.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
@@ -784,13 +767,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://51f72ea5-9203-44a9-bfea-ee415d803ffd/schema/zavrsni/table/comments">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://51f72ea5-9203-44a9-bfea-ee415d803ffd/schema/zavrsni/table/comments" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/51f72ea5-9203-44a9-bfea-ee415d803ffd/console.sql">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -804,16 +781,59 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://51f72ea5-9203-44a9-bfea-ee415d803ffd/schema/zavrsni/table/migration_versions">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://51f72ea5-9203-44a9-bfea-ee415d803ffd/schema/zavrsni/table/migration_versions" />
     <entry file="file://$PROJECT_DIR$/src/Entity/Comments.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-135" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Entity/Task.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-225">
+          <caret line="37" selection-start-line="37" selection-end-line="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/IndexController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="122" column="7" selection-start-line="122" selection-start-column="7" selection-end-line="122" selection-end-column="7" />
+          <folding>
+            <element signature="e#115#138#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/project/task.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-30">
+          <caret line="46" column="43" selection-start-line="46" selection-start-column="43" selection-end-line="46" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/project/project.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="434">
+          <caret line="74" column="55" selection-start-line="74" selection-start-column="55" selection-end-line="74" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/ProjectController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="75" column="52" selection-start-line="75" selection-start-column="52" selection-end-line="75" selection-end-column="52" />
+          <folding>
+            <element signature="e#6#86#0#PHP" expanded="true" />
+            <element signature="e#115#139#0#PHP" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
   </component>

@@ -67,6 +67,11 @@ class Task
      */
     private $priority;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $completed;
+
 
 
 
@@ -284,6 +289,18 @@ class Task
     public function setPriority(string $priority): self
     {
         $this->priority = $priority;
+
+        return $this;
+    }
+
+    public function getCompleted(): ?bool
+    {
+        return $this->completed;
+    }
+
+    public function setCompleted(bool $completed): self
+    {
+        $this->completed = $completed;
 
         return $this;
     }

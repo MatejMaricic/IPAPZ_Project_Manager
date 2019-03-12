@@ -56,8 +56,25 @@ class ProjectController extends AbstractController
 
 
         $task->setProject($project);
+        $task->setCompleted(false);
         $entityManager->persist($task);
         $entityManager->flush();
+
+    }
+    /**
+     * @Route("/project/{id}/complete", name="task_completed", methods={"POST", "GET"})
+     * @param Task $task
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function taskCompleted(Task $task, EntityManagerInterface $entityManager)
+    {
+        $task->setCompleted(true);
+
+        $entityManager->persist($task);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('index_page');
 
     }
 

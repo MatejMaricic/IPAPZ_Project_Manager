@@ -67,6 +67,10 @@
                                                     <a href="{{ path('task_delete', {'id': task.id}) }}" class="btn btn-danger removeTask">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
+                                                    <a href="{{ path('task_completed', {'id': task.id}) }}" >
+                                                        Completed
+                                                    </a>
+
                                                 </td>
                                             {% endif %}
                                         </tr>
