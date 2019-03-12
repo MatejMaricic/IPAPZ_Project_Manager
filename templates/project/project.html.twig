@@ -36,7 +36,8 @@
                                 </thead>
                                 <tbody>
                                 {% for task in project.task %}
-                                    {% if task.status.id == status.id %}
+                                    {% if task.completed == 0 %}
+                                    {% if task.status.id == status.id  %}
 
                                         <tr id="task-{{ task.id }}">
                                             <th scope="row">{{ task.id }}</th>
@@ -75,12 +76,15 @@
                                             {% endif %}
                                         </tr>
                                     {% endif %}
+                                    {% endif %}
+
                                 {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <hr>
+
                 {% endfor %}
             </div>
             <div class="col-3">
