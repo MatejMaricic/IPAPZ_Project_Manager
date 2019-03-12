@@ -81,7 +81,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="devForm" tabindex="-1" role="dialog" aria-labelledby="projectFormTitle"
+    <div class="modal fade" id="devForm" tabindex="-1" role="dialog" aria-labelledby="devFormTitle"
          aria-hidden="true">
         {{ form_start(form) }}
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -101,7 +101,7 @@
                                 {{ form_row(form.email, {'attr':{class: 'form-control'}}) }}
                                 {{ form_row(form.plainPassword.first, {'attr':{class: 'form-control'}}) }}
                                 {{ form_row(form.plainPassword.second, {'attr':{class: 'form-control'}}) }}
-                                {{ form_row(form.plainPassword, {'attr':{class: 'form-control'}}) }}
+
                                 {{ form_row(form.avatar, {'attr':{class: 'form-control'}}) }}
                             </div>
                         </div>
