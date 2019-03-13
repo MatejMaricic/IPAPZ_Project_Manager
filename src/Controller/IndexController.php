@@ -35,11 +35,79 @@ class IndexController extends AbstractController
 
         $project = $projectForm->getData();
         $project->addUser($this->getUser());
+        $project->setCompleted(false);
         $entityManager->persist($project);
         $entityManager->flush();
 
 
     }
+
+    /**
+     * @Route("/{id}/complete", name="project_complete", methods={"POST", "GET"})
+     * @param Project $project
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function completeProject(Project $project, EntityManagerInterface $entityManager)
+    {
+        $project->setCompleted(true);
+        $entityManager->persist($project);
+        $entityManager->flush();
+
+        return $this->redirectToRoute( 'index_page' );
+    }
+
+
+    /**
+     * @Route("/{id}/reopen", name="project_reopen", methods={"POST", "GET"})
+     * @param Project $project
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function projectReopen(Project $project, EntityManagerInterface $entityManager)
+    {
+
+        $project->setCompleted(false);
+
+        $entityManager->persist($project);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('index_page');
+
+    }
+
+    /**
+     * @Route("/completed_projects/{id}", name="completed_projects")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param Project $project
+     * @return Response
+     */
+
+    public function completedProjectsView(Project $project)
+    {
+        return $this->render('project/completed_projects.html.twig', [
+            'user' => $this->getUser(),
+            'project' => $project
+
+        ]);
+    }
+
+    /**
+     * @Route("/single_project/{id}", name="single_project")
+     * @param Project $project
+     * @return Response
+     */
+    public function completedSingleProjectView(Project $project)
+    {
+        return $this->render('project/single_project.html.twig', [
+            'user' => $this->getUser(),
+            'project' => $project
+
+        ]);
+    }
+
+
 
     private function addDeveloper(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, $form)
     {

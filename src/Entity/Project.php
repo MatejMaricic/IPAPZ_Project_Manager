@@ -52,6 +52,11 @@ class Project
      */
     private $deadline;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $completed;
+
 
 
     public function __construct()
@@ -202,6 +207,18 @@ class Project
     public function setDeadline(\DateTimeInterface $deadline): self
     {
         $this->deadline = $deadline;
+
+        return $this;
+    }
+
+    public function getCompleted(): ?bool
+    {
+        return $this->completed;
+    }
+
+    public function setCompleted(?bool $completed): self
+    {
+        $this->completed = $completed;
 
         return $this;
     }
