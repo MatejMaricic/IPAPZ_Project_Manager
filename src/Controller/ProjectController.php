@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Comments;
 use App\Entity\Project;
+use App\Entity\Subscriptions;
 use App\Entity\Task;
 use App\Form\AssignDevFormType;
 use App\Form\CommentFormType;
@@ -18,6 +19,7 @@ use App\Form\ProjectStatusFormType;
 use App\Form\TaskFormType;
 use App\Repository\ProjectRepository;
 use App\Repository\ProjectStatusRepository;
+use App\Repository\SubscriptionsRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -99,6 +101,37 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @Route("/subscribe_to_task/{id}", name="subscribe_to_task")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param SubscriptionsRepository $subscriptionsRepository
+     * @param Task $task
+     * @return Response
+     */
+    public function subscribeToTask(Task $task, EntityManagerInterface $entityManager,Request $request, SubscriptionsRepository $subscriptionsRepository)
+    {
+        $subscription = new Subscriptions();
+        $email = $this->getUser()->getEmail();
+
+        $subs = $subscriptionsRepository->findByTask($task->getId());
+
+        foreach ($subs as $sub)
+        {
+            if ($sub->getUserEmail() === $email){
+                return $this->redirectToRoute( 'index_page' );
+            }
+
+        }
+        $subscription->setUserEmail($email);
+        $subscription->setTaskId($task->getId());
+
+        $entityManager->persist($subscription);
+        $entityManager->flush();
+        return $this->redirectToRoute( 'index_page' );
+    }
+
+
+    /**
      * @Route("/completed_tasks/{id}", name="completed_tasks")
      * @param Request $request
      * @param EntityManagerInterface $entityManager
@@ -116,40 +149,32 @@ class ProjectController extends AbstractController
 
 
 
-    private function assignDevToTask(Task $task, Request $request, EntityManagerInterface $entityManager, $devForm)
+    private function assignDevToTask(Task $task, Request $request, EntityManagerInterface $entityManager, $devForm, SubscriptionsRepository $subscriptionsRepository)
     {
+        $subscription = new Subscriptions();
+
         $user = $devForm->getData();
         foreach ($user as $singleuser) {
             foreach ($singleuser as $item) {
                 $task->addUser($item);
-                $email = $item->getEmail();
-                $subscriber[] = $email;
+                $subs = $subscriptionsRepository->checkSubscriber($task->getId(), $item->getEmail());
+
+                if (!isset($subs[0])){
+
+                    $subscription->setUserEmail($item->getEmail());
+                    $subscription->setTaskId($task->getId());
+                    $entityManager->persist($subscription);
+                }
+
 
             }
-
         }
-        $task->addSubscribed($subscriber);
+
         $entityManager->persist($task);
         $entityManager->flush();
     }
 
-    /**
-     * @Route("/subscribe_to_task/{id}", name="subscribe_to_task")
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @param Task $task
-     * @return Response
-     */
-    public function subscribeToTask(Task $task, EntityManagerInterface $entityManager,Request $request)
-    {
-        $email = $this->getUser()->getEmail();
-        $task->addSubscribed([$email]);
-        $entityManager->persist($task);
-        $entityManager->flush();
 
-        return $this->redirectToRoute( 'index_page' );
-
-    }
 
     private function newStatus(Request $request, EntityManagerInterface $entityManager, Project $project, $statusForm)
     {
@@ -316,10 +341,11 @@ class ProjectController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param ProjectRepository $projectRepository
+     * @param SubscriptionsRepository $subscriptionsRepository
      * @param Task $task
      * @return Response
      */
-    public function taskView(Task $task, Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository)
+    public function taskView(Task $task, Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository, SubscriptionsRepository $subscriptionsRepository)
     {
 
         $id = $task->getProject()->getId();
@@ -335,7 +361,7 @@ class ProjectController extends AbstractController
         } else {
             $devForm->handleRequest($request);
             if ($this->isGranted('ROLE_MANAGER') && $devForm->isSubmitted() && $devForm->isValid()) {
-                $this->assignDevToTask($task, $request, $entityManager, $devForm);
+                $this->assignDevToTask($task, $request, $entityManager, $devForm, $subscriptionsRepository);
                 return $this->redirect($request->getUri());
             }
 
