@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block taskNav %}
+    <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a href="{{ path('project_view', {'id': project.id}) }}" class="nav-link">Back To Project</a>
+        </li>
+    </ul>
+{% endblock %}
+{% block title %}
+Completed Tasks
+{% endblock %}
+{% block body %}
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-9">
+            <h1>Completed Tasks</h1>
+
+                        <table class="table table-hover table-sm">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Priority </th>
+                                <th scope="col">Created</th>
+                                <th scope="col">Reopen</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for task in project.task %}
+                                {% if task.completed == 1 %}
+
+                                    <tr id="task-{{ task.id }}">
+                                        <th scope="row">{{ task.id }}</th>
+                                        <td><a href="{{ path('task_view', {'id': task.id}) }}">{{ task.name }}</a></td>
+                                        <td>{{ task.priority }}</td>
+                                        <td>{{ task.createdat|date("F jS \\a\\t g:ia") }}</td>
+                                        <td>
+                                            <a href="{{ path('task_reopen', {'id': task.id}) }}">
+                                                <i class="fa fa-check" aria-hidden="true"></i>
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+        </div>
+{% endblock %}

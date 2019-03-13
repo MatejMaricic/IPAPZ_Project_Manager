@@ -75,6 +75,7 @@
             </div>
 
         </div>
+        {% if task.completed != 1 %}
         <div class="row">
             <div class="col-9">
                 {{ form_start(commentForm) }}
@@ -90,6 +91,7 @@
                 {{ form_end(commentForm) }}
             </div>
         </div>
+        {% endif %}
 
         <div class="modal fade" id="devForm" tabindex="-1" role="dialog" aria-labelledby="devFormTitle"
              aria-hidden="true">

@@ -69,13 +69,49 @@ class ProjectController extends AbstractController
      */
     public function taskCompleted(Task $task, EntityManagerInterface $entityManager)
     {
+        $id = $task->getProject()->getId();
         $task->setCompleted(true);
 
         $entityManager->persist($task);
         $entityManager->flush();
 
-        return $this->redirectToRoute('index_page');
+        return $this->redirectToRoute('completed_tasks', array('id' => $id));
 
+    }
+    /**
+     * @Route("/project/{id}/reopen", name="task_reopen", methods={"POST", "GET"})
+     * @param Task $task
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+
+    public function taskReopen(Task $task, EntityManagerInterface $entityManager)
+    {
+
+        $projectId = $task->getProject()->getId();
+        $task->setCompleted(false);
+
+        $entityManager->persist($task);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('project_view', array('id' => $projectId));
+
+    }
+
+    /**
+     * @Route("/completed_tasks/{id}", name="completed_tasks")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param Project $project
+     * @return Response
+     */
+    public function completedTaskView(Project $project)
+    {
+        return $this->render('project/completed_tasks.html.twig', [
+            'user' => $this->getUser(),
+            'project' => $project
+
+        ]);
     }
 
     private function assignDevToTask(Task $task, Request $request, EntityManagerInterface $entityManager, $devForm)

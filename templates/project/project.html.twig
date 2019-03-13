@@ -31,7 +31,7 @@
                                     <th scope="col">Priority </th>
                                     <th scope="col">Created</th>
                                     <th scope="col"></th>
-                                    <th scope="col">Actions</th>
+                                    <th scope="col">Complete</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -64,12 +64,14 @@
                                                     </select>
 
                                                 </td>
+                                                {#<td>#}
+                                                    {#<a href="{{ path('task_delete', {'id': task.id}) }}" class="btn btn-danger removeTask">#}
+                                                        {#<i class="fa fa-trash"></i>#}
+                                                    {#</a>#}
+                                                {#</td>#}
                                                 <td>
-                                                    <a href="{{ path('task_delete', {'id': task.id}) }}" class="btn btn-danger removeTask">
-                                                        <i class="fa fa-trash"></i>
-                                                    </a>
                                                     <a href="{{ path('task_completed', {'id': task.id}) }}" >
-                                                        Completed
+                                                        <i class="fa fa-check-square-o" style="font-size:40px"></i>
                                                     </a>
 
                                                 </td>
@@ -214,5 +216,9 @@
             </div>
         </div>
     </div>
+
+    <a href="{{ path('completed_tasks', {'id': project.id}) }}" >
+        Completed Tasks
+    </a>
 
 {% endblock %}
