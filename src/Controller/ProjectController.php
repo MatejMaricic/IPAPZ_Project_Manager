@@ -172,7 +172,6 @@ class ProjectController extends AbstractController
 
             }
         }
-        $entityManager->persist($subscription);
         $entityManager->persist($task);
         $entityManager->flush();
     }
@@ -353,6 +352,7 @@ class ProjectController extends AbstractController
 
         $id = $task->getProject()->getId();
         $project = $projectRepository->find($id);
+        $subs = $subscriptionsRepository->findByTask($task->getId());
 
         $commentForm = $this->createForm(CommentFormType::class);
         $devForm = $this->createForm(AssignDevFormType::class, $data=null, array("id"=>$this->getUser()->getId()));
@@ -373,7 +373,8 @@ class ProjectController extends AbstractController
                 'task' => $task,
                 'commentForm' => $commentForm->createView(),
                 'project' => $project,
-                'devForm' => $devForm->createView()
+                'devForm' => $devForm->createView(),
+                'subs' => $subs
             ]);
         }
 

@@ -57,7 +57,7 @@ class UserRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
-    ;
+
     }
 
 

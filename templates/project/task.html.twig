@@ -16,6 +16,9 @@
     Task page
 {% endblock %}
 {% block body %}
+    {% for sub in subs %}
+        {{ sub.userEmail }}
+    {% endfor %}
     {% for subscribed in task.subscribed %}
         {% for subscriber in subscribed %}
             {{ subscriber }}
