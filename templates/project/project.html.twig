@@ -36,6 +36,8 @@
                                 </thead>
                                 <tbody>
                                 {% for task in project.task %}
+
+
                                     {% if task.completed == 0 %}
                                     {% if task.status.id == status.id  %}
 
@@ -75,6 +77,7 @@
                                                     </a>
 
                                                 </td>
+
                                             {% endif %}
                                         </tr>
                                     {% endif %}
@@ -224,5 +227,6 @@
     <a href="{{ path('completed_tasks', {'id': project.id}) }}" >
         Completed Tasks
     </a>
+
 
 {% endblock %}

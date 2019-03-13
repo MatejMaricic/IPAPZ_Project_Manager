@@ -7,12 +7,20 @@
         <li class="nav-item active">
             <a href="{{ path('project_view', {'id':task.project.id}) }}" class="nav-link">Back To Project</a>
         </li>
+        <li class="nav-item active">
+            <a href="{{ path('subscribe_to_task', {'id':task.id}) }}" class="nav-link">Subscribe</a>
+        </li>
     </ul>
 {% endblock %}
 {% block title %}
     Task page
 {% endblock %}
 {% block body %}
+    {% for subscribed in task.subscribed %}
+        {% for subscriber in subscribed %}
+            {{ subscriber }}
+            {% endfor %}
+    {% endfor%}
     <div class="container-fluid">
         <div class="row">
             <div class="col-9">

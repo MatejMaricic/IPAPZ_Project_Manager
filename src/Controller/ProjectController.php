@@ -122,10 +122,33 @@ class ProjectController extends AbstractController
         foreach ($user as $singleuser) {
             foreach ($singleuser as $item) {
                 $task->addUser($item);
+                $email = $item->getEmail();
+                $subscriber[] = $email;
+
             }
+
         }
+        $task->addSubscribed($subscriber);
         $entityManager->persist($task);
         $entityManager->flush();
+    }
+
+    /**
+     * @Route("/subscribe_to_task/{id}", name="subscribe_to_task")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param Task $task
+     * @return Response
+     */
+    public function subscribeToTask(Task $task, EntityManagerInterface $entityManager,Request $request)
+    {
+        $email = $this->getUser()->getEmail();
+        $task->addSubscribed([$email]);
+        $entityManager->persist($task);
+        $entityManager->flush();
+
+        return $this->redirectToRoute( 'index_page' );
+
     }
 
     private function newStatus(Request $request, EntityManagerInterface $entityManager, Project $project, $statusForm)

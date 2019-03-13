@@ -72,6 +72,11 @@ class Task
      */
     private $completed;
 
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $Subscribed = [];
+
 
 
 
@@ -81,6 +86,7 @@ class Task
         $this->users = new ArrayCollection();
         $this->projectStatuses = new ArrayCollection();
         $this->comments = new ArrayCollection();
+
     }
 
 
@@ -301,6 +307,25 @@ class Task
     public function setCompleted(bool $completed): self
     {
         $this->completed = $completed;
+
+        return $this;
+    }
+
+    public function getSubscribed(): ?array
+    {
+        return $this->Subscribed;
+    }
+
+    public function setSubscribed(?array $Subscribed): self
+    {
+        $this->Subscribed = $Subscribed;
+
+        return $this;
+    }
+
+    public function addSubscribed(?array $Subscribed): self
+    {
+        $this->Subscribed[] = $Subscribed;
 
         return $this;
     }
