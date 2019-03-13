@@ -102,7 +102,11 @@
                                 {% else %}
                                  <td scope="col" width="35" ><i class="fa fa-user fa-lg"></i></td>
                                  {% endif %}
-                                <td scope="col">{{ dev.fullName }}</td>
+                                <td scope="col">
+                                    <a href="{{ path('developer_tasks', {'id': project.id, 'dev_id' : dev.id }) }}" >
+                                  {{ dev.fullName }}
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                     </table>

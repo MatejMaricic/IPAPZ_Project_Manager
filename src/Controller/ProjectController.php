@@ -370,5 +370,27 @@ class ProjectController extends AbstractController
 
         ]);
     }
+
+    /**
+     * @Route("/developer_tasks/{id}/{dev_id}", name="developer_tasks", methods={"POST", "GET"})
+     * @param EntityManagerInterface $entityManager
+     * @param UserRepository $userRepository
+     * @param Project $project
+     * @param Request $request
+     * @return Response
+     */
+    public function developerTasks(Project $project, EntityManagerInterface $entityManager, Request $request, UserRepository $userRepository)
+    {
+
+        $devId = $request->get('dev_id');
+        $user = $userRepository->find($devId);
+
+        return $this->render('project/developer_tasks.html.twig', [
+            'user' => $user,
+            'project' => $project
+
+        ]);
+
+    }
 }
 
