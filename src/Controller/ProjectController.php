@@ -151,7 +151,7 @@ class ProjectController extends AbstractController
 
     private function assignDevToTask(Task $task, Request $request, EntityManagerInterface $entityManager, $devForm, SubscriptionsRepository $subscriptionsRepository)
     {
-        $subscription = new Subscriptions();
+
 
         $user = $devForm->getData();
         foreach ($user as $singleuser) {
@@ -161,15 +161,18 @@ class ProjectController extends AbstractController
 
                 if (!isset($subs[0])){
 
+                    $subscription = new Subscriptions();
                     $subscription->setUserEmail($item->getEmail());
                     $subscription->setTaskId($task->getId());
                     $entityManager->persist($subscription);
+                    $entityManager->flush();
+
                 }
 
 
             }
         }
-
+        $entityManager->persist($subscription);
         $entityManager->persist($task);
         $entityManager->flush();
     }
