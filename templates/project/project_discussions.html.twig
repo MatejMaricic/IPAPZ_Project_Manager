@@ -22,7 +22,7 @@
             {% for discussion in project.discussions %}
                 <tr id = discussion-{{ discussion.id }}>
                     <th scope="row">{{ discussion.id }}</th>
-                    <td>{{ discussion.name }}</td>
+                    <td><a href="{{ path('discussion_view', {'id': discussion.id}) }}">{{ discussion.name }}</a> </td>
                     <td>{{ discussion.createdBy }}</td>
                     <td>{{ discussion.createdAt|date("F jS \\a\\t g:ia") }}</td>
                     <td>

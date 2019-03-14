@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Discussion page
+{% endblock %}
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-9">
+                <div class="card border-dark">
+                    <div class="card-header">{{ discussion.name }}</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            {{ discussion.content|raw }}
+                        </p>
+
+                    </div>
+                </div>
+                <hr>
+            </div>
+
+            <div class="col-9">
+                {% if discussion.comments is not empty %}
+
+                    <div class="card border-light">
+                        <div class="card-header">Discussion</div>
+                        <div class="card-body">
+                            {% for comment in discussion.comments %}
+                                <p class="card-text">{{ comment.user.firstName }} {{ comment.user.lastName }} : {{ comment.content|raw }}</p>
+                                {% for image in comment.images %}
+                                    <a href="#" class="pop" >
+                                        <img id="imageresource" src="{{ asset('uploads/')~image }}" width="100" height="100">
+                                    </a>
+                                {% endfor %}
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+                <div class="col-9">
+                    {{ form_start(commentForm) }}
+                    <div class="card border-success">
+                        <div class="card-body">
+                            {{ form_row(commentForm.content, {'attr':{class: 'comment'}}) }}
+                            {{ form_row(commentForm.images, {'attr':{class: 'form-control'}}) }}
+                        </div>
+                        <div class="card-footer bg-transparent border-success">
+                            <button type="submit" class="btn btn-primary">Add comment</button>
+                        </div>
+                    </div>
+                    {{ form_end(commentForm) }}
+                </div>
+        </div>
+    </div>
+
+
+
+
+        <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <img src="" class="imagepreview" style="width: 100%; height: 100%" >
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+{% endblock %}

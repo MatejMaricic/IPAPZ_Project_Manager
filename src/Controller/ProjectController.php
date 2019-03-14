@@ -469,10 +469,7 @@ class ProjectController extends AbstractController
 
     /**
      * @Route("/project_discussions/{id}", name="project_discussions", methods={"POST", "GET"})
-     * @param EntityManagerInterface $entityManager
-     * @param UserRepository $userRepository
      * @param Project $project
-     * @param Request $request
      * @return Response
      */
     public function showDiscussions(Project $project)
@@ -482,6 +479,60 @@ class ProjectController extends AbstractController
             'user' => $this->getUser()
 
         ]);
+    }
+    /**
+     * @Route("/single_discussion/{id}", name="discussion_view", methods={"POST", "GET"})
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @param Discussion $discussion
+     * @return Response
+     */
+    public function singleDiscussionView(Discussion $discussion, Request $request, EntityManagerInterface $entityManager)
+    {
+        $commentForm = $this->createForm(CommentFormType::class);
+
+        $commentForm->handleRequest($request);
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $this->addDiscussionComment($discussion, $request, $entityManager, $commentForm);
+            return $this->redirect($request->getUri());
+        }
+
+        return $this->render('project/single_discussion.html.twig', [
+            'discussion' => $discussion,
+            'user' => $this->getUser(),
+            'commentForm' => $commentForm->createView()
+            ]);
+
+
+    }
+
+    private function addDiscussionComment(Discussion $discussion, Request $request, EntityManagerInterface $entityManager, $commentForm)
+    {
+
+        /**@var Comments $comments */
+        $comments = $commentForm->getData();
+
+        $files = $request->files->get('comment_form')['images'];
+
+        if (!empty($files)) {
+
+            foreach ($files as $file) {
+                $uploads_directory = $this->getParameter('uploads_directory');
+                $filename = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move(
+                    $uploads_directory,
+                    $filename
+
+                );
+                $images[] = $filename;
+            }
+            $comments->setImages($images);
+
+        }
+        $comments->setUser($this->getUser());
+        $comments->setDiscussion($discussion);
+        $entityManager->persist($comments);
+        $entityManager->flush();
     }
 
 }
