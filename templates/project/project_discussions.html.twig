@@ -14,15 +14,22 @@
             <th scope="col">Title</th>
             <th scope="col">Created By</th>
             <th scope="col">Created At</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Convert To Task</th>
         </tr>
         </thead>
         <tbody>
             {% for discussion in project.discussions %}
-                <tr>
+                <tr id = discussion-{{ discussion.id }}>
                     <th scope="row">{{ discussion.id }}</th>
                     <td>{{ discussion.name }}</td>
                     <td>{{ discussion.createdBy }}</td>
                     <td>{{ discussion.createdAt|date("F jS \\a\\t g:ia") }}</td>
+                    <td>
+                    <a href="{{ path('discussion_delete', {'id': discussion.id}) }}" class="btn btn-danger removeDiscussion">
+                    <i class="fa fa-trash"></i>
+                    </a>
+                    </td>
                 </tr>
             {% endfor %}
 

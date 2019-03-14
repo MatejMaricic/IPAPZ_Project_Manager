@@ -6,20 +6,22 @@ $(document).ready(function () {
             method: 'POST',
             url: link.attr('href')
         }).done(function (data) {
+            console.log('test');
             jQuery( '#project-'+data.deletedProject ).remove();
         })
     });
 });
 
 $(document).ready(function () {
-    $(document).on('click','.removeTask', function (e) {
+    $('.removeDiscussion').on('click', function (e) {
         e.preventDefault();
         var link = $(e.currentTarget);
         $.ajax({
             method: 'POST',
             url: link.attr('href')
         }).done(function (data) {
-            jQuery( '#task-'+data.deletedTask ).remove();
+            console.log('test');
+            jQuery( '#discussion-'+data.deletedDiscussion ).remove();
         })
     });
 });

@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Entity\Comments;
+use App\Entity\Discussion;
 use App\Entity\Project;
 use App\Entity\Subscriptions;
 use App\Entity\Task;
@@ -283,28 +284,28 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/project/{id}/delete", name="task_delete", methods={"POST", "GET"})
-     * @param Task $task
+     * @Route("/project_discussion/{id}/delete", name="discussion_delete", methods={"POST", "GET"})
+     * @param Discussion $discussion
      * @param EntityManagerInterface $entityManager
      * @return JsonResponse
      */
-    public function deleteTask(Task $task, EntityManagerInterface $entityManager)
+    public function deleteDiscussion(Discussion $discussion, EntityManagerInterface $entityManager)
     {
 
-        $taskId = $task->getId();
+        $discussionId = $discussion->getId();
 
-        if (!$task) {
+        if (!$discussion) {
             return new JsonResponse([
                 'msg' => 'Unable to delete'
             ]);
         }
 
-        $entityManager->remove($task);
+        $entityManager->remove($discussion);
         $entityManager->flush();
 
 
         return new JsonResponse([
-            'deletedTask' => $taskId
+            'deletedDiscussion' => $discussionId
         ]);
     }
 
