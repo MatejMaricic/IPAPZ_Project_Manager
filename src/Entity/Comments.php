@@ -38,6 +38,12 @@ class Comments
      */
     private $images = [];
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Discussion", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $discussion;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +93,18 @@ class Comments
     public function setImages(?array $images): self
     {
         $this->images = $images;
+
+        return $this;
+    }
+
+    public function getDiscussion(): ?Discussion
+    {
+        return $this->discussion;
+    }
+
+    public function setDiscussion(?Discussion $discussion): self
+    {
+        $this->discussion = $discussion;
 
         return $this;
     }

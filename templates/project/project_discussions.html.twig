@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Project page
+{% endblock %}
+{% block body %}
+
+
+<h1>Discussions</h1>
+    <table class="table table-hover table-sm">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Created By</th>
+            <th scope="col">Created At</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for discussion in project.discussions %}
+                <tr>
+                    <th scope="row">{{ discussion.id }}</th>
+                    <td>{{ discussion.name }}</td>
+                    <td>{{ discussion.createdBy }}</td>
+                    <td>{{ discussion.createdAt|date("F jS \\a\\t g:ia") }}</td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}

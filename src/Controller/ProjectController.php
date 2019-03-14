@@ -14,6 +14,7 @@ use App\Entity\Subscriptions;
 use App\Entity\Task;
 use App\Form\AssignDevFormType;
 use App\Form\CommentFormType;
+use App\Form\DiscussionFormType;
 use App\Form\ProjectFormType;
 use App\Form\ProjectStatusFormType;
 use App\Form\TaskFormType;
@@ -241,6 +242,7 @@ class ProjectController extends AbstractController
         $devForm = $this->createForm(AssignDevFormType::class, $data = null, array("id" => $this->getUser()->getId()));
         $taskForm = $this->createForm(TaskFormType::class, $data = null, array("project_id" => $project->getId()));
         $statusForm = $this->createForm(ProjectStatusFormType::class);
+        $discussionForm = $this->createForm(DiscussionFormType::class);
 
         $taskForm->handleRequest($request);
         if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
@@ -257,8 +259,15 @@ class ProjectController extends AbstractController
                     $this->newStatus($request, $entityManager, $project, $statusForm);
                     return $this->redirect($request->getUri());
 
-                }
+                } else {
+                    $discussionForm->handleRequest($request);
+                    if ($this->isGranted('ROLE_MANAGER') && $discussionForm->isSubmitted() && $discussionForm->isValid()) {
+                        $this->newDiscussion($request, $entityManager, $project, $discussionForm);
+                        return $this->redirect($request->getUri());
 
+                    }
+
+                }
             }
         }
         return $this->render('project/project.html.twig', [
@@ -267,6 +276,7 @@ class ProjectController extends AbstractController
             'project' => $project,
             'devForm' => $devForm->createView(),
             'statusForm' => $statusForm->createView(),
+            'discussionForm' => $discussionForm->createView(),
             'devs' => $devs
         ]);
 
@@ -443,5 +453,35 @@ class ProjectController extends AbstractController
         ]);
 
     }
+
+
+    private function newDiscussion(Request $request, EntityManagerInterface $entityManager, Project $project, $discussionForm)
+    {
+        $discussion = $discussionForm->getData();
+        $discussion->setProject($project);
+        $discussion->setCreatedBy($this->getUser()->getFullName());
+
+        $entityManager->persist($discussion);
+        $entityManager->flush();
+
+    }
+
+    /**
+     * @Route("/project_discussions/{id}", name="project_discussions", methods={"POST", "GET"})
+     * @param EntityManagerInterface $entityManager
+     * @param UserRepository $userRepository
+     * @param Project $project
+     * @param Request $request
+     * @return Response
+     */
+    public function showDiscussions(Project $project)
+    {
+        return $this->render('project/project_discussions.html.twig', [
+            'project' => $project,
+            'user' => $this->getUser()
+
+        ]);
+    }
+
 }
 
