@@ -18,7 +18,7 @@ class Comments
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Task", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $task;
 
@@ -40,7 +40,7 @@ class Comments
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Discussion", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $discussion;
 

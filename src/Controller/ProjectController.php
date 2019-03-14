@@ -13,11 +13,13 @@ use App\Entity\Discussion;
 use App\Entity\Project;
 use App\Entity\Subscriptions;
 use App\Entity\Task;
+use App\Entity\User;
 use App\Form\AssignDevFormType;
 use App\Form\CommentFormType;
 use App\Form\DiscussionFormType;
 use App\Form\ProjectFormType;
 use App\Form\ProjectStatusFormType;
+use App\Form\TaskConvertFormType;
 use App\Form\TaskFormType;
 use App\Repository\ProjectRepository;
 use App\Repository\ProjectStatusRepository;
@@ -434,6 +436,23 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @Route("/project_tasks/{id}", name="project_tasks", methods={"POST", "GET"})
+     * @param Project $project
+     * @param UserRepository $userRepository
+     * @return Response
+     */
+    public function showTasks(Project $project, UserRepository $userRepository)
+    {
+        $devs = $userRepository->devsOnProject($project->getId());
+        return $this->render('project/project_tasks.html.twig', [
+            'project' => $project,
+            'user' => $this->getUser(),
+            'devs' => $devs
+
+        ]);
+    }
+
+    /**
      * @Route("/developer_tasks/{id}/{dev_id}", name="developer_tasks", methods={"POST", "GET"})
      * @param EntityManagerInterface $entityManager
      * @param UserRepository $userRepository
@@ -474,6 +493,7 @@ class ProjectController extends AbstractController
      */
     public function showDiscussions(Project $project)
     {
+
         return $this->render('project/project_discussions.html.twig', [
             'project' => $project,
             'user' => $this->getUser()
@@ -489,18 +509,28 @@ class ProjectController extends AbstractController
      */
     public function singleDiscussionView(Discussion $discussion, Request $request, EntityManagerInterface $entityManager)
     {
+        $projectId =$discussion->getProject()->getId();
+
         $commentForm = $this->createForm(CommentFormType::class);
+        $taskForm = $this->createForm(TaskConvertFormType::class,$data = null, array('project_id' => $projectId));
 
         $commentForm->handleRequest($request);
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $this->addDiscussionComment($discussion, $request, $entityManager, $commentForm);
             return $this->redirect($request->getUri());
+        } else {
+            $taskForm->handleRequest($request);
+            if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
+                $this->convertToTask($discussion, $request, $entityManager, $taskForm);
+                return $this->redirectToRoute('index_page');
+            }
         }
 
         return $this->render('project/single_discussion.html.twig', [
             'discussion' => $discussion,
             'user' => $this->getUser(),
-            'commentForm' => $commentForm->createView()
+            'commentForm' => $commentForm->createView(),
+            'taskForm' => $taskForm->createView()
             ]);
 
 
@@ -561,6 +591,25 @@ class ProjectController extends AbstractController
 
         return $this->redirectToRoute('project_view', array('id' => $projectId));
     }
+
+    private function convertToTask(Discussion $discussion, Request $request, EntityManagerInterface $entityManager, $taskForm)
+    {
+        $task = new Task();
+        $task = $taskForm->getData();
+        $task->setProject($discussion->getProject());
+        $task->setContent($discussion->getContent());
+        $task->setName($discussion->getName());
+        $task->setCompleted(false);
+
+        $entityManager->persist($task);
+        $entityManager->remove($discussion);
+        $entityManager->flush();
+
+
+
+    }
+
+
 
 }
 

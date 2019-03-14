@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+{% block taskNav %}
+    <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a href="{{ path('project_view', {'id': project.id}) }}" class="nav-link">Back To Project</a>
+        </li>
+    </ul>
+{% endblock %}
+{% block title %}
+    Tasks page
+{% endblock %}
+{% block body %}
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-9">
+            <h1>Tasks</h1>
+            {% for status in project.projectStatus %}
+                <div class="card border-secondary">
+                    <div class="card-header">{{ status.name }}</div>
+                    <div class="card-body text-secondary">
+                        <table class="table table-hover table-sm" id="js-table-status-{{ status.id }}">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Assigned developers</th>
+                                <th scope="col">Priority </th>
+                                <th scope="col">Created</th>
+                                <th scope="col"></th>
+                                <th scope="col">Complete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for task in project.task %}
+
+
+                                {% if task.completed == 0 %}
+                                    {% if task.status.id == status.id  %}
+
+                                        <tr id="task-{{ task.id }}">
+                                            <th scope="row">{{ task.id }}</th>
+                                            <td><a href="{{ path('task_view', {'id': task.id}) }}">{{ task.name }}</a></td>
+                                            <td>
+                                                {% for user in task.users %}
+                                                    {{ user.fullName }}<br>
+                                                {% endfor %}
+                                            </td>
+                                            <td>{{ task.priority }}</td>
+                                            <td>{{ task.createdat|date("F jS \\a\\t g:ia") }}</td>
+                                            {% if is_granted("ROLE_MANAGER") %}
+                                                <td>
+
+                                                    <select class="js-status-change">
+                                                        {% for status in project.projectStatus  %}
+
+                                                            {% set selected = '' %}
+                                                            {% if (status.id == task.status.id) %}
+                                                                {% set selected = 'selected' %}
+                                                            {% endif %}
+                                                            <option {{ selected }} data-change_status="{{ path('status_change', {'id': task.id, 'status_id' : status.id }) }}" value="{{ status.id }}">{{status.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('task_completed', {'id': task.id}) }}" >
+                                                        <i class="fa fa-check-square-o" style="font-size:40px"></i>
+                                                    </a>
+
+                                                </td>
+
+                                            {% endif %}
+                                        </tr>
+                                    {% endif %}
+                                {% endif %}
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+
+            {% endfor %}
+        </div>
+        <div class="col-3">
+
+
+            {% if devs is not empty %}
+                <h4>People working on this project</h4>
+                <table class="table table-hover">
+                    {% for dev in devs %}
+                        <tr>
+                            {% if dev.avatar is not empty %}
+                                <td scope="col" width="35"><img class="img-circle" src="{{ asset('uploads/')~dev.avatar }}" width="35px" height="35px" align=""></td>
+                            {% else %}
+                                <td scope="col" width="35" ><i class="fa fa-user fa-lg"></i></td>
+                            {% endif %}
+                            <td scope="col">
+                                <a href="{{ path('developer_tasks', {'id': project.id, 'dev_id' : dev.id }) }}" >
+                                    {{ dev.fullName }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        </div>
+    </div>
+    <a href="{{ path('completed_tasks', {'id': project.id}) }}" >
+        Completed Tasks
+    </a>
+</div>
+
+{% endblock %}
