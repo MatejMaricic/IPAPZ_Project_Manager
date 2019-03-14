@@ -31,6 +31,7 @@
                                 <th scope="col">Created</th>
                                 <th scope="col"></th>
                                 <th scope="col">Complete</th>
+                                <th scope="col">Edit</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -67,6 +68,12 @@
                                                 </td>
                                                 <td>
                                                     <a href="{{ path('task_completed', {'id': task.id}) }}" >
+                                                        <i class="fa fa-check-square-o" style="font-size:40px"></i>
+                                                    </a>
+
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('task_edit', {'id': task.id}) }}" >
                                                         <i class="fa fa-check-square-o" style="font-size:40px"></i>
                                                     </a>
 

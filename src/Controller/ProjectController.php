@@ -454,6 +454,38 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @Route("/task_edit/{id}", name="task_edit", methods={"POST", "GET"})
+     * @param Task $task
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return Response
+     */
+    public function taskEditor (Task $task, Request $request, EntityManagerInterface $entityManager)
+    {
+        $taskForm = $this->createForm(TaskFormType::class, $task, array('project_id'=>$task->getProject()->getId()));
+        $taskForm->handleRequest($request);
+        if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
+            $this->editTask($request, $entityManager, $task, $taskForm);
+            return $this->redirectToRoute('index_page');
+        }
+
+
+        return $this->render('project/task_edit.html.twig', [
+            'user' => $this->getUser(),
+            'taskForm' => $taskForm->createView()
+        ]);
+    }
+
+    private function editTask(Request $request, EntityManagerInterface $entityManager, Task $task, $taskForm)
+    {
+        $task = $taskForm->getData();
+        $entityManager->persist($task);
+        $entityManager->flush();
+    }
+
+
+
+    /**
      * @Route("/developer_tasks/{id}/{dev_id}", name="developer_tasks", methods={"POST", "GET"})
      * @param EntityManagerInterface $entityManager
      * @param UserRepository $userRepository

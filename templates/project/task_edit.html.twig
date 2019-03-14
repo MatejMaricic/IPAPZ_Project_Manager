@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Edit task page
+{% endblock %}
+{% block body %}
+
+    {{ form_start(taskForm) }}
+    {{ form_row(taskForm.name, {'attr':{class: 'form-control'}}) }}
+    {{ form_row(taskForm.content, {'attr':{class: 'form-control'}}) }}
+    {{ form_row(taskForm.status, {'attr':{class: 'form-control'}}) }}
+    {{ form_row(taskForm.priority, {'attr':{class: 'form-control'}}) }}
+    {{ form_row(taskForm.images, {'attr':{class: 'form-control'}}) }}
+    <button type="submit" class="btn btn-primary">Update Task</button>
+    {{ form_end(taskForm) }}
+{% endblock %}
