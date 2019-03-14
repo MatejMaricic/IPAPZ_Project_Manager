@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\Table;
  * @ORM\Entity(repositoryClass="App\Repository\SubscriptionsRepository")
  * @Entity
  * @Table(name="subscriptions",uniqueConstraints={@UniqueConstraint(name="subscriptions", columns={"user_email", "task_id"})})
+ * @Table(name="subscriptions",uniqueConstraints={@UniqueConstraint(name="subscriptions", columns={"user_email", "discussion_id"})})
 **/
 class Subscriptions
 {
@@ -27,9 +28,14 @@ class Subscriptions
     private $userEmail;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $taskId;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $discussionId;
 
     public function getId(): ?int
     {
@@ -56,6 +62,18 @@ class Subscriptions
     public function setTaskId(int $taskId): self
     {
         $this->taskId = $taskId;
+
+        return $this;
+    }
+
+    public function getDiscussionId(): ?int
+    {
+        return $this->discussionId;
+    }
+
+    public function setDiscussionId(?int $discussionId): self
+    {
+        $this->discussionId = $discussionId;
 
         return $this;
     }

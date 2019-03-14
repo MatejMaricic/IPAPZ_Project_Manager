@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190314085850 extends AbstractMigration
+final class Version20190314093130 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,7 +22,9 @@ final class Version20190314085850 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE comments CHANGE task_id task_id INT NOT NULL');
+        $this->addSql('DROP INDEX subscriptions ON subscriptions');
+        $this->addSql('ALTER TABLE subscriptions CHANGE task_id task_id INT DEFAULT NULL');
+        $this->addSql('CREATE UNIQUE INDEX subscriptions ON subscriptions (user_email, discussion_id)');
     }
 
     public function down(Schema $schema) : void
@@ -30,6 +32,8 @@ final class Version20190314085850 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE comments CHANGE task_id task_id INT DEFAULT NULL');
+        $this->addSql('DROP INDEX subscriptions ON subscriptions');
+        $this->addSql('ALTER TABLE subscriptions CHANGE task_id task_id INT NOT NULL');
+        $this->addSql('CREATE UNIQUE INDEX subscriptions ON subscriptions (user_email, task_id)');
     }
 }

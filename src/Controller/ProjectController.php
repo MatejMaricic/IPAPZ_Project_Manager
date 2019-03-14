@@ -535,5 +535,32 @@ class ProjectController extends AbstractController
         $entityManager->flush();
     }
 
+    /**
+     * @Route("/subscribe_to_discussion{id}", name="subscribe_to_discussion")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param SubscriptionsRepository $subscriptionsRepository
+     * @param Discussion $discussion
+     * @return Response
+     */
+    public function subscribeToDiscussion(Discussion $discussion, EntityManagerInterface $entityManager, Request $request, SubscriptionsRepository $subscriptionsRepository)
+    {
+        $subscription = new Subscriptions();
+        $email = $this->getUser()->getEmail();
+        $projectId = $discussion->getProject()->getId();
+
+        try {
+            $subscription->setUserEmail($email);
+            $subscription->setDiscussionId($discussion->getId());
+            $entityManager->persist($subscription);
+            $entityManager->flush();
+        } catch (ConstraintViolationException $constraintViolationException) {
+
+        }
+
+
+        return $this->redirectToRoute('project_view', array('id' => $projectId));
+    }
+
 }
 
