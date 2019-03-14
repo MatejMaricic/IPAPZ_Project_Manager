@@ -57,6 +57,11 @@ class Project
      */
     private $completed;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Discussion", mappedBy="project", orphanRemoval=true)
+     */
+    private $discussions;
+
 
 
     public function __construct()
@@ -66,6 +71,7 @@ class Project
         $this->task = new ArrayCollection();
         $this->developers = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->discussions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -219,6 +225,37 @@ class Project
     public function setCompleted(?bool $completed): self
     {
         $this->completed = $completed;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Discussion[]
+     */
+    public function getDiscussions(): Collection
+    {
+        return $this->discussions;
+    }
+
+    public function addDiscussion(Discussion $discussion): self
+    {
+        if (!$this->discussions->contains($discussion)) {
+            $this->discussions[] = $discussion;
+            $discussion->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDiscussion(Discussion $discussion): self
+    {
+        if ($this->discussions->contains($discussion)) {
+            $this->discussions->removeElement($discussion);
+            // set the owning side to null (unless already changed)
+            if ($discussion->getProject() === $this) {
+                $discussion->setProject(null);
+            }
+        }
 
         return $this;
     }
