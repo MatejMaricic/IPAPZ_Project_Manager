@@ -58,7 +58,7 @@ class Task
     private $images = [];
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comments", mappedBy="task", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Comments", mappedBy="task", orphanRemoval=true, cascade={"persist"})
      */
     private $comments;
 

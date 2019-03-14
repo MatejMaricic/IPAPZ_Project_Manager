@@ -36,6 +36,22 @@ class SubscriptionsRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return Subscriptions[] Returns an array of Subscriptions objects
+     */
+
+    public function findByDiscussion($value)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.discussionId = :val')
+            ->setParameter('val', $value)
+            ->orderBy('s.id', 'ASC')
+            ->setMaxResults(50)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
      * @param $task_id
      * @param $user_email
      * @return Subscriptions

@@ -39,7 +39,7 @@ class Comments
     private $images = [];
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Discussion", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Discussion", inversedBy="comments", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $discussion;

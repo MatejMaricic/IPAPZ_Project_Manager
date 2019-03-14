@@ -21,6 +21,7 @@ use App\Form\ProjectFormType;
 use App\Form\ProjectStatusFormType;
 use App\Form\TaskConvertFormType;
 use App\Form\TaskFormType;
+use App\Repository\CommentsRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\ProjectStatusRepository;
 use App\Repository\SubscriptionsRepository;
@@ -505,9 +506,11 @@ class ProjectController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param Request $request
      * @param Discussion $discussion
+     * @param SubscriptionsRepository $subscriptionsRepository
+     * @param CommentsRepository $commentsRepository
      * @return Response
      */
-    public function singleDiscussionView(Discussion $discussion, Request $request, EntityManagerInterface $entityManager)
+    public function singleDiscussionView(Discussion $discussion, Request $request, EntityManagerInterface $entityManager, SubscriptionsRepository $subscriptionsRepository, CommentsRepository $commentsRepository)
     {
         $projectId =$discussion->getProject()->getId();
 
@@ -521,7 +524,7 @@ class ProjectController extends AbstractController
         } else {
             $taskForm->handleRequest($request);
             if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
-                $this->convertToTask($discussion, $request, $entityManager, $taskForm);
+                $this->convertToTask($discussion, $request, $entityManager, $taskForm, $subscriptionsRepository, $commentsRepository);
                 return $this->redirectToRoute('index_page');
             }
         }
@@ -592,8 +595,11 @@ class ProjectController extends AbstractController
         return $this->redirectToRoute('project_view', array('id' => $projectId));
     }
 
-    private function convertToTask(Discussion $discussion, Request $request, EntityManagerInterface $entityManager, $taskForm)
+    private function convertToTask(Discussion $discussion, Request $request, EntityManagerInterface $entityManager, $taskForm, SubscriptionsRepository $subscriptionsRepository, CommentsRepository $commentsRepository)
     {
+        $subs = $subscriptionsRepository->findByDiscussion($discussion->getId());
+        $comments = $commentsRepository->findCommentsByDiscussion($discussion);
+
         $task = new Task();
         $task = $taskForm->getData();
         $task->setProject($discussion->getProject());
@@ -601,12 +607,30 @@ class ProjectController extends AbstractController
         $task->setName($discussion->getName());
         $task->setCompleted(false);
 
+
+
         $entityManager->persist($task);
-        $entityManager->remove($discussion);
         $entityManager->flush();
 
+        foreach ($subs as $sub)
+        {
+            $sub->setDiscussionId(null);
+            $sub->setTaskId($task->getId());
+            $entityManager->persist($sub);
+            $entityManager->flush();
+        }
 
+        foreach ($comments as $comment)
+        {
+            $comment->setTask($task);
+            $discussion->removeComment($comment);
 
+            $entityManager->persist($comment);
+            $entityManager->persist($discussion);
+            $entityManager->flush();
+        }
+        $entityManager->remove($discussion);
+        $entityManager->flush();
     }
 
 

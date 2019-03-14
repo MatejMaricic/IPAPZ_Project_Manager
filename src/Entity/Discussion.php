@@ -46,7 +46,7 @@ class Discussion
     private $content;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comments", mappedBy="discussion", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Comments", mappedBy="discussion", orphanRemoval=false)
      */
     private $comments;
 
