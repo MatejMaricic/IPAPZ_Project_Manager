@@ -29,6 +29,7 @@ class UserRepository extends ServiceEntityRepository
             ->setParameter('val', "%ROLE_USER%")
             ->orderBy('u.id', 'ASC')
             ->setMaxResults(10)
+
         ;
     }
 

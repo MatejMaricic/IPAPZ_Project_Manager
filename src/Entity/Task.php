@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
  * @ORM\HasLifecycleCallbacks()
@@ -154,33 +155,7 @@ class Task
         return $this;
     }
 
-    /**
-     * @return Collection|TaskStatus[]
-     */
-    public function getTaskStatuses(): Collection
-    {
-        return $this->taskStatuses;
-    }
 
-    public function addTaskStatus(TaskStatus $taskStatus): self
-    {
-        if (!$this->taskStatuses->contains($taskStatus)) {
-            $this->taskStatuses[] = $taskStatus;
-            $taskStatus->addTask($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTaskStatus(TaskStatus $taskStatus): self
-    {
-        if ($this->taskStatuses->contains($taskStatus)) {
-            $this->taskStatuses->removeElement($taskStatus);
-            $taskStatus->removeTask($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|User[]

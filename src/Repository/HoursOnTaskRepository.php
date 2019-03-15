@@ -19,22 +19,22 @@ class HoursOnTaskRepository extends ServiceEntityRepository
         parent::__construct($registry, HoursOnTask::class);
     }
 
-    // /**
-    //  * @return HoursOnTask[] Returns an array of HoursOnTask objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return HoursOnTask[] Returns an array of HoursOnTask objects
+     */
+
+    public function findHoursByProject($id)
     {
         return $this->createQueryBuilder('h')
-            ->andWhere('h.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('h.projectId = :val')
+            ->setParameter('val', $id)
             ->orderBy('h.id', 'ASC')
-            ->setMaxResults(10)
+            ->setMaxResults(60)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?HoursOnTask

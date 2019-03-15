@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Form\ProjectFormType;
+use App\Repository\HoursOnTaskRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -78,8 +79,6 @@ class IndexController extends AbstractController
 
     /**
      * @Route("/completed_projects/{id}", name="completed_projects")
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
      * @param Project $project
      * @return Response
      */
@@ -270,18 +269,50 @@ class IndexController extends AbstractController
 
     /**
      * @Route("/hours_management", name="hours_management")
+     * @param ProjectRepository $projectRepository
+     * @param UserRepository $userRepository
      * @return Response $response
      */
 
-    public function hoursManagementView()
+    public function hoursManagementView(ProjectRepository $projectRepository, UserRepository $userRepository)
     {
+        $projects = $projectRepository->findAll();
+        $developers = $userRepository->findAllDevelopersArray();
+
         if ($this->isGranted('ROLE_MANAGER')){
 
             return $this->render('hours_management.html.twig', [
-                'user' => $this->getUser()
+                'user' => $this->getUser(),
+                'developers' => $developers,
+                'projects' => $projects
             ]);
         }
          return $this->redirectToRoute('index_page');
 
+    }
+
+    /**
+     * @Route("/project_hours/{id}", name="project_hours")
+     * @param HoursOnTaskRepository $hoursOnTaskRepository
+     * @param Project $project
+     * @return Response $response
+     */
+
+    public function projectHoursManagement(HoursOnTaskRepository $hoursOnTaskRepository, Project $project)
+    {
+        $total = 0;
+        $id = $project->getId();
+        $hoursOnProject = $hoursOnTaskRepository->findHoursByProject($id);
+
+        foreach ($hoursOnProject as $singleCommit){
+            $total += $singleCommit->getHours();
+        }
+
+        return $this->render('project_hours.html.twig', [
+           'user' => $this->getUser(),
+           'hoursOnProject' => $hoursOnProject,
+            'project' => $project,
+            'total' => $total
+        ]);
     }
 }
