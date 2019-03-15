@@ -13,6 +13,7 @@ use App\Entity\Project;
 use App\Entity\User;
 use App\Form\AddHoursFormType;
 use App\Form\ProjectFormType;
+use App\Form\SearchHoursFormType;
 use App\Repository\HoursOnTaskRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
@@ -329,6 +330,7 @@ class IndexController extends AbstractController
         $total = 0;
         $id = $user->getId();
         $hoursForUser = $hoursOnTaskRepository->findHoursByUser($id);
+        $searchForm = $this->createForm(SearchHoursFormType::class, $data = null, array('user' => $user));
 
         foreach ($hoursForUser as $singleCommit){
             $total += $singleCommit->getHours();
@@ -337,7 +339,8 @@ class IndexController extends AbstractController
         return $this->render('user_hours.html.twig', [
             'user' => $this->getUser(),
             'hoursForUser' => $hoursForUser,
-            'total' => $total
+            'total' => $total,
+            'searchForm' => $searchForm->createView()
         ]);
     }
 

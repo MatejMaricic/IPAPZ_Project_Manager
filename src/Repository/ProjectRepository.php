@@ -19,22 +19,19 @@ class ProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Project::class);
     }
 
-    // /**
-    //  * @return project[] Returns an array of project objects
-    //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findByUserId($id)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+            ->select('p')
+            ->innerJoin('p.users', 'u')
+            ->andWhere('u.id = :val')
+            ->setParameter('val', $id)
             ->orderBy('p.id', 'ASC')
             ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?project
