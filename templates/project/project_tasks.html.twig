@@ -4,7 +4,12 @@
         <li class="nav-item active">
             <a href="{{ path('project_view', {'id': project.id}) }}" class="nav-link">Back To Project</a>
         </li>
+        <li class="nav-item active">
+            <a href="{{ path('completed_tasks', {'id': project.id}) }}" class="nav-link" >Completed Tasks </a>
+        </li>
     </ul>
+
+
 {% endblock %}
 {% block title %}
     Tasks page
@@ -122,9 +127,7 @@
             {% endif %}
         </div>
     </div>
-    <a href="{{ path('completed_tasks', {'id': project.id}) }}" >
-        Completed Tasks
-    </a>
+
 </div>
 
 {% endblock %}

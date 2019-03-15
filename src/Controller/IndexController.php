@@ -267,4 +267,21 @@ class IndexController extends AbstractController
         }
 
     }
+
+    /**
+     * @Route("/hours_management", name="hours_management")
+     * @return Response $response
+     */
+
+    public function hoursManagementView()
+    {
+        if ($this->isGranted('ROLE_MANAGER')){
+
+            return $this->render('hours_management.html.twig', [
+                'user' => $this->getUser()
+            ]);
+        }
+         return $this->redirectToRoute('index_page');
+
+    }
 }

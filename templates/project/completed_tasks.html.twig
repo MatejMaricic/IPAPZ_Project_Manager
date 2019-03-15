@@ -4,6 +4,9 @@
         <li class="nav-item active">
             <a href="{{ path('project_view', {'id': project.id}) }}" class="nav-link">Back To Project</a>
         </li>
+        <li class="nav-item active">
+            <a href="{{ path('project_tasks', {'id': project.id}) }}" class="nav-link">Back To Tasks</a>
+        </li>
     </ul>
 {% endblock %}
 {% block title %}
