@@ -2,6 +2,16 @@
 {% block indexSidebar %}
     <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#projectForm">Add New Project</a></li>
     <li><i class="fa fa-folder"></i><a href="#" data-toggle="modal" data-target="#devForm">Add New Developer</a></li>
+    <li><i class="fa fa-folder"></i><a href="#">Hours Management</a></li>
+{% endblock %}
+{% block indexNav %}
+    <ul class="navbar-nav">
+        <li class="nav-item active" >
+            <a href="{{ path('completed_projects', {'id': user.id}) }}" class="nav-link">
+                Completed Projects
+            </a>
+        </li>
+    </ul>
 {% endblock %}
 {% block title %}
     Main page
@@ -125,9 +135,7 @@
         </div>
         {{ form_end(form) }}
     </div>
-    <a href="{{ path('completed_projects', {'id': user.id}) }}" >
-        Completed Projects
-    </a>
+
 
 
 

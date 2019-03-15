@@ -47,6 +47,11 @@ class HoursOnTask
      */
     private $hours;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $projectId;
+
 
     /**
      * @ORM\PrePersist
@@ -129,6 +134,18 @@ class HoursOnTask
     public function setHours(int $hours): self
     {
         $this->hours = $hours;
+
+        return $this;
+    }
+
+    public function getProjectId(): ?int
+    {
+        return $this->projectId;
+    }
+
+    public function setProjectId(int $projectId): self
+    {
+        $this->projectId = $projectId;
 
         return $this;
     }
