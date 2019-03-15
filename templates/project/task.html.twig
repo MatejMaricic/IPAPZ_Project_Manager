@@ -22,9 +22,10 @@
 
     {% for devs in task.users %}
         {% if devs.email == user.email %}
-          <a href="#">Add hours</a>
+            <a href="#" data-toggle="modal" data-target="#addHoursForm">Add Hours</a>
         {% endif %}
     {% endfor %}
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-9">
@@ -64,6 +65,13 @@
                 {% else %}
                     <div class="alert alert-warning">No one is working on this task</div>
                 {% endif %}
+
+                {% for commits in task.hoursOnTask %}
+                   Developer: {{ commits.user.fullname }} <br>
+                   Hours added: {{ commits.hours }}<br>
+                   Commit message: {{ commits.message }}<br>
+                    <hr>
+                {% endfor %}
 
             </div>
             <div class="col-9">
@@ -132,6 +140,35 @@
                         <button type="submit" class="btn btn-primary">Assign developer</button>
                     </div>
                     {{ form_end(devForm) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="addHoursForm" tabindex="-1" role="dialog" aria-labelledby="addHoursFormTitle"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    {{ form_start(addHoursForm) }}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add hours to this task</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col" id="developer-selection">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit Hours</button>
+                    </div>
+                    {{ form_end(addHoursForm) }}
                 </div>
             </div>
         </div>

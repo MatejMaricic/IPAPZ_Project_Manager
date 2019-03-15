@@ -10,10 +10,12 @@ namespace App\Controller;
 
 use App\Entity\Comments;
 use App\Entity\Discussion;
+use App\Entity\HoursOnTask;
 use App\Entity\Project;
 use App\Entity\Subscriptions;
 use App\Entity\Task;
 use App\Entity\User;
+use App\Form\AddHoursFormType;
 use App\Form\AssignDevFormType;
 use App\Form\CommentFormType;
 use App\Form\DiscussionFormType;
@@ -365,6 +367,7 @@ class ProjectController extends AbstractController
 
         $commentForm = $this->createForm(CommentFormType::class);
         $devForm = $this->createForm(AssignDevFormType::class, $data = null, array("id" => $this->getUser()->getId()));
+        $addHoursForm = $this->createForm(AddHoursFormType::class);
 
         $commentForm->handleRequest($request);
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
@@ -375,20 +378,26 @@ class ProjectController extends AbstractController
             if ($this->isGranted('ROLE_MANAGER') && $devForm->isSubmitted() && $devForm->isValid()) {
                 $this->assignDevToTask($task, $request, $entityManager, $devForm, $subscriptionsRepository);
                 return $this->redirect($request->getUri());
+            } else {
+                $addHoursForm->handleRequest($request);
+                if ($this->isGranted('ROLE_USER') && $addHoursForm->isSubmitted() && $addHoursForm->isValid()) {
+                    $this->addHoursToTask($task, $entityManager, $addHoursForm);
+                    return $this->redirect($request->getUri());
+                }
+
+                return $this->render('project/task.html.twig', [
+                    'user' => $this->getUser(),
+                    'task' => $task,
+                    'commentForm' => $commentForm->createView(),
+                    'project' => $project,
+                    'devForm' => $devForm->createView(),
+                    'subs' => $subs,
+                    'addHoursForm' => $addHoursForm->createView()
+                ]);
             }
 
-            return $this->render('project/task.html.twig', [
-                'user' => $this->getUser(),
-                'task' => $task,
-                'commentForm' => $commentForm->createView(),
-                'project' => $project,
-                'devForm' => $devForm->createView(),
-                'subs' => $subs
-            ]);
         }
-
     }
-
     /**
      * @Route("/project_edit/{id}", name="project_edit")
      * @param Request $request
@@ -410,6 +419,16 @@ class ProjectController extends AbstractController
             'user' => $this->getUser(),
             'projectForm' => $projectForm->createView()
         ]);
+    }
+
+    private function addHoursToTask(Task $task, EntityManagerInterface $entityManager, $addHoursForm)
+    {
+        $hoursOnTask = $addHoursForm->getData();
+        $hoursOnTask->setTask($task);
+        $hoursOnTask->setUser($this->getUser());
+
+        $entityManager->persist($hoursOnTask);
+        $entityManager->flush();
     }
 
     private function editProject(Request $request, EntityManagerInterface $entityManager, Project $project, $projectForm)

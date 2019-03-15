@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\HoursOnTaskRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class HoursOnTask
 {
@@ -45,6 +46,15 @@ class HoursOnTask
      * @ORM\Column(type="integer")
      */
     private $hours;
+
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setAddedAtValue()
+    {
+        $this->addedAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
