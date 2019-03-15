@@ -83,6 +83,11 @@ class User implements UserInterface
      */
     private $addedBy;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\HoursOnTask", mappedBy="user")
+     */
+    private $hoursOnTasks;
+
 
 
     public function __construct()
@@ -90,6 +95,7 @@ class User implements UserInterface
         $this->project = new ArrayCollection();
         $this->task = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->hoursOnTasks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -345,6 +351,37 @@ class User implements UserInterface
     public function setAddedBy(int $addedBy): self
     {
         $this->addedBy = $addedBy;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|HoursOnTask[]
+     */
+    public function getHoursOnTasks(): Collection
+    {
+        return $this->hoursOnTasks;
+    }
+
+    public function addHoursOnTask(HoursOnTask $hoursOnTask): self
+    {
+        if (!$this->hoursOnTasks->contains($hoursOnTask)) {
+            $this->hoursOnTasks[] = $hoursOnTask;
+            $hoursOnTask->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHoursOnTask(HoursOnTask $hoursOnTask): self
+    {
+        if ($this->hoursOnTasks->contains($hoursOnTask)) {
+            $this->hoursOnTasks->removeElement($hoursOnTask);
+            // set the owning side to null (unless already changed)
+            if ($hoursOnTask->getUser() === $this) {
+                $hoursOnTask->setUser(null);
+            }
+        }
 
         return $this;
     }

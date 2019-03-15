@@ -19,11 +19,12 @@
     {% for sub in subs %}
         {{ sub.userEmail }}
     {% endfor %}
-    {% for subscribed in task.subscribed %}
-        {% for subscriber in subscribed %}
-            {{ subscriber }}
-            {% endfor %}
-    {% endfor%}
+
+    {% for devs in task.users %}
+        {% if devs.email == user.email %}
+          <a href="#">Add hours</a>
+        {% endif %}
+    {% endfor %}
     <div class="container-fluid">
         <div class="row">
             <div class="col-9">

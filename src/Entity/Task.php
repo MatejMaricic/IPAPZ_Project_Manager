@@ -82,6 +82,11 @@ class Task
      */
     private $estimate;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\HoursOnTask", mappedBy="Task")
+     */
+    private $hoursOnTask;
+
 
 
 
@@ -91,6 +96,7 @@ class Task
         $this->users = new ArrayCollection();
         $this->projectStatuses = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->hoursOnTask = new ArrayCollection();
 
     }
 
@@ -343,6 +349,37 @@ class Task
     public function setEstimate(?int $estimate): self
     {
         $this->estimate = $estimate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|HoursOnTask[]
+     */
+    public function getHoursOnTask(): Collection
+    {
+        return $this->hoursOnTask;
+    }
+
+    public function addHoursOnTask(HoursOnTask $hoursOnTask): self
+    {
+        if (!$this->hoursOnTask->contains($hoursOnTask)) {
+            $this->hoursOnTask[] = $hoursOnTask;
+            $hoursOnTask->setTask($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHoursOnTask(HoursOnTask $hoursOnTask): self
+    {
+        if ($this->hoursOnTask->contains($hoursOnTask)) {
+            $this->hoursOnTask->removeElement($hoursOnTask);
+            // set the owning side to null (unless already changed)
+            if ($hoursOnTask->getTask() === $this) {
+                $hoursOnTask->setTask(null);
+            }
+        }
 
         return $this;
     }

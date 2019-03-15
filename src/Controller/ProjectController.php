@@ -62,7 +62,6 @@ class ProjectController extends AbstractController
 
         }
 
-
         $task->setProject($project);
         $task->setCompleted(false);
         $entityManager->persist($task);
