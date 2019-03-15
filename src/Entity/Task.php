@@ -77,6 +77,11 @@ class Task
      */
     private $Subscribed = [];
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $estimate;
+
 
 
 
@@ -326,6 +331,18 @@ class Task
     public function addSubscribed(?array $Subscribed): self
     {
         $this->Subscribed[] = $Subscribed;
+
+        return $this;
+    }
+
+    public function getEstimate(): ?int
+    {
+        return $this->estimate;
+    }
+
+    public function setEstimate(?int $estimate): self
+    {
+        $this->estimate = $estimate;
 
         return $this;
     }
