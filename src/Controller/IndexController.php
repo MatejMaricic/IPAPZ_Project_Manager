@@ -8,8 +8,10 @@
 
 namespace App\Controller;
 
+use App\Entity\HoursOnTask;
 use App\Entity\Project;
 use App\Entity\User;
+use App\Form\AddHoursFormType;
 use App\Form\ProjectFormType;
 use App\Repository\HoursOnTaskRepository;
 use App\Repository\ProjectRepository;
@@ -337,5 +339,33 @@ class IndexController extends AbstractController
             'hoursForUser' => $hoursForUser,
             'total' => $total
         ]);
+    }
+
+    /**
+     * @Route("/edit_user_hours/{id}", name="edit_user_hours")
+     * @param HoursOnTask $hoursOnTask
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return Response $response
+     */
+    public function editUserHours(HoursOnTask $hoursOnTask,Request $request, EntityManagerInterface $entityManager)
+    {
+        $editHoursForm  = $this->createForm(AddHoursFormType::class, $hoursOnTask);
+        $id= $hoursOnTask->getUser()->getId();
+
+        $editHoursForm->handleRequest($request);
+        if ($this->isGranted('ROLE_MANAGER') && $editHoursForm->isSubmitted() && $editHoursForm->isValid()) {
+            $hoursOnTask = $editHoursForm->getData();
+            $entityManager->persist($hoursOnTask);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('user_hours', array('id' => $id ));
+        }
+
+        return $this->render('edit_user_hours.html.twig', [
+            'user' => $this->getUser(),
+            'editHoursForm' => $editHoursForm->createView()
+        ]);
+
     }
 }

@@ -21,6 +21,7 @@
                         <th scope="col">Hours</th>
                         <th scope="col">Billable</th>
                         <th scope="col">Added At</th>
+                        <th scope="col">Edit</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -40,6 +41,7 @@
                                 {% endif %}
                             </td>
                             <td>{{ hoursForUser.addedAt|date }}</td>
+                            <td><a href="{{ path('edit_user_hours', {'id': hoursForUser.id}) }}">Edit</a> </td>
 
                         </tr>
 
