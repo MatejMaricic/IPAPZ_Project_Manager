@@ -26,6 +26,7 @@ Project Hours Management
                                     <th scope="col">Developer </th>
                                     <th scope="col">Hours</th>
                                     <th scope="col">Billable</th>
+                                    <th scope="col">Added At</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -44,6 +45,7 @@ Project Hours Management
                                                 No
                                                 {% endif %}
                                             </td>
+                                            <td>{{ hoursOnProject.addedAt|date }}</td>
 
                                         </tr>
 

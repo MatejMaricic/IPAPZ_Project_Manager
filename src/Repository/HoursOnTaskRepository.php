@@ -35,6 +35,24 @@ class HoursOnTaskRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return HoursOnTask[] Returns an array of HoursOnTask objects
+     */
+
+    public function findHoursByUser($id)
+    {
+        return $this->createQueryBuilder('h')
+            ->select('h')
+            ->innerJoin('h.user', 'u')
+            ->andWhere('u.id = :val')
+            ->setParameter('val', $id)
+            ->orderBy('h.id', 'ASC')
+            ->setMaxResults(60)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?HoursOnTask

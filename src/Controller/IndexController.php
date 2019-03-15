@@ -315,4 +315,27 @@ class IndexController extends AbstractController
             'total' => $total
         ]);
     }
+
+    /**
+     * @Route("/user_hours/{id}", name="user_hours")
+     * @param HoursOnTaskRepository $hoursOnTaskRepository
+     * @param User $user
+     * @return Response $response
+     */
+    public function userHoursManagement(HoursOnTaskRepository $hoursOnTaskRepository, User $user)
+    {
+        $total = 0;
+        $id = $user->getId();
+        $hoursForUser = $hoursOnTaskRepository->findHoursByUser($id);
+
+        foreach ($hoursForUser as $singleCommit){
+            $total += $singleCommit->getHours();
+        }
+
+        return $this->render('user_hours.html.twig', [
+            'user' => $this->getUser(),
+            'hoursForUser' => $hoursForUser,
+            'total' => $total
+        ]);
+    }
 }

@@ -18,7 +18,8 @@
          <div class="col-md-6">
             <h3>Developers</h3>
             {% for developer in developers %}
-               {{ developer.fullname }}
+               <a href="{{ path('user_hours', {'id':developer.id}) }}"> {{ developer.fullname }}</a>
+
             {% endfor %}
 
          </div>
