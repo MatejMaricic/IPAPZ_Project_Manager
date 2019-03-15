@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a514df7d-3dc8-424a-b05f-18139b802102" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/user_hours.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/IndexController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/IndexController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ProjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProjectController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/HoursOnTask.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/HoursOnTask.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Project.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Project.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/HoursOnTaskRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/HoursOnTaskRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/hours_management.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/hours_management.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/project_hours.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/project_hours.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user_hours.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user_hours.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -57,7 +56,7 @@
         <item name="zavrsni@localhost" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="zavrsni: schema" type="76f4a085:MysqlImplModel$Schema" />
-        <item name="task: table" type="285a2a93:MysqlImplModel$Table" />
+        <item name="project: table" type="285a2a93:MysqlImplModel$Table" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
@@ -72,10 +71,23 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="383">
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Controller/ProjectController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="428" column="54" selection-start-line="428" selection-start-column="54" selection-end-line="428" selection-end-column="54" />
+              <folding>
+                <element signature="e#6#86#0#PHP" expanded="true" />
+                <element signature="e#115#139#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Controller/IndexController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="319" column="50" selection-start-line="319" selection-start-column="50" selection-end-line="319" selection-end-column="50" />
+            <state relative-caret-position="175">
+              <caret line="326" selection-start-line="326" selection-end-line="326" />
               <folding>
                 <element signature="e#115#138#0#PHP" expanded="true" />
               </folding>
@@ -84,10 +96,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Repository/HoursOnTaskRepository.php">
+        <entry file="file://$PROJECT_DIR$/src/Entity/HoursOnTask.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="468">
-              <caret line="44" column="23" selection-start-line="44" selection-start-column="23" selection-end-line="44" selection-end-column="23" />
+              <caret line="48" selection-start-line="48" selection-end-line="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Repository/HoursOnTaskRepository.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="258">
+              <caret line="30" column="28" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="28" />
               <folding>
                 <element signature="e#34#61#0#PHP" expanded="true" />
               </folding>
@@ -95,11 +116,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/hours_management.html.twig">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="405">
-              <caret line="27" column="14" lean-forward="true" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+              <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -108,7 +129,7 @@
         <entry file="file://$PROJECT_DIR$/templates/project_hours.html.twig">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
-              <caret line="17" column="31" lean-forward="true" selection-end-line="60" selection-end-column="14" />
+              <caret line="17" column="31" selection-end-line="60" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -116,8 +137,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/user_hours.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="363">
-              <caret line="38" column="62" selection-start-line="38" selection-start-column="62" selection-end-line="38" selection-end-column="62" />
+            <state relative-caret-position="390">
+              <caret line="32" column="58" selection-start-line="32" selection-start-column="58" selection-end-line="32" selection-end-column="58" />
             </state>
           </provider>
         </entry>
@@ -184,21 +205,21 @@
         <option value="$PROJECT_DIR$/src/Form/TaskFormType.php" />
         <option value="$PROJECT_DIR$/templates/project/my_tasks.html.twig" />
         <option value="$PROJECT_DIR$/src/Form/AddHoursFormType.php" />
-        <option value="$PROJECT_DIR$/src/Entity/HoursOnTask.php" />
         <option value="$PROJECT_DIR$/templates/project/task.html.twig" />
         <option value="$PROJECT_DIR$/templates/base.html.twig" />
         <option value="$PROJECT_DIR$/templates/project/project_tasks.html.twig" />
         <option value="$PROJECT_DIR$/templates/project/completed_tasks.html.twig" />
         <option value="$PROJECT_DIR$/templates/project/developer_tasks.html.twig" />
         <option value="$PROJECT_DIR$/templates/index.html.twig" />
-        <option value="$PROJECT_DIR$/src/Controller/ProjectController.php" />
         <option value="$PROJECT_DIR$/src/Repository/UserRepository.php" />
         <option value="$PROJECT_DIR$/src/Entity/Task.php" />
         <option value="$PROJECT_DIR$/templates/project_hours.html.twig" />
-        <option value="$PROJECT_DIR$/templates/user_hours.html.twig" />
-        <option value="$PROJECT_DIR$/src/Controller/IndexController.php" />
-        <option value="$PROJECT_DIR$/src/Repository/HoursOnTaskRepository.php" />
         <option value="$PROJECT_DIR$/templates/hours_management.html.twig" />
+        <option value="$PROJECT_DIR$/src/Controller/IndexController.php" />
+        <option value="$PROJECT_DIR$/src/Entity/HoursOnTask.php" />
+        <option value="$PROJECT_DIR$/src/Controller/ProjectController.php" />
+        <option value="$PROJECT_DIR$/src/Repository/HoursOnTaskRepository.php" />
+        <option value="$PROJECT_DIR$/templates/user_hours.html.twig" />
       </list>
     </option>
   </component>
@@ -208,6 +229,7 @@
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
+  <component name="PhpDebugGeneral" listening_started="true" />
   <component name="PhpServers">
     <servers>
       <server host="phpakademija.loc" id="8653caac-3a78-4177-bb7c-391f478ede76" name="phpakademija.loc" />
@@ -444,12 +466,12 @@
       <workItem from="1552370923455" duration="8377000" />
       <workItem from="1552457892044" duration="12712000" />
       <workItem from="1552544155628" duration="9684000" />
-      <workItem from="1552630732993" duration="17504000" />
+      <workItem from="1552630732993" duration="19026000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="303554000" />
+    <option name="totallyTimeSpent" value="305076000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -462,9 +484,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-1" width="1920" height="1040" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18943436" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18943436" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Database Console" order="0" weight="0.32963374" />
@@ -479,7 +500,7 @@
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5010672" side_tool="true" weight="0.32969433" />
-      <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.4986165" visible="true" weight="0.23799127" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="12" sideWeight="0.4986165" visible="true" weight="0.45960698" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -510,6 +531,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/Controller/IndexController.php</url>
+          <line>326</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="das://51f72ea5-9203-44a9-bfea-ee415d803ffd/schema/zavrsni/table/discussion">
@@ -642,13 +674,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Entity/HoursOnTask.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="63" column="33" selection-start-line="63" selection-start-column="33" selection-end-line="63" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="das://51f72ea5-9203-44a9-bfea-ee415d803ffd/schema/zavrsni/table/task">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
@@ -698,13 +723,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://51f72ea5-9203-44a9-bfea-ee415d803ffd/schema/zavrsni/table/project">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/project/single_project.html.twig">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -715,17 +733,6 @@
           <column-attributes>
             <column name="roles" languageId="JSON" />
           </column-attributes>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/ProjectController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="422" selection-start-line="422" selection-end-line="422" />
-          <folding>
-            <element signature="e#6#86#0#PHP" expanded="true" />
-            <element signature="e#115#139#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -810,13 +817,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://51f72ea5-9203-44a9-bfea-ee415d803ffd/schema/zavrsni/table/hours_on_task">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/symfony/http-kernel/HttpKernel.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -824,36 +824,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/project_hours.html.twig">
+    <entry file="file://$PROJECT_DIR$/src/Controller/ProjectController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="31" lean-forward="true" selection-end-line="60" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/user_hours.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="363">
-          <caret line="38" column="62" selection-start-line="38" selection-start-column="62" selection-end-line="38" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/IndexController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="319" column="50" selection-start-line="319" selection-start-column="50" selection-end-line="319" selection-end-column="50" />
+        <state relative-caret-position="375">
+          <caret line="428" column="54" selection-start-line="428" selection-start-column="54" selection-end-line="428" selection-end-column="54" />
           <folding>
-            <element signature="e#115#138#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Repository/HoursOnTaskRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="44" column="23" selection-start-line="44" selection-start-column="23" selection-end-line="44" selection-end-column="23" />
-          <folding>
-            <element signature="e#34#61#0#PHP" expanded="true" />
+            <element signature="e#6#86#0#PHP" expanded="true" />
+            <element signature="e#115#139#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -861,7 +838,62 @@
     <entry file="file://$PROJECT_DIR$/templates/hours_management.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
-          <caret line="27" column="14" lean-forward="true" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+          <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://51f72ea5-9203-44a9-bfea-ee415d803ffd/schema/zavrsni/table/project">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://51f72ea5-9203-44a9-bfea-ee415d803ffd/schema/zavrsni/table/hours_on_task">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Repository/HoursOnTaskRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="30" column="28" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="28" />
+          <folding>
+            <element signature="e#34#61#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Entity/HoursOnTask.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/project_hours.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="31" selection-end-line="60" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/user_hours.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="32" column="58" selection-start-line="32" selection-start-column="58" selection-end-line="32" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/IndexController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="326" selection-start-line="326" selection-end-line="326" />
+          <folding>
+            <element signature="e#115#138#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

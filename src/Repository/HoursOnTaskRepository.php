@@ -26,7 +26,9 @@ class HoursOnTaskRepository extends ServiceEntityRepository
     public function findHoursByProject($id)
     {
         return $this->createQueryBuilder('h')
-            ->andWhere('h.projectId = :val')
+            ->select('h')
+            ->innerJoin('h.project', 'u')
+            ->andWhere('u.id = :val')
             ->setParameter('val', $id)
             ->orderBy('h.id', 'ASC')
             ->setMaxResults(60)

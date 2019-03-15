@@ -17,6 +17,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Task Name</th>
+                        <th scope="col">Project Name</th>
                         <th scope="col">Hours</th>
                         <th scope="col">Billable</th>
                         <th scope="col">Added At</th>
@@ -29,6 +30,7 @@
                         <tr>
                             <th scope="row">{{ hoursForUser.id }}</th>
                             <td>{{ hoursForUser.task.name }}</td>
+                            <td>{{ hoursForUser.project.name }}</td>
                             <td>{{ hoursForUser.hours }} Hours</td>
                             <td>
                                 {% if hoursForUser.billable == true %}
@@ -44,7 +46,7 @@
                     {% endfor %}
                     </tbody>
                 </table>
-                <h4>Total Time Spent On This Project: {{ total }} Hours</h4>
+                <h4>Total Time Spent By This User: {{ total }} Hours</h4>
             </div>
         </div>
         <hr>

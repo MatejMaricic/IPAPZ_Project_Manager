@@ -62,6 +62,11 @@ class Project
      */
     private $discussions;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\HoursOnTask", mappedBy="project")
+     */
+    private $hoursOnTasks;
+
 
 
     public function __construct()
@@ -72,6 +77,7 @@ class Project
         $this->developers = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->discussions = new ArrayCollection();
+        $this->hoursOnTasks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -254,6 +260,37 @@ class Project
             // set the owning side to null (unless already changed)
             if ($discussion->getProject() === $this) {
                 $discussion->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|HoursOnTask[]
+     */
+    public function getHoursOnTasks(): Collection
+    {
+        return $this->hoursOnTasks;
+    }
+
+    public function addHoursOnTask(HoursOnTask $hoursOnTask): self
+    {
+        if (!$this->hoursOnTasks->contains($hoursOnTask)) {
+            $this->hoursOnTasks[] = $hoursOnTask;
+            $hoursOnTask->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHoursOnTask(HoursOnTask $hoursOnTask): self
+    {
+        if ($this->hoursOnTasks->contains($hoursOnTask)) {
+            $this->hoursOnTasks->removeElement($hoursOnTask);
+            // set the owning side to null (unless already changed)
+            if ($hoursOnTask->getProject() === $this) {
+                $hoursOnTask->setProject(null);
             }
         }
 

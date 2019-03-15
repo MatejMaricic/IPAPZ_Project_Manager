@@ -426,7 +426,7 @@ class ProjectController extends AbstractController
         $hoursOnTask = $addHoursForm->getData();
         $hoursOnTask->setTask($task);
         $hoursOnTask->setUser($this->getUser());
-        $hoursOnTask->setProjectId($task->getProject()->getId());
+        $hoursOnTask->setProject($task->getProject());
 
         $task->setTotalHours($task->getTotalHours() + $hoursOnTask->getHours());
 

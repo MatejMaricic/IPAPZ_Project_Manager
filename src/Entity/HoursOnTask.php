@@ -48,9 +48,9 @@ class HoursOnTask
     private $hours;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="hoursOnTasks")
      */
-    private $projectId;
+    private $project;
 
 
     /**
@@ -138,15 +138,16 @@ class HoursOnTask
         return $this;
     }
 
-    public function getProjectId(): ?int
+    public function getProject(): ?Project
     {
-        return $this->projectId;
+        return $this->project;
     }
 
-    public function setProjectId(int $projectId): self
+    public function setProject(?Project $project): self
     {
-        $this->projectId = $projectId;
+        $this->project = $project;
 
         return $this;
     }
+
 }
