@@ -427,6 +427,8 @@ class ProjectController extends AbstractController
         $hoursOnTask->setTask($task);
         $hoursOnTask->setUser($this->getUser());
 
+        $task->setTotalHours($task->getTotalHours() + $hoursOnTask->getHours());
+
         $entityManager->persist($hoursOnTask);
         $entityManager->flush();
     }

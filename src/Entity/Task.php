@@ -87,6 +87,11 @@ class Task
      */
     private $hoursOnTask;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $totalHours;
+
 
 
 
@@ -380,6 +385,18 @@ class Task
                 $hoursOnTask->setTask(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTotalHours(): ?int
+    {
+        return $this->totalHours;
+    }
+
+    public function setTotalHours(?int $totalHours): self
+    {
+        $this->totalHours = $totalHours;
 
         return $this;
     }
