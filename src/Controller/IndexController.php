@@ -17,11 +17,8 @@ use App\Form\ProjectFormType;
 use App\Form\SearchHoursFormType;
 use App\Repository\HoursOnTaskRepository;
 use App\Repository\ProjectRepository;
-use App\Repository\SubscriptionsRepository;
-use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,182 +32,6 @@ use Dompdf\Options;
 
 class IndexController extends AbstractController
 {
-
-    /**
-     * @Route("/email", name="email")
-     * @param Project $project
-     * @param EntityManagerInterface $entityManager
-     * @param \Swift_Mailer $mailer
-     * @param TaskRepository $taskRepository
-     * @param SubscriptionsRepository $subscriptionsRepository
-     * @param EntityManagerInterface $entityManager
-     * @return Response
-     */
-    public function mail(\Swift_Mailer $mailer, TaskRepository $taskRepository, SubscriptionsRepository $subscriptionsRepository, EntityManagerInterface $entityManager)
-    {
-        $tasks = $taskRepository->findAll();
-
-        foreach ($tasks as $task)
-        {
-            if ($task->getUpdated() == true){
-
-                $subscribers = $subscriptionsRepository->findByTask($task->getId());
-
-                foreach ($subscribers as $subscriber){
-                    $message = (new \Swift_Message('Hello Email'))
-                        ->setFrom('send@example.com')
-                        ->setTo($subscriber->getUserEmail())
-                        ->setBody(
-                            $this->renderView('test.html.twig', [
-                                'task'=> $task
-                            ])
-                        );
-                    $mailer->send($message);
-                    $task->setUpdated(false);
-                    $entityManager->persist($task);
-                    $entityManager->flush();
-
-
-                }
-
-            }
-
-        }
-
-        return $this->redirectToRoute( 'index_page' );
-    }
-
-
-    private function newProject(Request $request, EntityManagerInterface $entityManager, $projectForm)
-    {
-
-
-        /** @var Project $project */
-
-        $project = $projectForm->getData();
-        $project->addUser($this->getUser());
-        $project->setCompleted(false);
-        $entityManager->persist($project);
-        $entityManager->flush();
-
-
-    }
-
-    /**
-     * @Route("/{id}/complete", name="project_complete", methods={"POST", "GET"})
-     * @param Project $project
-     * @param EntityManagerInterface $entityManager
-     * @return Response
-     */
-    public function completeProject(Project $project, EntityManagerInterface $entityManager)
-    {
-        $project->setCompleted(true);
-        $entityManager->persist($project);
-        $entityManager->flush();
-
-        return $this->redirectToRoute( 'index_page' );
-    }
-
-
-    /**
-     * @Route("/{id}/reopen", name="project_reopen", methods={"POST", "GET"})
-     * @param Project $project
-     * @param EntityManagerInterface $entityManager
-     * @return Response
-     */
-    public function projectReopen(Project $project, EntityManagerInterface $entityManager)
-    {
-
-        $project->setCompleted(false);
-
-        $entityManager->persist($project);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('index_page');
-
-    }
-
-    /**
-     * @Route("/completed_projects/{id}", name="completed_projects")
-     * @param Project $project
-     * @return Response
-     */
-
-    public function completedProjectsView(Project $project)
-    {
-        return $this->render('project/completed_projects.html.twig', [
-            'user' => $this->getUser(),
-            'project' => $project
-
-        ]);
-    }
-
-    /**
-     * @Route("/single_project/{id}", name="single_project")
-     * @param Project $project
-     * @return Response
-     */
-    public function completedSingleProjectView(Project $project)
-    {
-        return $this->render('project/single_project.html.twig', [
-            'user' => $this->getUser(),
-            'project' => $project
-
-        ]);
-    }
-
-
-
-    private function addDeveloper(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, $form)
-    {
-        /**@var User $user */
-        $user = $form->getData();
-        $file = $request->files->get('registration_form')['avatar'];
-
-        if (isset($file)) {
-            $uploads_directory = $this->getParameter('uploads_directory');
-            $filename = md5(uniqid()) . '.' . $file->guessExtension();
-            $file->move(
-                $uploads_directory,
-                $filename
-            );
-            $user->setAvatar($filename);
-        }
-        $user->setAddedBy($this->getUser()->getId());
-        $user->setPassword(
-            $passwordEncoder->encodePassword(
-                $user,
-                $form->get('plainPassword')->getData()
-            )
-        );
-        $user->setRoles(array('ROLE_USER'));
-        $entityManager->persist($user);
-        $entityManager->flush();
-    }
-
-    /**
-     * @Route("/{id}/delete", name="project_delete", methods={"POST", "GET"})
-     * @param Project $project
-     * @param EntityManagerInterface $entityManager
-     * @return JsonResponse
-     */
-    public function deleteProject(Project $project, EntityManagerInterface $entityManager)
-    {
-
-        $projectId = $project->getId();
-
-        if (!$project) {
-            return new JsonResponse([
-                'msg' => 'Unable to delete'
-            ]);
-        }
-        $entityManager->remove($project);
-        $entityManager->flush();
-
-        return new JsonResponse([
-            'deletedProject' => $projectId
-        ]);
-    }
 
     /**
      * @param Request $request
@@ -252,9 +73,26 @@ class IndexController extends AbstractController
 
     }
 
-    private function updateUser(Request $request, EntityManagerInterface $entityManager, User $user,$updateForm,$passwordEncoder)
+
+    private function newProject(Request $request, EntityManagerInterface $entityManager, $projectForm)
     {
-        $user = $updateForm->getData();
+
+
+        /** @var Project $project */
+
+        $project = $projectForm->getData();
+        $project->addUser($this->getUser());
+        $project->setCompleted(false);
+        $entityManager->persist($project);
+        $entityManager->flush();
+
+
+    }
+
+    private function addDeveloper(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, $form)
+    {
+        /**@var User $user */
+        $user = $form->getData();
         $file = $request->files->get('registration_form')['avatar'];
 
         if (isset($file)) {
@@ -266,23 +104,18 @@ class IndexController extends AbstractController
             );
             $user->setAvatar($filename);
         }
+        $user->setAddedBy($this->getUser()->getId());
         $user->setPassword(
             $passwordEncoder->encodePassword(
                 $user,
-                $updateForm->get('plainPassword')->getData()
+                $form->get('plainPassword')->getData()
             )
         );
-
-        $id = $user->getAddedBy();
-        if ($id == 0){
-            $user->setRoles(array('ROLE_MANAGER'));
-        } else {
-            $user->setRoles(array('ROLE_USER'));
-        }
-
+        $user->setRoles(array('ROLE_USER'));
         $entityManager->persist($user);
         $entityManager->flush();
     }
+
 
     /**
      * @Route("/profile/{id}", name="profile_view")
@@ -318,6 +151,38 @@ class IndexController extends AbstractController
             return $this->redirectToRoute( 'index_page' );
         }
 
+    }
+
+    private function updateUser(Request $request, EntityManagerInterface $entityManager, User $user,$updateForm,$passwordEncoder)
+    {
+        $user = $updateForm->getData();
+        $file = $request->files->get('registration_form')['avatar'];
+
+        if (isset($file)) {
+            $uploads_directory = $this->getParameter('uploads_directory');
+            $filename = md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $uploads_directory,
+                $filename
+            );
+            $user->setAvatar($filename);
+        }
+        $user->setPassword(
+            $passwordEncoder->encodePassword(
+                $user,
+                $updateForm->get('plainPassword')->getData()
+            )
+        );
+
+        $id = $user->getAddedBy();
+        if ($id == 0){
+            $user->setRoles(array('ROLE_MANAGER'));
+        } else {
+            $user->setRoles(array('ROLE_USER'));
+        }
+
+        $entityManager->persist($user);
+        $entityManager->flush();
     }
 
     /**
