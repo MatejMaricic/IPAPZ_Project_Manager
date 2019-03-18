@@ -8,12 +8,6 @@
 
     <div class="container-fluid">
         <div class="row">
-            {{ form_start(searchForm) }}
-            {{ form_row(searchForm.project) }}
-            {{ form_row(searchForm.date) }}
-            <button type="submit" class="btn btn-primary">Edit</button>
-            {{ form_end(searchForm) }}
-
             <div class="col-9">
                 <h1>Commits For This User</h1>
 
@@ -53,7 +47,6 @@
                     {% endfor %}
                     </tbody>
                 </table>
-                <h4>Total Time Spent By This User: {{ total }} Hours</h4>
             </div>
         </div>
         <hr>

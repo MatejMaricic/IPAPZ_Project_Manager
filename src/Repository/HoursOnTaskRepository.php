@@ -37,6 +37,22 @@ class HoursOnTaskRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByCriteria($project, $date)
+    {
+        return $this->createQueryBuilder('h')
+            ->select('h')
+            ->innerJoin('h.project', 'u')
+            ->andWhere('u.id = :project')
+            ->andWhere('h.addedAt <= :date')
+            ->setParameter('project', $project->getId())
+            ->setParameter('date', $date)
+            ->orderBy('h.id', 'ASC')
+            ->setMaxResults(60)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     /**
      * @return HoursOnTask[] Returns an array of HoursOnTask objects
      */

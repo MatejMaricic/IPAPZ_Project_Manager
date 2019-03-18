@@ -298,10 +298,12 @@ class IndexController extends AbstractController
      * @Route("/project_hours/{id}", name="project_hours")
      * @param HoursOnTaskRepository $hoursOnTaskRepository
      * @param Project $project
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
      * @return Response $response
      */
 
-    public function projectHoursManagement(HoursOnTaskRepository $hoursOnTaskRepository, Project $project)
+    public function projectHoursManagement(HoursOnTaskRepository $hoursOnTaskRepository, Project $project, Request $request, EntityManagerInterface $entityManager)
     {
         $total = 0;
         $id = $project->getId();
@@ -319,18 +321,40 @@ class IndexController extends AbstractController
         ]);
     }
 
+    private function findHoursByCriteria($searchForm, $hoursOnTaskRepository)
+    {
+         $data = $searchForm->getData();
+         $project = $data['project'];
+         $date = $data['date'];
+
+         $hoursForUser = $hoursOnTaskRepository->findByCriteria($project,$date);
+
+        return $hoursForUser;
+    }
+
     /**
      * @Route("/user_hours/{id}", name="user_hours")
      * @param HoursOnTaskRepository $hoursOnTaskRepository
      * @param User $user
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
      * @return Response $response
      */
-    public function userHoursManagement(HoursOnTaskRepository $hoursOnTaskRepository, User $user)
+    public function userHoursManagement(HoursOnTaskRepository $hoursOnTaskRepository, User $user, EntityManagerInterface $entityManager, Request $request)
     {
         $total = 0;
         $id = $user->getId();
         $hoursForUser = $hoursOnTaskRepository->findHoursByUser($id);
         $searchForm = $this->createForm(SearchHoursFormType::class, $data = null, array('user' => $user));
+
+
+        $searchForm->handleRequest($request);
+        if ($this->isGranted('ROLE_MANAGER') && $searchForm->isSubmitted() && $searchForm->isValid()) {
+            $hoursForUser = $this->findHoursByCriteria( $searchForm, $hoursOnTaskRepository);
+
+        }
+
+
 
         foreach ($hoursForUser as $singleCommit){
             $total += $singleCommit->getHours();

@@ -22,18 +22,19 @@
     <button class="navbar-toggler" type="button" data-target="">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse">
+    <div class="collapse navbar-collapse">}
         <ul class="navbar-nav">
             <li class="nav-item active">
                 <a href="{{ path('index_page') }}" class="nav-link">Home</a>
             </li>
         </ul>
+        {% if app.user %}
         {% block taskNav %}{% endblock %}
         {% block projectNav %}{% endblock %}
         {% block indexNav %}{% endblock %}
         <form class="form-inline my-2 my-lg-0 ">
             <ul class="navbar-nav float-sm-right top-menu">
-                {% if app.user %}
+
                     <li><a class="btn btn-danger" href="{{ path('app_logout') }}">Logout</a></li>
                 {% endif %}
             </ul>
