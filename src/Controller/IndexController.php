@@ -17,6 +17,8 @@ use App\Form\ProjectFormType;
 use App\Form\SearchHoursFormType;
 use App\Repository\HoursOnTaskRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\SubscriptionsRepository;
+use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -33,6 +35,40 @@ use Dompdf\Options;
 
 class IndexController extends AbstractController
 {
+
+    /**
+     * @Route("/email", name="email")
+     * @param Project $project
+     * @param EntityManagerInterface $entityManager
+     * @param \Swift_Mailer $mailer
+     * @param TaskRepository $taskRepository
+     * @param SubscriptionsRepository $subscriptionsRepository
+     * @return Response
+     */
+    public function mail(\Swift_Mailer $mailer, TaskRepository $taskRepository, SubscriptionsRepository $subscriptionsRepository)
+    {
+        $tasks = $taskRepository->findAll();
+
+        foreach ($tasks as $task)
+        {
+            $subscribers = $subscriptionsRepository->findByTask($task->getId());
+
+            foreach ($subscribers as $subscriber){
+                $message = (new \Swift_Message('Hello Email'))
+                    ->setFrom('send@example.com')
+                    ->setTo($subscriber->getUserEmail())
+                    ->setBody(
+                        $this->renderView('test.html.twig', [
+                            'task'=> $task
+                        ])
+                    );
+                $mailer->send($message);
+
+            }
+        }
+
+        return $this->redirectToRoute( 'index_page' );
+    }
 
 
     private function newProject(Request $request, EntityManagerInterface $entityManager, $projectForm)
