@@ -12,6 +12,7 @@ use App\Entity\HoursOnTask;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Form\AddHoursFormType;
+use App\Form\DatePickerFormType;
 use App\Form\ProjectFormType;
 use App\Form\SearchHoursFormType;
 use App\Repository\HoursOnTaskRepository;
@@ -312,11 +313,19 @@ class IndexController extends AbstractController
         $id = $project->getId();
         $hoursOnProject = $hoursOnTaskRepository->findHoursByProject($id);
         $export = $request->get('value');
-        foreach ($hoursOnProject as $singleCommit){
-            $total += $singleCommit->getHours();
+        $dateForm = $this->createForm(DatePickerFormType::class);
+
+        $dateForm->handleRequest($request);
+        if ($this->isGranted('ROLE_MANAGER') && $dateForm->isSubmitted() && $dateForm->isValid()) {
+            $hoursOnProject = $this->findHoursByDate( $dateForm, $hoursOnTaskRepository, $project);
+
         }
 
 
+
+        foreach ($hoursOnProject as $singleCommit){
+            $total += $singleCommit->getHours();
+        }
 
         if ($export == 1){
             $pdfOptions = new Options();
@@ -340,14 +349,12 @@ class IndexController extends AbstractController
         }
 
 
-
-
-
         return $this->render('project_hours.html.twig', [
            'user' => $this->getUser(),
            'hoursOnProject' => $hoursOnProject,
             'project' => $project,
-            'total' => $total
+            'total' => $total,
+            'dateForm' => $dateForm->createView()
         ]);
     }
 
@@ -361,6 +368,17 @@ class IndexController extends AbstractController
 
         return $hoursForUser;
     }
+
+    private function findHoursByDate($dateForm, $hoursOnTaskRepository, $project)
+    {
+        $data = $dateForm->getData();
+        $date = $data['date'];
+
+        $hoursForUser = $hoursOnTaskRepository->findByDate($date, $project);
+
+        return $hoursForUser;
+    }
+
 
     /**
      * @Route("/user_hours/{id}", name="user_hours")

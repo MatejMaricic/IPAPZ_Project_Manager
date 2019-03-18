@@ -14,6 +14,10 @@ Project Hours Management
 
     <div class="container-fluid">
         <div class="row">
+            {{ form_start(dateForm) }}
+            {{ form_widget(dateForm.date.day, { 'attr': { 'style': 'display:none' }} )}}
+            <button type="submit" class="btn btn-primary">Find</button>
+            {{ form_end(dateForm) }}
 
             <div class="col-9">
                 <h1>Commits on this project</h1>
