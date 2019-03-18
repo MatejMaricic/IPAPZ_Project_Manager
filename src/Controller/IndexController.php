@@ -18,6 +18,7 @@ use App\Repository\HoursOnTaskRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +26,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\RegistrationFormType;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 
 class IndexController extends AbstractController
@@ -295,7 +298,7 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/project_hours/{id}", name="project_hours")
+     * @Route("/project_hours/{id}/{value}", defaults={"value" = 0}, name="project_hours", methods={"POST", "GET"})
      * @param HoursOnTaskRepository $hoursOnTaskRepository
      * @param Project $project
      * @param Request $request
@@ -308,10 +311,37 @@ class IndexController extends AbstractController
         $total = 0;
         $id = $project->getId();
         $hoursOnProject = $hoursOnTaskRepository->findHoursByProject($id);
-
+        $export = $request->get('value');
         foreach ($hoursOnProject as $singleCommit){
             $total += $singleCommit->getHours();
         }
+
+
+
+        if ($export == 1){
+            $pdfOptions = new Options();
+            $pdfOptions->set('defaultFont', 'Arial');
+
+            $dompdf = new Dompdf($pdfOptions);
+            $html = $this->renderView('export_for_project.html.twig', [
+                'title' => "Welcome to our PDF Test",
+                'user' => $this->getUser(),
+                'hoursOnProject' => $hoursOnProject,
+                'project' => $project,
+                'total' => $total
+            ]);
+
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $dompdf->stream("{$project->getName()}.pdf", [
+                "Attachment" => true
+            ]);
+        }
+
+
+
+
 
         return $this->render('project_hours.html.twig', [
            'user' => $this->getUser(),
