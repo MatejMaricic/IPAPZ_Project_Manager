@@ -43,28 +43,38 @@ class IndexController extends AbstractController
      * @param \Swift_Mailer $mailer
      * @param TaskRepository $taskRepository
      * @param SubscriptionsRepository $subscriptionsRepository
+     * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function mail(\Swift_Mailer $mailer, TaskRepository $taskRepository, SubscriptionsRepository $subscriptionsRepository)
+    public function mail(\Swift_Mailer $mailer, TaskRepository $taskRepository, SubscriptionsRepository $subscriptionsRepository, EntityManagerInterface $entityManager)
     {
         $tasks = $taskRepository->findAll();
 
         foreach ($tasks as $task)
         {
-            $subscribers = $subscriptionsRepository->findByTask($task->getId());
+            if ($task->getUpdated() == true){
 
-            foreach ($subscribers as $subscriber){
-                $message = (new \Swift_Message('Hello Email'))
-                    ->setFrom('send@example.com')
-                    ->setTo($subscriber->getUserEmail())
-                    ->setBody(
-                        $this->renderView('test.html.twig', [
-                            'task'=> $task
-                        ])
-                    );
-                $mailer->send($message);
+                $subscribers = $subscriptionsRepository->findByTask($task->getId());
+
+                foreach ($subscribers as $subscriber){
+                    $message = (new \Swift_Message('Hello Email'))
+                        ->setFrom('send@example.com')
+                        ->setTo($subscriber->getUserEmail())
+                        ->setBody(
+                            $this->renderView('test.html.twig', [
+                                'task'=> $task
+                            ])
+                        );
+                    $mailer->send($message);
+                    $task->setUpdated(false);
+                    $entityManager->persist($task);
+                    $entityManager->flush();
+
+
+                }
 
             }
+
         }
 
         return $this->redirectToRoute( 'index_page' );

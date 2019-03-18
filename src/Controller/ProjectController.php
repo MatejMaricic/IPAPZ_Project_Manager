@@ -224,10 +224,12 @@ class ProjectController extends AbstractController
             $comments->setImages($images);
 
         }
+        $task->setUpdated(true);
         $comments->setUser($this->getUser());
         $comments->setTask($task);
         $entityManager->persist($comments);
-        $entityManager->flush($comments);
+        $entityManager->persist($task);
+        $entityManager->flush();
 
     }
 

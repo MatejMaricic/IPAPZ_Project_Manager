@@ -93,6 +93,11 @@ class Task
      */
     private $totalHours;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $updated;
+
 
 
 
@@ -372,6 +377,18 @@ class Task
     public function setTotalHours(?int $totalHours): self
     {
         $this->totalHours = $totalHours;
+
+        return $this;
+    }
+
+    public function getUpdated(): ?bool
+    {
+        return $this->updated;
+    }
+
+    public function setUpdated(?bool $updated): self
+    {
+        $this->updated = $updated;
 
         return $this;
     }
