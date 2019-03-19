@@ -67,6 +67,11 @@ class Project
      */
     private $hoursOnTasks;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Collaboration", inversedBy="projects")
+     */
+    private $collaboration;
+
 
 
     public function __construct()
@@ -293,6 +298,18 @@ class Project
                 $hoursOnTask->setProject(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCollaboration(): ?Collaboration
+    {
+        return $this->collaboration;
+    }
+
+    public function setCollaboration(?Collaboration $collaboration): self
+    {
+        $this->collaboration = $collaboration;
 
         return $this;
     }

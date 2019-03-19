@@ -88,6 +88,11 @@ class User implements UserInterface
      */
     private $hoursOnTasks;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Collaboration", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $collaboration;
+
 
 
     public function __construct()
@@ -381,6 +386,23 @@ class User implements UserInterface
             if ($hoursOnTask->getUser() === $this) {
                 $hoursOnTask->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getCollaboration(): ?Collaboration
+    {
+        return $this->collaboration;
+    }
+
+    public function setCollaboration(Collaboration $collaboration): self
+    {
+        $this->collaboration = $collaboration;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $collaboration->getUser()) {
+            $collaboration->setUser($this);
         }
 
         return $this;

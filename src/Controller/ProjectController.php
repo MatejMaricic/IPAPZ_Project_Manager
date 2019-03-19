@@ -173,16 +173,14 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/completed_projects/{id}", name="completed_projects")
-     * @param Project $project
+     * @Route("/completed_projects/", name="completed_projects")
      * @return Response
      */
 
-    public function completedProjectsView(Project $project)
+    public function completedProjectsView()
     {
         return $this->render('project/completed_projects.html.twig', [
             'user' => $this->getUser(),
-            'project' => $project
 
         ]);
     }
