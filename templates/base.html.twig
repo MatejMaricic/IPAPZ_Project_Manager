@@ -33,6 +33,7 @@
         {% block projectNav %}{% endblock %}
         {% block indexNav %}{% endblock %}
         {% block singleDiscussionNav %}{% endblock %}
+        {% block userHoursNav %}{% endblock %}
         <form class="form-inline my-2 my-lg-0 ">
             <ul class="navbar-nav float-sm-right top-menu">
 
@@ -74,6 +75,8 @@
                                 {% block projectSidebar %}{% endblock %}
                                 {% block indexSidebar %}{% endblock %}
                                 {% block taskSidebar %}{% endblock %}
+                                {% block userHoursSidebar %}{% endblock %}
+                                {% block projectHoursSidebar %}{% endblock %}
                             {% endif %}
                             {% if is_granted("ROLE_USER") %}
                                 {% block myTasks %}{% endblock %}

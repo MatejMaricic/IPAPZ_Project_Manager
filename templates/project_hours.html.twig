@@ -6,6 +6,9 @@
         </li>
     </ul>
 {% endblock %}
+{% block projectHoursSidebar %}
+    <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#findByMonthForm">Find By Month</a></li>
+{% endblock %}
 {% block title %}
 Project Hours Management
 {% endblock %}
@@ -14,10 +17,6 @@ Project Hours Management
 
     <div class="container-fluid">
         <div class="row">
-            {{ form_start(dateForm) }}
-            {{ form_widget(dateForm.date.day, { 'attr': { 'style': 'display:none' }} )}}
-            <button type="submit" class="btn btn-primary">Find</button>
-            {{ form_end(dateForm) }}
 
             <div class="col-9">
                 <h1>Commits on this project</h1>
@@ -62,5 +61,36 @@ Project Hours Management
                     </div>
                     <hr>
             </div>
+
+    <div class="modal fade" id="findByMonthForm" tabindex="-1" role="dialog" aria-labelledby="findByMonthFormTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                {{ form_start(dateForm) }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Find Commits for this project by month</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col">
+                                {{ form_widget(dateForm.date.year, {'attr':{class: 'form-control'}}) }}
+                                {{ form_widget(dateForm.date.month, {'attr':{class: 'form-control'}}) }}
+                                {{ form_widget(dateForm.date.day, { 'attr': { 'style': 'display:none' }} )}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Find</button>
+                </div>
+                {{ form_end(dateForm) }}
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

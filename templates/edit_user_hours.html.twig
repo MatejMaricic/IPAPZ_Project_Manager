@@ -6,7 +6,11 @@ Edit user hours
 {% block body %}
 
 {{ form_start(editHoursForm) }}
+    {{ form_row(editHoursForm.hours, {'attr':{class: 'form-control'}}) }}
+    {{ form_row(editHoursForm.billable, {'attr':{class: 'form-control'}}) }}
+    {{ form_row(editHoursForm.message, {'attr':{class: 'comment'}}) }}
     <button type="submit" class="btn btn-primary">Edit</button>
     {{ form_end(editHoursForm) }}
-test
+
 {% endblock %}
+
