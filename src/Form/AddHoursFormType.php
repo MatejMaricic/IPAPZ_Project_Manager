@@ -23,7 +23,9 @@ class AddHoursFormType extends AbstractType
     {
         $builder
             ->add('hours', IntegerType::class)
-            ->add('message', TextareaType::class)
+            ->add('message', TextareaType::class, [
+                'required' => false,
+            ])
             ->add('billable', ChoiceType::class,[
                 'choices'  => [
                     'Billable' => true,
