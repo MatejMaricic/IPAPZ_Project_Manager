@@ -42,43 +42,17 @@ class ProjectController extends AbstractController
         $devs = $userRepository->devsOnProject($project->getId());
 
         $devForm = $this->createForm(AssignDevFormType::class, $data = null, array("id" => $this->getUser()->getId()));
-        $taskForm = $this->createForm(TaskFormType::class, $data = null, array("project_id" => $project->getId()));
-        $statusForm = $this->createForm(ProjectStatusFormType::class);
-        $discussionForm = $this->createForm(DiscussionFormType::class);
 
-        $taskForm->handleRequest($request);
-        if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
-            $this->addTask($request, $entityManager, $project, $taskForm);
-            return $this->redirect($request->getUri());
-        } else {
             $devForm->handleRequest($request);
             if ($this->isGranted('ROLE_MANAGER') && $devForm->isSubmitted() && $devForm->isValid()) {
                 $this->assignDev($project, $entityManager, $devForm);
                 return $this->redirect($request->getUri());
-            } else {
-                $statusForm->handleRequest($request);
-                if ($this->isGranted('ROLE_MANAGER') && $statusForm->isSubmitted() && $statusForm->isValid()) {
-                    $this->newStatus($entityManager, $project, $statusForm);
-                    return $this->redirect($request->getUri());
-
-                } else {
-                    $discussionForm->handleRequest($request);
-                    if ($this->isGranted('ROLE_MANAGER') && $discussionForm->isSubmitted() && $discussionForm->isValid()) {
-                        $this->newDiscussion( $entityManager, $project, $discussionForm);
-                        return $this->redirect($request->getUri());
-
-                    }
-
-                }
             }
-        }
+
         return $this->render('project/project.html.twig', [
-            'taskForm' => $taskForm->createView(),
             'user' => $this->getUser(),
             'project' => $project,
             'devForm' => $devForm->createView(),
-            'statusForm' => $statusForm->createView(),
-            'discussionForm' => $discussionForm->createView(),
             'devs' => $devs
         ]);
 
@@ -92,46 +66,6 @@ class ProjectController extends AbstractController
     }
 
 
-    private function addTask(Request $request, EntityManagerInterface $entityManager, Project $project, $taskForm)
-    {
-
-        /**@var Task $task */
-        $task = $taskForm->getData();
-        $files = $request->files->get('task_form')['images'];
-
-        if (!empty($files)) {
-
-            foreach ($files as $file) {
-                $uploads_directory = $this->getParameter('uploads_directory');
-                $filename = md5(uniqid()) . '.' . $file->guessExtension();
-                $file->move(
-                    $uploads_directory,
-                    $filename
-
-                );
-                $images[] = $filename;
-            }
-            $task->setImages($images);
-
-        }
-
-        $task->setProject($project);
-        $task->setCompleted(false);
-        $entityManager->persist($task);
-        $entityManager->flush();
-
-    }
-
-
-    private function newStatus(EntityManagerInterface $entityManager, Project $project, $statusForm)
-    {
-        $status = $statusForm->getData();
-        $project->addProjectStatus($status);
-        $entityManager->persist($project);
-        $entityManager->flush();
-
-    }
-
     private function assignDev(Project $project, EntityManagerInterface $entityManager, $devForm)
     {
         $user = $devForm->getData();
@@ -142,17 +76,6 @@ class ProjectController extends AbstractController
         }
         $entityManager->persist($project);
         $entityManager->flush();
-    }
-
-    private function newDiscussion(EntityManagerInterface $entityManager, Project $project, $discussionForm)
-    {
-        $discussion = $discussionForm->getData();
-        $discussion->setProject($project);
-        $discussion->setCreatedBy($this->getUser()->getFullName());
-
-        $entityManager->persist($discussion);
-        $entityManager->flush();
-
     }
 
 

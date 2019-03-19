@@ -1,12 +1,9 @@
 {% extends 'base.html.twig' %}
-{% block projectSidebar %}
-    <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#taskForm">Add Task</a></li>
-    <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#assignDevForm">Assign Developer</a></li>
-    <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#addStatusForm">Add New Status</a></li>
-    <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#addDiscussionForm">Add New Discussion</a></li>
-{% endblock %}
 {% block myTasks %}
     <li><i class="fa fa-folder"></i><a href="{{ path('my_tasks', {'id': project.id}) }}">My Tasks</a></li>
+{% endblock %}
+{% block projectSidebar %}
+    <li><i class="fa fa-users"></i><a href="#" data-toggle="modal" data-target="#assignDevForm">Assign Developer</a></li>
 {% endblock %}
 {% block title %}
     Project page
@@ -16,53 +13,43 @@
 
     <div class="container-fluid">
 
+        <div class="row">
+            <div class="col-6">
+                <div class="card text-white bg-info mb-5">
+                    <span class="project-icon text-center"><i class="fa fa-tasks"></i></span>
+                    <div class="card-body">
+                        <h2 class="card-title">Tasks</h2>
 
-        <a href="{{ path('project_discussions', {'id': project.id}) }}" >
-        Show all Discussions for this project
-        </a>
-        <br>
+                        <p class="card-text"> <h3>Show all Tasks for this project</h3> </p>
 
-        <a href="{{ path('project_tasks', {'id': project.id}) }}" >
-            Show all Tasks for this project
-        </a>
-    </div>
+                        <a href="{{ path('project_tasks', {'id': project.id}) }}" class="btn btn-success">
+                            Open
+                        </a>
 
-
-
-
-    <div class="modal fade" id="taskForm" tabindex="-1" role="dialog" aria-labelledby="projectFormTitle"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-            <div class="modal-content">
-                {{ form_start(taskForm) }}
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Task</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col">
-                                {{ form_row(taskForm.name, {'attr':{class: 'form-control'}}) }}
-                                {{ form_row(taskForm.content, {'attr':{class: 'form-control'}}) }}
-                                {{ form_row(taskForm.status, {'attr':{class: 'form-control'}}) }}
-                                {{ form_row(taskForm.priority, {'attr':{class: 'form-control'}}) }}
-                                {{ form_row(taskForm.images, {'attr':{class: 'form-control'}}) }}
-                                {{ form_row(taskForm.estimate, {'attr':{class: 'form-control'}}) }}
-                            </div>
-                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Task</button>
-                </div>
-                {{ form_end(taskForm) }}
             </div>
+
+
+            <div class="col-6">
+                <div class="card text-white bg-info mb-5">
+                    <span class="project-icon text-center"><i class="fa fa-tasks"></i></span>
+                    <div class="card-body">
+                        <h2 class="card-title">Discussions</h2>
+
+                        <p class="card-text"><h3>Show all Discussions for this project</h3> </p>
+
+                        <a href="{{ path('project_discussions', {'id': project.id}) }} " class="btn btn-success">
+                            Open
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+
 
     <div class="modal fade" id="assignDevForm" tabindex="-1" role="dialog" aria-labelledby="devFormTitle"
          aria-hidden="true">
@@ -95,71 +82,6 @@
 
                 </div>
                 {{ form_end(devForm) }}
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="addStatusForm" tabindex="-1" role="dialog" aria-labelledby="devFormTitle"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Status</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col">
-                                {{ form_start(statusForm) }}
-                                Status title:
-                                {{ form_row(statusForm.name) }}
-                                {{ form_row(statusForm._token) }}
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Status</button>
-
-                </div>
-                {{ form_end(statusForm) }}
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="addDiscussionForm" tabindex="-1" role="dialog" aria-labelledby="discussionFormTitle"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Discussion</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col">
-                                {{ form_start(discussionForm) }}
-                                {{ form_row(discussionForm.name) }}
-                                {{ form_row(discussionForm.content) }}
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Discussion</button>
-
-                </div>
-                {{ form_end(discussionForm) }}
             </div>
         </div>
     </div>

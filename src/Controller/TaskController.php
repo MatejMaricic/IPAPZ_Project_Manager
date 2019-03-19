@@ -202,7 +202,7 @@ class TaskController extends AbstractController
         $entityManager->persist($task);
         $entityManager->flush();
 
-        return $this->redirectToRoute('project_view', array('id' => $projectId));
+        return $this->redirectToRoute('project_tasks', array('id' => $projectId));
 
     }
 
@@ -251,17 +251,76 @@ class TaskController extends AbstractController
      * @Route("/project_tasks/{id}", name="project_tasks", methods={"POST", "GET"})
      * @param Project $project
      * @param UserRepository $userRepository
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function showTasks(Project $project, UserRepository $userRepository)
+    public function showTasks(Project $project, UserRepository $userRepository, Request $request, EntityManagerInterface $entityManager)
     {
         $devs = $userRepository->devsOnProject($project->getId());
+        $taskForm = $this->createForm(TaskFormType::class, $data = null, array("project_id" => $project->getId()));
+        $statusForm = $this->createForm(ProjectStatusFormType::class);
+
+        $taskForm->handleRequest($request);
+        if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
+            $this->addTask($request, $entityManager, $project, $taskForm);
+            return $this->redirect($request->getUri());
+        } else {
+            $statusForm->handleRequest($request);
+            if ($this->isGranted('ROLE_MANAGER') && $statusForm->isSubmitted() && $statusForm->isValid()) {
+                $this->newStatus($entityManager, $project, $statusForm);
+                return $this->redirect($request->getUri());
+
+            }
+        }
+
         return $this->render('project/project_tasks.html.twig', [
             'project' => $project,
             'user' => $this->getUser(),
-            'devs' => $devs
+            'devs' => $devs,
+            'taskForm' => $taskForm->createView(),
+            'statusForm' => $statusForm->createView(),
 
         ]);
+    }
+
+    private function addTask(Request $request, EntityManagerInterface $entityManager, Project $project, $taskForm)
+    {
+
+        /**@var Task $task */
+        $task = $taskForm->getData();
+        $files = $request->files->get('task_form')['images'];
+
+        if (!empty($files)) {
+
+            foreach ($files as $file) {
+                $uploads_directory = $this->getParameter('uploads_directory');
+                $filename = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move(
+                    $uploads_directory,
+                    $filename
+
+                );
+                $images[] = $filename;
+            }
+            $task->setImages($images);
+
+        }
+
+        $task->setProject($project);
+        $task->setCompleted(false);
+        $entityManager->persist($task);
+        $entityManager->flush();
+
+    }
+
+    private function newStatus(EntityManagerInterface $entityManager, Project $project, $statusForm)
+    {
+        $status = $statusForm->getData();
+        $project->addProjectStatus($status);
+        $entityManager->persist($project);
+        $entityManager->flush();
+
     }
 
     /**
@@ -277,7 +336,7 @@ class TaskController extends AbstractController
         $taskForm->handleRequest($request);
         if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
             $this->editTask( $entityManager, $task, $taskForm);
-            return $this->redirectToRoute('index_page');
+            return $this->redirectToRoute('project_tasks',  array('id' => $task->getProject()->getId()));
         }
 
 

@@ -9,18 +9,50 @@
       <div class="row">
          <div class="col-md-6">
             <h3>Projects</h3>
-            {% for project in projects %}
-              <a href="{{ path('project_hours', {'id':project.id}) }}"> {{ project.name }}</a>
+            <table class="table table-hover table-sm">
+               <thead>
+               <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Project Name</th>
+                  <th scope="col">Created At</th>
+                  <th scope="col">Deadline</th>
+               </tr>
+               </thead>
 
-            {% endfor %}
+               <tbody>
+               {% for project in projects %}
+                  <tr>
+               <td>{{ project.id }}</td>
+               <td> <a href="{{ path('project_hours', {'id':project.id}) }}"> {{ project.name }}</a></td>
+                  <td>{{ project.createdAt|date }}</td>
+               <td>{{ project.deadline|date }}</td>
+                  </tr>
+               {% endfor %}
+               </tbody>
+            </table>
 
          </div>
          <div class="col-md-6">
             <h3>Developers</h3>
-            {% for developer in developers %}
-               <a href="{{ path('user_hours', {'id':developer.id}) }}"> {{ developer.fullname }}</a>
+            <table class="table table-hover table-sm">
+               <thead>
+               <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Developer Name</th>
+                  <th scope="col">Developer Email</th>
+               </tr>
+               </thead>
 
-            {% endfor %}
+               <tbody>
+               {% for developer in developers %}
+                  <tr>
+                     <td>{{ developer.id }}</td>
+                     <td> <a href="{{ path('user_hours', {'id':developer.id}) }}"> {{ developer.fullname }}</a></td>
+                     <td>{{ developer.email }}</td>
+                  </tr>
+               {% endfor %}
+               </tbody>
+            </table>
 
          </div>
       </div>

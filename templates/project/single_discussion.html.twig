@@ -1,14 +1,28 @@
 {% extends 'base.html.twig' %}
+{% block singleDiscussionNav %}
+    <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a href="{{ path('project_view', {'id': project.id}) }}" class="nav-link">Back To Project</a>
+        </li>
+        <li class="nav-item active">
+            <a href="{{ path('subscribe_to_discussion', {'id':discussion.id}) }}" class="nav-link">Subscribe</a>
+        </li>
+        <li class="nav-item active">
+            <a href="#" data-toggle="modal" data-target="#convertToTask"  class="nav-link">Convert To Task</a>
+        </li>
+    </ul>
 
+
+{% endblock %}
 {% block title %}
     Discussion page
 {% endblock %}
 {% block body %}
 
     <div class="container-fluid">
-        <a href="{{ path('subscribe_to_discussion', {'id':discussion.id}) }}" class="nav-link">Subscribe</a>
 
-        <a href="#" data-toggle="modal" data-target="#convertToTask">Convert To Task</a>
+
+
         <div class="row">
             <div class="col-9">
                 <div class="card border-dark">
