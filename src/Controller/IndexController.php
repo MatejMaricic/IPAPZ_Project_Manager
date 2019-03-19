@@ -15,6 +15,7 @@ use App\Form\AddHoursFormType;
 use App\Form\DatePickerFormType;
 use App\Form\ProjectFormType;
 use App\Form\SearchHoursFormType;
+use App\Repository\CollaborationRepository;
 use App\Repository\HoursOnTaskRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
@@ -40,11 +41,12 @@ class IndexController extends AbstractController
      * @param ProjectRepository $projectRepository
      * @param UserRepository $userRepository
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param CollaborationRepository $collaborationRepository
      * @return Response
      */
-    public function indexHandler(Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder)
+    public function indexHandler(Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder, CollaborationRepository $collaborationRepository)
     {
-
+        $pending = $collaborationRepository->findByPending(true);
         $projectForm = $this->createForm(ProjectFormType::class);
         $devForm = $this->createForm(RegistrationFormType::class);
 
@@ -65,7 +67,8 @@ class IndexController extends AbstractController
                 'projects' => $projectRepository->findAll(),
                 'user' => $this->getUser(),
                 'users' => $userRepository->findAllDevelopersArray(),
-                'form' => $devForm->createView()
+                'form' => $devForm->createView(),
+                'pending' => $pending
 
             ]);
         }

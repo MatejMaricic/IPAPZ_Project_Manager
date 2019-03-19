@@ -32,6 +32,19 @@ class ProjectRepository extends ServiceEntityRepository
 
         ;
     }
+    public function findByUser($id)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->innerJoin('p.users', 'u')
+            ->andWhere('u.id = :val')
+            ->setParameter('val', $id)
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
     /*
     public function findOneBySomeField($value): ?project

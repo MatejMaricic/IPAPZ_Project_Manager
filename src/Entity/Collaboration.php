@@ -44,6 +44,16 @@ class Collaboration
      */
     private $projects;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $pending;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $approved;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
@@ -129,6 +139,30 @@ class Collaboration
                 $project->setCollaboration(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPending(): ?bool
+    {
+        return $this->pending;
+    }
+
+    public function setPending(bool $pending): self
+    {
+        $this->pending = $pending;
+
+        return $this;
+    }
+
+    public function getApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(bool $approved): self
+    {
+        $this->approved = $approved;
 
         return $this;
     }
