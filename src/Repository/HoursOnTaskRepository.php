@@ -37,15 +37,17 @@ class HoursOnTaskRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findByCriteria($project, $date)
+    public function findByCriteria($project, $date, $billable)
     {
         return $this->createQueryBuilder('h')
             ->select('h')
             ->innerJoin('h.project', 'u')
             ->andWhere('u.id = :project')
             ->andWhere('h.addedAt <= :date')
+            ->andWhere('h.billable = :billable')
             ->setParameter('project', $project->getId())
             ->setParameter('date', $date)
+            ->setParameter('billable', $billable)
             ->orderBy('h.id', 'ASC')
             ->setMaxResults(60)
             ->getQuery()

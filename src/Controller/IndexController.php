@@ -274,8 +274,9 @@ class IndexController extends AbstractController
          $data = $searchForm->getData();
          $project = $data['project'];
          $date = $data['date'];
+         $billable = $data['billable'];
 
-         $hoursForUser = $hoursOnTaskRepository->findByCriteria($project,$date);
+         $hoursForUser = $hoursOnTaskRepository->findByCriteria($project,$date,$billable);
 
         return $hoursForUser;
     }
