@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a514df7d-3dc8-424a-b05f-18139b802102" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/Form/AddHoursFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/AddHoursFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/project/task.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/project/task.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/project_hours.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/project_hours.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/project/project_tasks.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/project/project_tasks.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -64,6 +60,18 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="383">
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Controller/IndexController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2955">
+              <caret line="122" column="51" selection-start-line="122" selection-start-column="51" selection-end-line="122" selection-end-column="51" />
+              <folding>
+                <element signature="e#115#142#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/edit_user_hours.html.twig">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
@@ -72,11 +80,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/project_hours.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="55" column="108" selection-start-line="55" selection-start-column="108" selection-end-line="55" selection-end-column="108" />
+            <state relative-caret-position="375">
+              <caret line="34" column="65" selection-start-line="34" selection-start-column="65" selection-end-line="34" selection-end-column="65" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/project/project_tasks.html.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="41" column="33" selection-start-line="41" selection-start-column="33" selection-end-line="41" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -153,7 +170,6 @@
         <option value="$PROJECT_DIR$/config/packages/swiftmailer.yaml" />
         <option value="$PROJECT_DIR$/config/packages/dev/web_profiler.yaml" />
         <option value="$PROJECT_DIR$/src/Command/CronOnSubscribers.php" />
-        <option value="$PROJECT_DIR$/templates/project/project_tasks.html.twig" />
         <option value="$PROJECT_DIR$/templates/project/project.html.twig" />
         <option value="$PROJECT_DIR$/src/Controller/TaskController.php" />
         <option value="$PROJECT_DIR$/src/Controller/ProjectController.php" />
@@ -168,6 +184,7 @@
         <option value="$PROJECT_DIR$/src/Form/AddHoursFormType.php" />
         <option value="$PROJECT_DIR$/templates/project/task.html.twig" />
         <option value="$PROJECT_DIR$/templates/project_hours.html.twig" />
+        <option value="$PROJECT_DIR$/templates/project/project_tasks.html.twig" />
       </list>
     </option>
   </component>
@@ -297,35 +314,6 @@
             <path>
               <item name="IPAPZ_Project_Manager" type="b2602c69:ProjectViewProjectNode" />
               <item name="IPAPZ_Project_Manager" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="IPAPZ_Project_Manager" type="b2602c69:ProjectViewProjectNode" />
-              <item name="IPAPZ_Project_Manager" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Controller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="IPAPZ_Project_Manager" type="b2602c69:ProjectViewProjectNode" />
-              <item name="IPAPZ_Project_Manager" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Entity" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="IPAPZ_Project_Manager" type="b2602c69:ProjectViewProjectNode" />
-              <item name="IPAPZ_Project_Manager" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Form" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="IPAPZ_Project_Manager" type="b2602c69:ProjectViewProjectNode" />
-              <item name="IPAPZ_Project_Manager" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Repository" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="IPAPZ_Project_Manager" type="b2602c69:ProjectViewProjectNode" />
-              <item name="IPAPZ_Project_Manager" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -333,11 +321,6 @@
               <item name="IPAPZ_Project_Manager" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
               <item name="project" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="IPAPZ_Project_Manager" type="b2602c69:ProjectViewProjectNode" />
-              <item name="IPAPZ_Project_Manager" type="462c0819:PsiDirectoryNode" />
-              <item name="var" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -421,12 +404,12 @@
       <workItem from="1552630732993" duration="19026000" />
       <workItem from="1552889821351" duration="8421000" />
       <workItem from="1552898258445" duration="16490000" />
-      <workItem from="1552976364685" duration="7058000" />
+      <workItem from="1552976364685" duration="8102000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="341550000" />
+    <option name="totallyTimeSpent" value="342594000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -679,13 +662,6 @@
         <state relative-caret-position="-1125" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/project/project_tasks.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="52" selection-start-line="52" selection-end-line="52" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/hours_management.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="415">
@@ -710,16 +686,6 @@
           <caret line="69" column="24" selection-start-line="69" selection-start-column="24" selection-end-line="69" selection-end-column="24" />
           <folding>
             <element signature="e#34#61#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/IndexController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-900">
-          <caret line="122" column="51" selection-start-line="122" selection-start-column="51" selection-end-line="122" selection-end-column="51" />
-          <folding>
-            <element signature="e#115#142#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -783,10 +749,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/IndexController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2955">
+          <caret line="122" column="51" selection-start-line="122" selection-start-column="51" selection-end-line="122" selection-end-column="51" />
+          <folding>
+            <element signature="e#115#142#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/project_hours.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="55" column="108" selection-start-line="55" selection-start-column="108" selection-end-line="55" selection-end-column="108" />
+        <state relative-caret-position="375">
+          <caret line="34" column="65" selection-start-line="34" selection-start-column="65" selection-end-line="34" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/project/project_tasks.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="41" column="33" selection-start-line="41" selection-start-column="33" selection-end-line="41" selection-end-column="33" />
         </state>
       </provider>
     </entry>
