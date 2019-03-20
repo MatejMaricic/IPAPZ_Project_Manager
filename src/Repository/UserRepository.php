@@ -45,6 +45,20 @@ class UserRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+    public function findAllDevelopersForManagerArray($id)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u')
+            ->where('u.roles LIKE :val')
+            ->andWhere('u.addedBy = :id')
+            ->setParameter('val', "%ROLE_USER%")
+            ->setParameter('id', $id)
+            ->orderBy('u.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     public function devsOnProject($id)
     {
         return $this->createQueryBuilder('u')

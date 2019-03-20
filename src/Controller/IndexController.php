@@ -29,6 +29,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\RegistrationFormType;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Braintree_Gateway;
+
 
 
 class IndexController extends AbstractController
@@ -46,6 +48,8 @@ class IndexController extends AbstractController
      */
     public function indexHandler(Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder, CollaborationRepository $collaborationRepository)
     {
+
+
 
         $projectForm = $this->createForm(ProjectFormType::class);
         $devForm = $this->createForm(RegistrationFormType::class);
@@ -66,10 +70,13 @@ class IndexController extends AbstractController
                 $collab= $this->getUser()->getCollaboration()->getSubscribed();
 
                 if ($collab == 0){
+                    $gateway = $this->gateway()->ClientToken()->generate();
+
 
                     return $this->render('payment.html.twig', [
                         'user' => $this->getUser(),
-                        'collab' => $this->getUser()->getCollaboration()
+                        'collab' => $this->getUser()->getCollaboration(),
+                        'gateway' => $gateway
                     ]);
 
                 }
@@ -87,6 +94,18 @@ class IndexController extends AbstractController
         }
 
 
+    }
+
+    private function gateway()
+    {
+        $gateway = new Braintree_Gateway([
+            'environment' => 'sandbox',
+            'merchantId' => 'qmk79j9h7rxpjg8t',
+            'publicKey' => 'pnz7bb5774j2j3n4',
+            'privateKey' => '7c0e8443e507a26409dc23f6ca1afcb6'
+        ]);
+
+        return $gateway;
     }
 
 

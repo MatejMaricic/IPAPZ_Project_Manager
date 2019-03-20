@@ -19,14 +19,9 @@
                     Make a test payment with Braintree using PayPal or a card
             </header>
 
-            <form method="post" id="payment-form" action="{{ path('checkout') }}">
+            <form method="post" id="payment-form" action="{{ path('checkout', {'id': collab.id}) }}">
                 <section>
-                    <label for="amount">
-                        <span class="input-label">Amount</span>
-                        <div class="input-wrapper amount-wrapper">
-                            <input id="amount" name="amount" type="tel" min="1" placeholder="Amount" value="10">
-                        </div>
-                    </label>
+>
 
                     <div class="bt-drop-in-wrapper">
                         <div id="bt-dropin"></div>
@@ -42,7 +37,7 @@
 
     <script>
         var form = document.querySelector('#payment-form');
-        var client_token = "eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJmYmVjY2RjNmU4NThhYTJhYjc3YzRlZWEwNTBlZTFlYzQ1NjE1MWYxOTY2MDFlOTQ5YTc3MjY4OTE0NmFmYWZhfGNyZWF0ZWRfYXQ9MjAxOS0wMy0yMFQxMToxNjo0NC4xNTM0OTczMzcrMDAwMFx1MDAyNm1lcmNoYW50X2lkPXFtazc5ajloN3J4cGpnOHRcdTAwMjZwdWJsaWNfa2V5PXBuejdiYjU3NzRqMmozbjQiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvcW1rNzlqOWg3cnhwamc4dC9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24iLCJncmFwaFFMIjp7InVybCI6Imh0dHBzOi8vcGF5bWVudHMuc2FuZGJveC5icmFpbnRyZWUtYXBpLmNvbS9ncmFwaHFsIiwiZGF0ZSI6IjIwMTgtMDUtMDgifSwiY2hhbGxlbmdlcyI6W10sImVudmlyb25tZW50Ijoic2FuZGJveCIsImNsaWVudEFwaVVybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy9xbWs3OWo5aDdyeHBqZzh0L2NsaWVudF9hcGkiLCJhc3NldHNVcmwiOiJodHRwczovL2Fzc2V0cy5icmFpbnRyZWVnYXRld2F5LmNvbSIsImF1dGhVcmwiOiJodHRwczovL2F1dGgudmVubW8uc2FuZGJveC5icmFpbnRyZWVnYXRld2F5LmNvbSIsImFuYWx5dGljcyI6eyJ1cmwiOiJodHRwczovL29yaWdpbi1hbmFseXRpY3Mtc2FuZC5zYW5kYm94LmJyYWludHJlZS1hcGkuY29tL3Ftazc5ajloN3J4cGpnOHQifSwidGhyZWVEU2VjdXJlRW5hYmxlZCI6dHJ1ZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiTWF0ZWpNYXJpY2ljIiwiY2xpZW50SWQiOiJBWHE0ejJ1X0hfdjU1aDNJQ0o5cFpuSnJLNTI1dXh4MGJvY1NuZzhPVVZaS1JyakZNajFMdk5SUE05T25tRTBiVlhoOURzMm9KSGdRVkdQSiIsInByaXZhY3lVcmwiOiJodHRwOi8vZXhhbXBsZS5jb20vcHAiLCJ1c2VyQWdyZWVtZW50VXJsIjoiaHR0cDovL2V4YW1wbGUuY29tL3RvcyIsImJhc2VVcmwiOiJodHRwczovL2Fzc2V0cy5icmFpbnRyZWVnYXRld2F5LmNvbSIsImFzc2V0c1VybCI6Imh0dHBzOi8vY2hlY2tvdXQucGF5cGFsLmNvbSIsImRpcmVjdEJhc2VVcmwiOm51bGwsImFsbG93SHR0cCI6dHJ1ZSwiZW52aXJvbm1lbnROb05ldHdvcmsiOmZhbHNlLCJlbnZpcm9ubWVudCI6Im9mZmxpbmUiLCJ1bnZldHRlZE1lcmNoYW50IjpmYWxzZSwiYnJhaW50cmVlQ2xpZW50SWQiOiJtYXN0ZXJjbGllbnQzIiwiYmlsbGluZ0FncmVlbWVudHNFbmFibGVkIjp0cnVlLCJtZXJjaGFudEFjY291bnRJZCI6Im1hdGVqbWFyaWNpYyIsImN1cnJlbmN5SXNvQ29kZSI6IkVVUiJ9LCJtZXJjaGFudElkIjoicW1rNzlqOWg3cnhwamc4dCIsInZlbm1vIjoib2ZmIn0=";
+        var client_token = "{{ gateway }}";
         braintree.dropin.create({
             authorization: client_token,
             selector: '#bt-dropin',

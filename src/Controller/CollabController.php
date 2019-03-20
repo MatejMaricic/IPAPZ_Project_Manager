@@ -10,11 +10,10 @@ namespace App\Controller;
 
 
 use App\Entity\Collaboration;
-use App\Entity\User;
-use App\Repository\ProjectRepository;
+use App\Entity\Transactions;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Braintree_Gateway;
@@ -22,33 +21,8 @@ use Braintree_Gateway;
 class CollabController extends AbstractController
 {
 
-    /**
-     * @Route("index/{id}/subscribe_to_collab", name="subscribe_to_collab")
-     * @param EntityManagerInterface $entityManager
-     * @param Collaboration $collaboration
-     * @throws
-     * @return Response
-     */
-    public function subscribeToCollab(EntityManagerInterface $entityManager, Collaboration $collaboration)
-    {
 
-        $token = $this->gateway();
-
-//        $collaboration->setCreatedAt(new \DateTime('now'));
-//        $collaboration->setSubscribedUntil(new \DateTime('now + 1 month'));
-//        $collaboration->setSubscribed(true);
-//
-//        $entityManager->persist($collaboration);
-//        $entityManager->flush();
-
-        return $this->redirectToRoute('index_page');
-    }
-
-    /**
-     * @Route("get_token", name ="get_token")
-     * @return string
-     */
-    public function gateway()
+    private function gateway()
     {
         $gateway = new Braintree_Gateway([
             'environment' => 'sandbox',
@@ -57,16 +31,23 @@ class CollabController extends AbstractController
             'privateKey' => '7c0e8443e507a26409dc23f6ca1afcb6'
         ]);
 
-         return $gateway;
+        return $gateway;
     }
 
+
     /**
-     * @Route("checkout", name = "checkout")
+     * @Route("checkout/{id}", name = "checkout")
+     * @param Collaboration $collaboration
+     * @param EntityManagerInterface $entityManager
+     * @param UserRepository $userRepository
+     * @throws
+     * @return Response
      */
-    public function checkout()
+    public function checkout(Collaboration $collaboration, EntityManagerInterface $entityManager, UserRepository $userRepository)
     {
 
-        $amount = $_POST["amount"];
+
+        $amount = $this->subscriptionAmount($collaboration, $entityManager, $userRepository);
         $nonce = $_POST["payment_method_nonce"];
         $result = $this->gateway()->transaction()->sale([
             'amount' => $amount,
@@ -77,14 +58,36 @@ class CollabController extends AbstractController
         ]);
         if ($result->success || !is_null($result->transaction)) {
             $transaction = $result->transaction;
-            header("Location: " . $baseUrl . "transaction.php?id=" . $transaction->id);
+
+            $collaboration->setSubscribed(true);
+            $transactions = new Transactions();
+            $transactions->setAmount($amount);
+            $transactions->setTransactionId($transaction->id);
+            $transactions->setBoughtAt(new \DateTime('now'));
+            $transactions->setBuyerEmail($collaboration->getUser()->getEmail());
+            $transactions->setCurrency('€');
+
+            $entityManager->persist($transactions);
+            $entityManager->persist($collaboration);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('index_page');
         } else {
             $errorString = "";
             foreach ($result->errors->deepAll() as $error) {
                 $errorString .= 'Error: ' . $error->code . ": " . $error->message . "\n";
             }
             $_SESSION["errors"] = $errorString;
-            header("Location: " . $baseUrl . "index.php");
+            return $this->redirectToRoute('index_page');
         }
+    }
+
+    public function subscriptionAmount(Collaboration $collaboration, EntityManagerInterface $entityManager, UserRepository $userRepository)
+    {
+        $user = $collaboration->getUser();
+        $devs = $userRepository->findAllDevelopersForManagerArray($user->getId());
+        $numOfDevs = count($devs);
+
+       return $amount = ($numOfDevs * 5) + 5;
     }
 }
