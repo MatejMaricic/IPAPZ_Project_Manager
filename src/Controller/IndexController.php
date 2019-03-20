@@ -46,7 +46,7 @@ class IndexController extends AbstractController
      */
     public function indexHandler(Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder, CollaborationRepository $collaborationRepository)
     {
-        $pending = $collaborationRepository->findByPending(true);
+
         $projectForm = $this->createForm(ProjectFormType::class);
         $devForm = $this->createForm(RegistrationFormType::class);
 
@@ -81,7 +81,7 @@ class IndexController extends AbstractController
                 'user' => $this->getUser(),
                 'users' => $userRepository->findAllDevelopersArray(),
                 'form' => $devForm->createView(),
-                'pending' => $pending
+
 
             ]);
         }

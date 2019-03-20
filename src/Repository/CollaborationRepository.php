@@ -19,21 +19,7 @@ class CollaborationRepository extends ServiceEntityRepository
         parent::__construct($registry, Collaboration::class);
     }
 
-    /**
-    * @return Collaboration[] Returns an array of Collaboration objects
-     */
 
-    public function findByPending($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.pending = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
 
 
     /*
