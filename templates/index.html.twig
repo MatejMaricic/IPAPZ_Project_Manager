@@ -17,14 +17,6 @@
     Main page
 {% endblock %}
 {% block body %}
-    <li><i class="fa fa-folder"></i><a href="{{ path('request_collab', {'id' : user.id}) }}">Request Collab</a></li>
-
-    {% if is_granted("ROLE_ADMIN") %}
-        Requests For Collaboration<br>
-        {% for pending in pending %}
-            {{ pending.user.fullName }}<br> <a href="{{ path('approve_collab', {'id' : pending.id}) }}">Approve</a><br><a href="#">Deny</a>
-        {% endfor %}
-    {% endif %}
 
     <div class="container">
         <div class="row">
@@ -144,7 +136,6 @@
         </div>
         {{ form_end(form) }}
     </div>
-
 
 
 

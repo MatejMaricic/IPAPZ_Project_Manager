@@ -1,0 +1,12 @@
+
+
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Payment
+{% endblock %}
+{% block body %}
+
+    You need to pay your subscription in order to use this app
+   <a href="{{ path('subscribe_to_collab', {'id': collab.id}) }}" >Subscribe</a>
+{% endblock %}

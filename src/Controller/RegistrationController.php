@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Collaboration;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\UserAuthenticator;
@@ -17,7 +18,8 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder,
+                             GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator): Response
     {
 
         $form = $this->createForm(RegistrationFormType::class);
@@ -39,6 +41,14 @@ class RegistrationController extends AbstractController
                 );
                 $user->setAvatar($filename);
             }
+            $collaboration = new Collaboration();
+            $collaboration->setUser($user);
+            $collaboration->setCreatedAt(new \DateTime('now'));
+            $collaboration->setSubscribedUntil(new \DateTime('now'));
+            $collaboration->setSubscribed(false);
+
+
+
             $user->setRoles(array('ROLE_MANAGER'));
             $user->setAddedBy('0');
             $user->setPassword(
@@ -50,6 +60,7 @@ class RegistrationController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
+            $entityManager->persist($collaboration);
             $entityManager->flush();
 
             // do anything else you need here, like send an email

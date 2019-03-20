@@ -62,6 +62,19 @@ class IndexController extends AbstractController
                 return $this->redirect($request->getUri());
             }
 
+            if ($this->isGranted('ROLE_MANAGER')){
+                $collab= $this->getUser()->getCollaboration()->getSubscribed();
+
+                if ($collab == 0){
+
+                    return $this->render('payment.html.twig', [
+                        'user' => $this->getUser(),
+                        'collab' => $this->getUser()->getCollaboration()
+                    ]);
+
+                }
+            }
+
             return $this->render('index.html.twig', [
                 'projectForm' => $projectForm->createView(),
                 'projects' => $projectRepository->findAll(),
