@@ -20,8 +20,6 @@ class CollaborationRepository extends ServiceEntityRepository
     }
 
 
-
-
     /*
     public function findOneBySomeField($value): ?Collaboration
     {

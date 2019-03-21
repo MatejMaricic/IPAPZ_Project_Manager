@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
  * @ORM\HasLifecycleCallbacks()
@@ -99,8 +98,6 @@ class Task
     private $updated;
 
 
-
-
     public function __construct()
     {
         $this->taskStatuses = new ArrayCollection();
@@ -108,7 +105,6 @@ class Task
         $this->projectStatuses = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->hoursOnTask = new ArrayCollection();
-
     }
 
 
@@ -119,6 +115,7 @@ class Task
     {
         $this->createdat = new \DateTime('now');
     }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -159,7 +156,6 @@ class Task
 
         return $this;
     }
-
 
 
     /**
@@ -392,5 +388,4 @@ class Task
 
         return $this;
     }
-
 }

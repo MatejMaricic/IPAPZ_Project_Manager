@@ -9,49 +9,43 @@
 namespace App\Controller;
 
 use App\Entity\Comments;
-use App\Entity\Discussion;
-use App\Entity\HoursOnTask;
 use App\Entity\Project;
 use App\Entity\Subscriptions;
 use App\Entity\Task;
-use App\Entity\User;
 use App\Form\AddHoursFormType;
 use App\Form\AssignDevFormType;
 use App\Form\CommentFormType;
-use App\Form\DiscussionFormType;
-use App\Form\ProjectFormType;
 use App\Form\ProjectStatusFormType;
-use App\Form\TaskConvertFormType;
 use App\Form\TaskFormType;
-use App\Repository\CommentsRepository;
 use App\Repository\ProjectRepository;
-use App\Repository\ProjectStatusRepository;
 use App\Repository\SubscriptionsRepository;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception\ConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
 
 class TaskController extends AbstractController
 {
 
     /**
      * @Route("/task/{id}", name="task_view")
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @param ProjectRepository $projectRepository
-     * @param SubscriptionsRepository $subscriptionsRepository
-     * @param Task $task
-     * @return Response
+     * @param               Request $request
+     * @param               EntityManagerInterface $entityManager
+     * @param               ProjectRepository $projectRepository
+     * @param               SubscriptionsRepository $subscriptionsRepository
+     * @param               Task $task
+     * @return              Response
      */
-    public function taskView(Task $task, Request $request, EntityManagerInterface $entityManager, ProjectRepository $projectRepository, SubscriptionsRepository $subscriptionsRepository)
-    {
+    public function taskView(
+        Task $task,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        ProjectRepository $projectRepository,
+        SubscriptionsRepository $subscriptionsRepository
+    ) {
 
         $id = $task->getProject()->getId();
         $project = $projectRepository->find($id);
@@ -77,48 +71,55 @@ class TaskController extends AbstractController
                     return $this->redirect($request->getUri());
                 }
 
-                return $this->render('project/task.html.twig', [
-                    'user' => $this->getUser(),
-                    'task' => $task,
-                    'commentForm' => $commentForm->createView(),
-                    'project' => $project,
-                    'devForm' => $devForm->createView(),
-                    'subs' => $subs,
-                    'addHoursForm' => $addHoursForm->createView()
-                ]);
+                return $this->render(
+                    'project/task.html.twig',
+                    [
+                        'user' => $this->getUser(),
+                        'task' => $task,
+                        'commentForm' => $commentForm->createView(),
+                        'project' => $project,
+                        'devForm' => $devForm->createView(),
+                        'subs' => $subs,
+                        'addHoursForm' => $addHoursForm->createView()
+                    ]
+                );
             }
-
         }
     }
 
-    private function editTask(EntityManagerInterface $entityManager, Task $task, $taskForm)
-    {
+    private function editTask(
+        EntityManagerInterface $entityManager,
+        $taskForm
+    ) {
         $task = $taskForm->getData();
         $entityManager->persist($task);
         $entityManager->flush();
     }
 
-    private function addComment(Task $task, Request $request, EntityManagerInterface $entityManager, $commentForm)
-    {
-        /**@var Comments $comments */
+    private function addComment(
+        Task $task,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        $commentForm
+    ) {
+        /**
+         * @var Comments $comments
+         */
         $comments = $commentForm->getData();
 
         $files = $request->files->get('comment_form')['images'];
 
         if (!empty($files)) {
-
             foreach ($files as $file) {
                 $uploads_directory = $this->getParameter('uploads_directory');
                 $filename = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move(
                     $uploads_directory,
                     $filename
-
                 );
                 $images[] = $filename;
             }
             $comments->setImages($images);
-
         }
         $task->setUpdated(true);
         $comments->setUser($this->getUser());
@@ -126,11 +127,14 @@ class TaskController extends AbstractController
         $entityManager->persist($comments);
         $entityManager->persist($task);
         $entityManager->flush();
-
     }
 
-    private function assignDevToTask(Task $task, EntityManagerInterface $entityManager, $devForm, SubscriptionsRepository $subscriptionsRepository)
-    {
+    private function assignDevToTask(
+        Task $task,
+        EntityManagerInterface $entityManager,
+        $devForm,
+        SubscriptionsRepository $subscriptionsRepository
+    ) {
 
 
         $user = $devForm->getData();
@@ -140,13 +144,11 @@ class TaskController extends AbstractController
                 $subs = $subscriptionsRepository->checkSubscriber($task->getId(), $item->getEmail());
 
                 if (!isset($subs[0])) {
-
                     $subscription = new Subscriptions();
                     $subscription->setUserEmail($item->getEmail());
                     $subscription->setTaskId($task->getId());
                     $entityManager->persist($subscription);
                     $entityManager->flush();
-
                 }
             }
         }
@@ -154,8 +156,11 @@ class TaskController extends AbstractController
         $entityManager->flush();
     }
 
-    private function addHoursToTask(Task $task, EntityManagerInterface $entityManager, $addHoursForm)
-    {
+    private function addHoursToTask(
+        Task $task,
+        EntityManagerInterface $entityManager,
+        $addHoursForm
+    ) {
         $hoursOnTask = $addHoursForm->getData();
         $hoursOnTask->setTask($task);
         $hoursOnTask->setUser($this->getUser());
@@ -170,12 +175,14 @@ class TaskController extends AbstractController
 
     /**
      * @Route("/project/{id}/complete", name="task_completed", methods={"POST", "GET"})
-     * @param Task $task
-     * @param EntityManagerInterface $entityManager
-     * @return Response
+     * @param                           Task $task
+     * @param                           EntityManagerInterface $entityManager
+     * @return                          Response
      */
-    public function taskCompleted(Task $task, EntityManagerInterface $entityManager)
-    {
+    public function taskCompleted(
+        Task $task,
+        EntityManagerInterface $entityManager
+    ) {
         $id = $task->getProject()->getId();
         $task->setCompleted(true);
 
@@ -183,18 +190,19 @@ class TaskController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('completed_tasks', array('id' => $id));
-
     }
 
     /**
      * @Route("/project/{id}/reopen", name="task_reopen", methods={"POST", "GET"})
-     * @param Task $task
-     * @param EntityManagerInterface $entityManager
-     * @return Response
+     * @param                         Task $task
+     * @param                         EntityManagerInterface $entityManager
+     * @return                        Response
      */
 
-    public function taskReopen(Task $task, EntityManagerInterface $entityManager)
-    {
+    public function taskReopen(
+        Task $task,
+        EntityManagerInterface $entityManager
+    ) {
 
         $projectId = $task->getProject()->getId();
         $task->setCompleted(false);
@@ -203,17 +211,18 @@ class TaskController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('project_tasks', array('id' => $projectId));
-
     }
 
     /**
      * @Route("/subscribe_to_task/{id}", name="subscribe_to_task")
-     * @param EntityManagerInterface $entityManager
-     * @param Task $task
-     * @return Response
+     * @param                            EntityManagerInterface $entityManager
+     * @param                            Task $task
+     * @return                           Response
      */
-    public function subscribeToTask(Task $task, EntityManagerInterface $entityManager)
-    {
+    public function subscribeToTask(
+        Task $task,
+        EntityManagerInterface $entityManager
+    ) {
         $subscription = new Subscriptions();
         $email = $this->getUser()->getEmail();
         $projectId = $task->getProject()->getId();
@@ -224,7 +233,6 @@ class TaskController extends AbstractController
             $entityManager->persist($subscription);
             $entityManager->flush();
         } catch (ConstraintViolationException $constraintViolationException) {
-
         }
 
 
@@ -234,29 +242,37 @@ class TaskController extends AbstractController
 
     /**
      * @Route("/completed_tasks/{id}", name="completed_tasks")
-     * @param Project $project
-     * @return Response
+     * @param                          Project $project
+     * @return                         Response
      */
     public function completedTaskView(Project $project)
     {
-        return $this->render('project/completed_tasks.html.twig', [
-            'user' => $this->getUser(),
-            'project' => $project
+        return $this->render(
+            'project/completed_tasks.html.twig',
+            [
+                'user' => $this->getUser(),
+                'project' => $project
 
-        ]);
+            ]
+        );
     }
 
 
     /**
      * @Route("/project_tasks/{id}", name="project_tasks", methods={"POST", "GET"})
-     * @param Project $project
-     * @param UserRepository $userRepository
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @return Response
+     * @param                        Project $project
+     * @param                        UserRepository $userRepository
+     * @param                        Request $request
+     * @param                        EntityManagerInterface $entityManager
+     * @return                       Response
      */
-    public function showTasks(Project $project, UserRepository $userRepository, Request $request, EntityManagerInterface $entityManager)
-    {
+    public function showTasks(
+        Project $project,
+        UserRepository $userRepository,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ) {
+
         $devs = $userRepository->devsOnProject($project->getId());
         $taskForm = $this->createForm(TaskFormType::class, $data = null, array("project_id" => $project->getId()));
         $statusForm = $this->createForm(ProjectStatusFormType::class);
@@ -270,116 +286,134 @@ class TaskController extends AbstractController
             if ($this->isGranted('ROLE_MANAGER') && $statusForm->isSubmitted() && $statusForm->isValid()) {
                 $this->newStatus($entityManager, $project, $statusForm);
                 return $this->redirect($request->getUri());
-
             }
         }
 
-        return $this->render('project/project_tasks.html.twig', [
-            'project' => $project,
-            'user' => $this->getUser(),
-            'devs' => $devs,
-            'taskForm' => $taskForm->createView(),
-            'statusForm' => $statusForm->createView(),
+        return $this->render(
+            'project/project_tasks.html.twig',
+            [
+                'project' => $project,
+                'user' => $this->getUser(),
+                'devs' => $devs,
+                'taskForm' => $taskForm->createView(),
+                'statusForm' => $statusForm->createView(),
 
-        ]);
+            ]
+        );
     }
 
-    private function addTask(Request $request, EntityManagerInterface $entityManager, Project $project, $taskForm)
-    {
+    private function addTask(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        Project $project,
+        $taskForm
+    ) {
 
-        /**@var Task $task */
+        /**
+         * @var Task $task
+         */
         $task = $taskForm->getData();
         $files = $request->files->get('task_form')['images'];
 
         if (!empty($files)) {
-
             foreach ($files as $file) {
                 $uploads_directory = $this->getParameter('uploads_directory');
                 $filename = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move(
                     $uploads_directory,
                     $filename
-
                 );
                 $images[] = $filename;
             }
             $task->setImages($images);
-
         }
 
         $task->setProject($project);
         $task->setCompleted(false);
         $entityManager->persist($task);
         $entityManager->flush();
-
     }
 
-    private function newStatus(EntityManagerInterface $entityManager, Project $project, $statusForm)
-    {
+    private function newStatus(
+        EntityManagerInterface $entityManager,
+        Project $project,
+        $statusForm
+    ) {
         $status = $statusForm->getData();
         $project->addProjectStatus($status);
         $entityManager->persist($project);
         $entityManager->flush();
-
     }
 
     /**
      * @Route("/task_edit/{id}", name="task_edit", methods={"POST", "GET"})
-     * @param Task $task
-     * @param EntityManagerInterface $entityManager
-     * @param Request $request
-     * @return Response
+     * @param                    Task $task
+     * @param                    EntityManagerInterface $entityManager
+     * @param                    Request $request
+     * @return                   Response
      */
-    public function taskEditor(Task $task, Request $request, EntityManagerInterface $entityManager)
-    {
+    public function taskEditor(
+        Task $task,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ) {
         $taskForm = $this->createForm(TaskFormType::class, $task, array('project_id' => $task->getProject()->getId()));
         $taskForm->handleRequest($request);
         if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
-            $this->editTask( $entityManager, $task, $taskForm);
-            return $this->redirectToRoute('project_tasks',  array('id' => $task->getProject()->getId()));
+            $this->editTask($entityManager, $task, $taskForm);
+            return $this->redirectToRoute('project_tasks', array('id' => $task->getProject()->getId()));
         }
 
 
-        return $this->render('project/task_edit.html.twig', [
-            'user' => $this->getUser(),
-            'taskForm' => $taskForm->createView()
-        ]);
+        return $this->render(
+            'project/task_edit.html.twig',
+            [
+                'user' => $this->getUser(),
+                'taskForm' => $taskForm->createView()
+            ]
+        );
     }
 
     /**
      * @Route("/developer_tasks/{id}/{dev_id}", name="developer_tasks", methods={"POST", "GET"})
-     * @param UserRepository $userRepository
-     * @param Project $project
-     * @param Request $request
-     * @return Response
+     * @param                                   UserRepository $userRepository
+     * @param                                   Project $project
+     * @param                                   Request $request
+     * @return                                  Response
      */
-    public function developerTasks(Project $project, Request $request, UserRepository $userRepository)
-    {
+    public function developerTasks(
+        Project $project,
+        Request $request,
+        UserRepository $userRepository
+    ) {
 
         $devId = $request->get('dev_id');
         $user = $userRepository->find($devId);
 
-        return $this->render('project/developer_tasks.html.twig', [
-            'user' => $user,
-            'project' => $project
+        return $this->render(
+            'project/developer_tasks.html.twig',
+            [
+                'user' => $user,
+                'project' => $project
 
-        ]);
-
+            ]
+        );
     }
 
     /**
      * @Route("/my_tasks/{id}", name="my_tasks")
-     * @param Project $project
-     * @return Response
+     * @param                   Project $project
+     * @return                  Response
      */
     public function myTasks(Project $project)
     {
-        return $this->render('project/my_tasks.html.twig', [
-            'user' => $this->getUser(),
-            'project' => $project
+        return $this->render(
+            'project/my_tasks.html.twig',
+            [
+                'user' => $this->getUser(),
+                'project' => $project
 
-        ]);
+            ]
+        );
     }
-
-
 }

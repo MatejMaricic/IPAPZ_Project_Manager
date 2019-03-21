@@ -8,8 +8,6 @@
 
 namespace App\Form;
 
-
-
 use App\Entity\Project;
 use App\Entity\ProjectStatus;
 use App\Repository\ProjectStatusRepository;
@@ -22,18 +20,22 @@ class ProjectStatusFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-       $builder
-           ->add('name', TextType::class, [
-               'label' => false
-           ])
-
-       ;
+        $builder
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'label' => false
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => ProjectStatus::class
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => ProjectStatus::class
+            ]
+        );
     }
 }

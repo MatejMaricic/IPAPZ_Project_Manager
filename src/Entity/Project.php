@@ -73,7 +73,6 @@ class Project
     private $collaboration;
 
 
-
     public function __construct()
     {
 
@@ -122,8 +121,6 @@ class Project
 
         return $this;
     }
-
-
 
 
     public function getProjectStatus()
@@ -313,7 +310,4 @@ class Project
 
         return $this;
     }
-
-
-
 }

@@ -28,9 +28,7 @@ class UserRepository extends ServiceEntityRepository
             ->setParameter('id', $id)
             ->setParameter('val', "%ROLE_USER%")
             ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-
-        ;
+            ->setMaxResults(10);
     }
 
     public function findAllDevelopersArray()
@@ -42,9 +40,9 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('u.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
+
     public function findAllDevelopersForManagerArray($id)
     {
         return $this->createQueryBuilder('u')
@@ -56,9 +54,9 @@ class UserRepository extends ServiceEntityRepository
             ->orderBy('u.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
+
     public function devsOnProject($id)
     {
         return $this->createQueryBuilder('u')
@@ -67,14 +65,10 @@ class UserRepository extends ServiceEntityRepository
             ->where('up.id = :id')
             ->andWhere('u.roles LIKE :val')
             ->setParameter('val', "%ROLE_USER%")
-            ->setParameter('id',$id)
+            ->setParameter('id', $id)
             ->orderBy('u.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
-
     }
-
-
-
 }

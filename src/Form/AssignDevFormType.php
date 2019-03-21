@@ -8,7 +8,6 @@
 
 namespace App\Form;
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -22,24 +21,31 @@ class AssignDevFormType extends AbstractType
     {
         $id = $options['id'];
         $builder
-            ->add('users', EntityType::class, [
-                'label'=> 'Choose Developers ',
-                'class' => User::class,
-                'choice_label' => 'fullName',
-                'multiple' => true,
-                'expanded' => true,
-                'query_builder' => function(UserRepository $userRepository) use ($id){
-                    return $userRepository->findAllDevelopers($id);
-                }
+            ->add(
+                'users',
+                EntityType::class,
+                [
+                    'label' => 'Choose Developers ',
+                    'class' => User::class,
+                    'choice_label' => 'fullName',
+                    'multiple' => true,
+                    'expanded' => true,
+                    'query_builder' => function (UserRepository $userRepository) use ($id) {
+                        return $userRepository->findAllDevelopers($id);
+                    }
 
 
-            ]);
+                ]
+            );
     }
+
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'class' => User::class,
-            'id' => array()
-        ]);
+        $resolver->setDefaults(
+            [
+                'class' => User::class,
+                'id' => array()
+            ]
+        );
     }
 }

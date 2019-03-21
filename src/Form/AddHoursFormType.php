@@ -8,7 +8,6 @@
 
 namespace App\Form;
 
-
 use App\Entity\HoursOnTask;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -23,22 +22,31 @@ class AddHoursFormType extends AbstractType
     {
         $builder
             ->add('hours', IntegerType::class)
-            ->add('message', TextareaType::class, [
-                'required' => false,
-            ])
-            ->add('billable', ChoiceType::class,[
-                'choices'  => [
-                    'Billable' => true,
-                    'Not Billable' => false
-                ],
-            ]);
+            ->add(
+                'message',
+                TextareaType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'billable',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'Billable' => true,
+                        'Not Billable' => false
+                    ],
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => HoursOnTask::class
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => HoursOnTask::class
+            ]
+        );
     }
-
 }

@@ -17,52 +17,52 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class EmailController
+ *
  * @package App\Controller
  */
-
 class EmailController extends AbstractController
 {
 
     /**
      * @Route("/email", name="email")
-     * @param EntityManagerInterface $entityManager
-     * @param \Swift_Mailer $mailer
-     * @param TaskRepository $taskRepository
-     * @param SubscriptionsRepository $subscriptionsRepository
-     * @return Response
+     * @param           EntityManagerInterface $entityManager
+     * @param           \Swift_Mailer $mailer
+     * @param           TaskRepository $taskRepository
+     * @param           SubscriptionsRepository $subscriptionsRepository
+     * @return          Response
      */
-    public function mail(\Swift_Mailer $mailer, TaskRepository $taskRepository, SubscriptionsRepository $subscriptionsRepository, EntityManagerInterface $entityManager)
-    {
+    public function mail(
+        \Swift_Mailer $mailer,
+        TaskRepository $taskRepository,
+        SubscriptionsRepository $subscriptionsRepository,
+        EntityManagerInterface $entityManager
+    ) {
         $tasks = $taskRepository->findAll();
 
-        foreach ($tasks as $task)
-        {
-            if ($task->getUpdated() == true){
-
+        foreach ($tasks as $task) {
+            if ($task->getUpdated() == true) {
                 $subscribers = $subscriptionsRepository->findByTask($task->getId());
 
-                foreach ($subscribers as $subscriber){
+                foreach ($subscribers as $subscriber) {
                     $message = (new \Swift_Message('Hello Email'))
                         ->setFrom('send@example.com')
                         ->setTo($subscriber->getUserEmail())
                         ->setBody(
-                            $this->renderView('test.html.twig', [
-                                'task'=> $task
-                            ])
+                            $this->renderView(
+                                'test.html.twig',
+                                [
+                                    'task' => $task
+                                ]
+                            )
                         );
                     $mailer->send($message);
                     $task->setUpdated(false);
                     $entityManager->persist($task);
                     $entityManager->flush();
-
-
                 }
-
             }
-
         }
 
-        return $this->redirectToRoute( 'index_page' );
+        return $this->redirectToRoute('index_page');
     }
-
 }

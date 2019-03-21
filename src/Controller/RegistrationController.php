@@ -18,26 +18,30 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder,
-                             GuardAuthenticatorHandler $guardHandler, UserAuthenticator $authenticator): Response
-    {
+    public function register(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        GuardAuthenticatorHandler $guardHandler,
+        UserAuthenticator $authenticator
+    ): Response {
 
         $form = $this->createForm(RegistrationFormType::class);
         $form->handleRequest($request);
-        /**@var User $user */
+        /**
+         * @var User $user
+         */
         $user = $form->getData();
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
 
             $file = $request->files->get('registration_form')['avatar'];
 
-            if (isset($file)){
+            if (isset($file)) {
                 $uploads_directory = $this->getParameter('uploads_directory');
-                $filename = md5(uniqid()) . '.' .$file->guessExtension();
+                $filename = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move(
                     $uploads_directory,
                     $filename
-
                 );
                 $user->setAvatar($filename);
             }
@@ -46,7 +50,6 @@ class RegistrationController extends AbstractController
             $collaboration->setCreatedAt(new \DateTime('now'));
             $collaboration->setSubscribedUntil(new \DateTime('now'));
             $collaboration->setSubscribed(false);
-
 
 
             $user->setRoles(array('ROLE_MANAGER'));
@@ -73,8 +76,11 @@ class RegistrationController extends AbstractController
             );
         }
 
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+        return $this->render(
+            'registration/register.html.twig',
+            [
+                'registrationForm' => $form->createView(),
+            ]
+        );
     }
 }

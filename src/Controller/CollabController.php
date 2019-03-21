@@ -8,9 +8,9 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Collaboration;
 use App\Entity\Transactions;
+use App\Repository\CollaborationRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,12 +24,14 @@ class CollabController extends AbstractController
 
     private function gateway()
     {
-        $gateway = new Braintree_Gateway([
-            'environment' => 'sandbox',
-            'merchantId' => 'qmk79j9h7rxpjg8t',
-            'publicKey' => 'pnz7bb5774j2j3n4',
-            'privateKey' => '7c0e8443e507a26409dc23f6ca1afcb6'
-        ]);
+        $gateway = new Braintree_Gateway(
+            [
+                'environment' => 'sandbox',
+                'merchantId' => 'qmk79j9h7rxpjg8t',
+                'publicKey' => 'pnz7bb5774j2j3n4',
+                'privateKey' => '7c0e8443e507a26409dc23f6ca1afcb6'
+            ]
+        );
 
         return $gateway;
     }
@@ -37,29 +39,34 @@ class CollabController extends AbstractController
 
     /**
      * @Route("checkout/{id}", name = "checkout")
-     * @param Collaboration $collaboration
-     * @param EntityManagerInterface $entityManager
-     * @param UserRepository $userRepository
+     * @param                  Collaboration $collaboration
+     * @param                  EntityManagerInterface $entityManager
+     * @param                  UserRepository $userRepository
      * @throws
-     * @return Response
+     * @return                 Response
      */
-    public function checkout(Collaboration $collaboration, EntityManagerInterface $entityManager, UserRepository $userRepository)
-    {
+    public function checkout(
+        Collaboration $collaboration,
+        EntityManagerInterface $entityManager,
+        UserRepository $userRepository
+    ) {
 
-
-        $amount = $this->subscriptionAmount($collaboration, $entityManager, $userRepository);
+        $amount = $this->subscriptionAmount($collaboration, $userRepository);
         $nonce = $_POST["payment_method_nonce"];
-        $result = $this->gateway()->transaction()->sale([
-            'amount' => $amount,
-            'paymentMethodNonce' => $nonce,
-            'options' => [
-                'submitForSettlement' => true
+        $result = $this->gateway()->transaction()->sale(
+            [
+                'amount' => $amount,
+                'paymentMethodNonce' => $nonce,
+                'options' => [
+                    'submitForSettlement' => true
+                ]
             ]
-        ]);
+        );
         if ($result->success || !is_null($result->transaction)) {
             $transaction = $result->transaction;
 
             $collaboration->setSubscribed(true);
+            $collaboration->setSubscribedUntil(new \DateTime('now + 1 month'));
             $transactions = new Transactions();
             $transactions->setAmount($amount);
             $transactions->setTransactionId($transaction->id);
@@ -82,12 +89,39 @@ class CollabController extends AbstractController
         }
     }
 
-    public function subscriptionAmount(Collaboration $collaboration, EntityManagerInterface $entityManager, UserRepository $userRepository)
-    {
+    public function subscriptionAmount(
+        Collaboration $collaboration,
+        UserRepository $userRepository
+    ) {
         $user = $collaboration->getUser();
         $devs = $userRepository->findAllDevelopersForManagerArray($user->getId());
         $numOfDevs = count($devs);
 
-       return $amount = ($numOfDevs * 5) + 5;
+        return $amount = ($numOfDevs * 5) + 5;
+    }
+
+
+    /**
+     * @param  CollaborationRepository $collaborationRepository
+     * @param  EntityManagerInterface $entityManager
+     * @return Response
+     * @throws
+     */
+    public function checkSubscriptionDate(
+        CollaborationRepository $collaborationRepository,
+        EntityManagerInterface $entityManager
+    ) {
+        $subscriptions = $collaborationRepository->findAll();
+        $today = new \DateTime('now');
+
+        foreach ($subscriptions as $subscription) {
+            if ($subscription->getSubscribedUntil() < $today) {
+                $subscription->setSubscribed(false);
+
+                $entityManager->persist($subscription);
+                $entityManager->flush();
+            }
+        }
+        return $this->redirectToRoute('index_page');
     }
 }

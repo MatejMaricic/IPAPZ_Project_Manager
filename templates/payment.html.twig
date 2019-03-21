@@ -16,12 +16,12 @@
         <div class="checkout container">
 
             <header>
-                    Make a test payment with Braintree using PayPal or a card
+                <h2>Your subscription has not been paid, please make a payment in order to use this app</h2>
             </header>
 
             <form method="post" id="payment-form" action="{{ path('checkout', {'id': collab.id}) }}">
                 <section>
->
+
 
                     <div class="bt-drop-in-wrapper">
                         <div id="bt-dropin"></div>
@@ -29,7 +29,7 @@
                 </section>
 
                 <input id="nonce" name="payment_method_nonce" type="hidden" />
-                <button class="button" type="submit"><span>Test Transaction</span></button>
+                <button class="button" type="submit"><span>Pay Subscription</span></button>
             </form>
         </div>
     </div>

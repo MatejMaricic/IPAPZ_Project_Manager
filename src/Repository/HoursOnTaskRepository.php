@@ -33,8 +33,7 @@ class HoursOnTaskRepository extends ServiceEntityRepository
             ->orderBy('h.id', 'ASC')
             ->setMaxResults(60)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     public function findByCriteria($project, $date, $billable)
@@ -51,14 +50,13 @@ class HoursOnTaskRepository extends ServiceEntityRepository
             ->orderBy('h.id', 'ASC')
             ->setMaxResults(60)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
-    public function findByDate($date,$project)
+    public function findByDate($date, $project)
     {
         $startDate = $date;
-        $endDate =(clone $startDate)->modify('last day of this month')->setTime(23, 59, 59);
+        $endDate = (clone $startDate)->modify('last day of this month')->setTime(23, 59, 59);
         return $this->createQueryBuilder('h')
             ->select('h')
             ->innerJoin('h.project', 'u')
@@ -70,8 +68,7 @@ class HoursOnTaskRepository extends ServiceEntityRepository
             ->orderBy('h.id', 'ASC')
             ->setMaxResults(60)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
 
@@ -89,8 +86,7 @@ class HoursOnTaskRepository extends ServiceEntityRepository
             ->orderBy('h.id', 'ASC')
             ->setMaxResults(60)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
 

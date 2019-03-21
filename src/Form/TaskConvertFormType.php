@@ -7,6 +7,7 @@
  */
 
 namespace App\Form;
+
 use App\Entity\ProjectStatus;
 use App\Entity\Task;
 use App\Repository\ProjectStatusRepository;
@@ -26,33 +27,45 @@ class TaskConvertFormType extends AbstractType
 
         $id = $options['project_id'];
         $builder
-
-            ->add('status', EntityType::class,[
-                'class' => ProjectStatus::class,
-                'choice_label' => 'name',
-                'query_builder' => function(ProjectStatusRepository $projectStatusRepository) use ($id){
-                    return $projectStatusRepository->findAllForProject($id);
-                }
-            ])
-            ->add('images', FileType::class,[
-                'required' => false,
-                'multiple' => true
-            ])
-            ->add('priority', ChoiceType::class,[
-                'choices'=> [
-                    'High' => 'High',
-                    'Medium' => 'Medium',
-                    'Low' => 'Low'
+            ->add(
+                'status',
+                EntityType::class,
+                [
+                    'class' => ProjectStatus::class,
+                    'choice_label' => 'name',
+                    'query_builder' => function (ProjectStatusRepository $projectStatusRepository) use ($id) {
+                        return $projectStatusRepository->findAllForProject($id);
+                    }
                 ]
-            ])
-        ;
-
+            )
+            ->add(
+                'images',
+                FileType::class,
+                [
+                    'required' => false,
+                    'multiple' => true
+                ]
+            )
+            ->add(
+                'priority',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'High' => 'High',
+                        'Medium' => 'Medium',
+                        'Low' => 'Low'
+                    ]
+                ]
+            );
     }
+
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Task::class,
-            'project_id' => null
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Task::class,
+                'project_id' => null
+            ]
+        );
     }
 }

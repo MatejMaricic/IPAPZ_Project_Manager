@@ -8,7 +8,6 @@
 
 namespace App\Form;
 
-
 use App\Entity\Comments;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -20,21 +19,30 @@ class CommentFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-       $builder
-           ->add('content', TextareaType::class,[
-               'required' => false,
-           ])
-           ->add('images', FileType::class, [
-               'required' => false,
-               'multiple' => true
-           ])
-       ;
+        $builder
+            ->add(
+                'content',
+                TextareaType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'images',
+                FileType::class,
+                [
+                    'required' => false,
+                    'multiple' => true
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-       $resolver->setDefaults([
-           'data_class' => Comments::class
-       ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Comments::class
+            ]
+        );
     }
 }

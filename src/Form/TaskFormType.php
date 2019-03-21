@@ -8,7 +8,6 @@
 
 namespace App\Form;
 
-
 use App\Entity\ProjectStatus;
 use App\Entity\Task;
 use App\Repository\ProjectStatusRepository;
@@ -30,37 +29,58 @@ class TaskFormType extends AbstractType
         $id = $options['project_id'];
         $builder
             ->add('name', TextType::class)
-            ->add('content', TextareaType::class, [
-                'required'=> false
-            ])
-            ->add('status', EntityType::class,[
-                'class' => ProjectStatus::class,
-                'choice_label' => 'name',
-                'query_builder' => function(ProjectStatusRepository $projectStatusRepository) use ($id){
-                    return $projectStatusRepository->findAllForProject($id);
-                }
-            ])
-            ->add('images', FileType::class,[
-                'required' => false,
-                'multiple' => true
-            ])
-            ->add('priority', ChoiceType::class,[
-                'choices'=> [
-                    'High' => 'High',
-                    'Medium' => 'Medium',
-                    'Low' => 'Low'
+            ->add(
+                'content',
+                TextareaType::class,
+                [
+                    'required' => false
                 ]
-            ])
-            ->add('estimate', IntegerType::class,[
-                'label'=>'Estimated Time For Task'])
-        ;
-
+            )
+            ->add(
+                'status',
+                EntityType::class,
+                [
+                    'class' => ProjectStatus::class,
+                    'choice_label' => 'name',
+                    'query_builder' => function (ProjectStatusRepository $projectStatusRepository) use ($id) {
+                        return $projectStatusRepository->findAllForProject($id);
+                    }
+                ]
+            )
+            ->add(
+                'images',
+                FileType::class,
+                [
+                    'required' => false,
+                    'multiple' => true
+                ]
+            )
+            ->add(
+                'priority',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'High' => 'High',
+                        'Medium' => 'Medium',
+                        'Low' => 'Low'
+                    ]
+                ]
+            )
+            ->add(
+                'estimate',
+                IntegerType::class,
+                [
+                    'label' => 'Estimated Time For Task']
+            );
     }
+
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Task::class,
-            'project_id' => null
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Task::class,
+                'project_id' => null
+            ]
+        );
     }
 }

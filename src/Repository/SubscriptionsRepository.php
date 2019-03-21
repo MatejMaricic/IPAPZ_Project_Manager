@@ -19,9 +19,9 @@ class SubscriptionsRepository extends ServiceEntityRepository
         parent::__construct($registry, Subscriptions::class);
     }
 
-     /**
-      * @return Subscriptions[] Returns an array of Subscriptions objects
-      */
+    /**
+     * @return Subscriptions[] Returns an array of Subscriptions objects
+     */
 
     public function findByTask($value)
     {
@@ -31,8 +31,7 @@ class SubscriptionsRepository extends ServiceEntityRepository
             ->orderBy('s.id', 'ASC')
             ->setMaxResults(50)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     /**
@@ -47,13 +46,12 @@ class SubscriptionsRepository extends ServiceEntityRepository
             ->orderBy('s.id', 'ASC')
             ->setMaxResults(50)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
     /**
-     * @param $task_id
-     * @param $user_email
+     * @param  $task_id
+     * @param  $user_email
      * @return Subscriptions
      */
 
@@ -67,8 +65,7 @@ class SubscriptionsRepository extends ServiceEntityRepository
             ->orderBy('s.id', 'ASC')
             ->setMaxResults(50)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
 

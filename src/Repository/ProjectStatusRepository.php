@@ -25,8 +25,6 @@ class ProjectStatusRepository extends ServiceEntityRepository
             ->innerJoin('ps.projects', 'p')
             ->where('p.id = :id')
             ->setParameter('id', $id)
-            ->setMaxResults(10)
-
-            ;
+            ->setMaxResults(10);
     }
 }

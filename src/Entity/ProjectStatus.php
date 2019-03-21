@@ -40,7 +40,6 @@ class ProjectStatus
     private $tasks;
 
 
-
     public function __construct()
     {
         $this->projects = new ArrayCollection();

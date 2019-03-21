@@ -10,9 +10,12 @@ use Doctrine\ORM\Mapping\Table;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SubscriptionsRepository")
  * @Entity
- * @Table(name="subscriptions",uniqueConstraints={@UniqueConstraint(name="subscriptions", columns={"user_email", "task_id"})})
- * @Table(name="subscriptions",uniqueConstraints={@UniqueConstraint(name="subscriptions", columns={"user_email", "discussion_id"})})
-**/
+ * @Table(name="subscriptions",uniqueConstraints={@UniqueConstraint(name="subscriptions",
+ *      columns={"user_email", "task_id"})})
+
+ * @Table(name="subscriptions",uniqueConstraints={@UniqueConstraint(name="subscriptions",
+ *      columns={"user_email", "discussion_id"})})
+ **/
 class Subscriptions
 {
     /**

@@ -25,31 +25,41 @@ class ProjectFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'label' => 'Name of your new project'
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'label' => 'Name of your new project'
 
-            ])
-            ->add('deadline', DateType::class, [
-                'label' => 'Deadline for project',
-                'data' => new \DateTime()
-            ])
-
-
-            ->add('projectStatus',CollectionType::class,[
-                    'label' =>false,
+                ]
+            )
+            ->add(
+                'deadline',
+                DateType::class,
+                [
+                    'label' => 'Deadline for project',
+                    'data' => new \DateTime()
+                ]
+            )
+            ->add(
+                'projectStatus',
+                CollectionType::class,
+                [
+                    'label' => false,
                     'entry_type' => ProjectStatusFormType::class,
                     'allow_add' => true,
                     'by_reference' => false,
-                    'delete_empty' =>true
+                    'delete_empty' => true
                 ]
-
-            )
-        ;
+            );
     }
+
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Project::class
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Project::class
+            ]
+        );
     }
 }

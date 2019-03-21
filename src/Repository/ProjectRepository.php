@@ -28,10 +28,9 @@ class ProjectRepository extends ServiceEntityRepository
             ->andWhere('u.id = :val')
             ->setParameter('val', $id)
             ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-
-        ;
+            ->setMaxResults(10);
     }
+
     public function findByUser($id)
     {
         return $this->createQueryBuilder('p')
@@ -42,8 +41,7 @@ class ProjectRepository extends ServiceEntityRepository
             ->orderBy('p.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
     /*

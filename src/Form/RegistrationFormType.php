@@ -12,7 +12,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 
-
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -21,41 +20,54 @@ class RegistrationFormType extends AbstractType
             ->add('firstName')
             ->add('lastName')
             ->add('email')
-            ->add('plainPassword', RepeatedType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
-                'mapped' => false,
-                'type' => PasswordType::class,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
-                'invalid_message' => 'The password fields must match.',
-                'options' => ['attr' => ['class' => 'password-field']],
-                'required' => true,
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
-            ])
-            ->add('avatar', FileType::class,[
-                'required' => false,
-                'data_class' => null
-            ])
-        ;
+            ->add(
+                'plainPassword',
+                RepeatedType::class,
+                [
+                    // instead of being set onto the object directly,
+                    // this is read and encoded in the controller
+                    'mapped' => false,
+                    'type' => PasswordType::class,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'Please enter a password',
+                            ]
+                        ),
+                        new Length(
+                            [
+                                'min' => 6,
+                                'minMessage' => 'Your password should be at least {{ limit }} characters',
+                                // max length allowed by Symfony for security reasons
+                                'max' => 4096,
+                            ]
+                        ),
+                    ],
+                    'invalid_message' => 'The password fields must match.',
+                    'options' => ['attr' => ['class' => 'password-field']],
+                    'required' => true,
+                    'first_options' => ['label' => 'Password'],
+                    'second_options' => ['label' => 'Repeat Password'],
+                ]
+            )
+            ->add(
+                'avatar',
+                FileType::class,
+                [
+                    'required' => false,
+                    'data_class' => null
+                ]
+            );
     }
 
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
+        $resolver->setDefaults(
+            [
+                'data_class' => User::class,
 
-        ]);
+            ]
+        );
     }
 }

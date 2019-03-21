@@ -8,7 +8,6 @@
 
 namespace App\Form;
 
-
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -24,31 +23,44 @@ class SearchHoursFormType extends AbstractType
     {
         $user = $options['user'];
         $builder
-            ->add('project', EntityType::class, [
-                'label'=> 'Choose Project ',
-                'class' => Project::class,
-                'choice_label' => 'name',
-                'multiple' => false,
-                'expanded' => false,
-                'query_builder' => function(ProjectRepository $projectRepository) use ($user){
-                    return $projectRepository->findByUserId($user->getId());
-                }
-                ])
-            ->add('date', DateType::class, [
-                'widget' => 'choice',
-            ])
-            ->add('billable', ChoiceType::class,[
-                'choices'  => [
-                    'Billable' => true,
-                    'Not Billable' => false
-                ]])
-            ;
+            ->add(
+                'project',
+                EntityType::class,
+                [
+                    'label' => 'Choose Project ',
+                    'class' => Project::class,
+                    'choice_label' => 'name',
+                    'multiple' => false,
+                    'expanded' => false,
+                    'query_builder' => function (ProjectRepository $projectRepository) use ($user) {
+                        return $projectRepository->findByUserId($user->getId());
+                    }
+                ]
+            )
+            ->add(
+                'date',
+                DateType::class,
+                [
+                    'widget' => 'choice',
+                ]
+            )
+            ->add(
+                'billable',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'Billable' => true,
+                        'Not Billable' => false
+                    ]]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'user' => array()
-        ]);
+        $resolver->setDefaults(
+            [
+                'user' => array()
+            ]
+        );
     }
 }

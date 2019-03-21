@@ -30,63 +30,86 @@ class DiscussionController extends AbstractController
 {
     /**
      * @Route("/single_discussion/{id}", name="discussion_view", methods={"POST", "GET"})
-     * @param EntityManagerInterface $entityManager
-     * @param Request $request
-     * @param Discussion $discussion
-     * @param SubscriptionsRepository $subscriptionsRepository
-     * @param CommentsRepository $commentsRepository
-     * @return Response
+     * @param                            EntityManagerInterface $entityManager
+     * @param                            Request $request
+     * @param                            Discussion $discussion
+     * @param                            SubscriptionsRepository $subscriptionsRepository
+     * @param                            CommentsRepository $commentsRepository
+     * @return                           Response
      */
-    public function singleDiscussionView(Discussion $discussion, Request $request, EntityManagerInterface $entityManager, SubscriptionsRepository $subscriptionsRepository, CommentsRepository $commentsRepository)
-    {
-        $projectId =$discussion->getProject()->getId();
+    public function singleDiscussionView(
+        Discussion $discussion,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        SubscriptionsRepository $subscriptionsRepository,
+        CommentsRepository $commentsRepository
+    ) {
+        $projectId = $discussion->getProject()->getId();
 
         $commentForm = $this->createForm(CommentFormType::class);
-        $taskForm = $this->createForm(TaskConvertFormType::class,$data = null, array('project_id' => $projectId));
+        $taskForm = $this->createForm(TaskConvertFormType::class, $data = null, array('project_id' => $projectId));
 
         $commentForm->handleRequest($request);
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
-            $this->addDiscussionComment($discussion, $request, $entityManager, $commentForm);
+            $this->addDiscussionComment(
+                $discussion,
+                $request,
+                $entityManager,
+                $commentForm
+            );
             return $this->redirect($request->getUri());
         } else {
             $taskForm->handleRequest($request);
             if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
-                $this->convertToTask($discussion, $request, $entityManager, $taskForm, $subscriptionsRepository, $commentsRepository);
+                $this->convertToTask(
+                    $discussion,
+                    $request,
+                    $entityManager,
+                    $taskForm,
+                    $subscriptionsRepository,
+                    $commentsRepository
+                );
                 return $this->redirectToRoute('project_tasks', array('id' => $projectId));
             }
         }
 
-        return $this->render('project/single_discussion.html.twig', [
-            'discussion' => $discussion,
-            'user' => $this->getUser(),
-            'commentForm' => $commentForm->createView(),
-            'taskForm' => $taskForm->createView(),
-            'project' => $discussion->getProject()
-        ]);
+        return $this->render(
+            'project/single_discussion.html.twig',
+            [
+                'discussion' => $discussion,
+                'user' => $this->getUser(),
+                'commentForm' => $commentForm->createView(),
+                'taskForm' => $taskForm->createView(),
+                'project' => $discussion->getProject()
+            ]
+        );
     }
 
-    private function addDiscussionComment(Discussion $discussion, Request $request, EntityManagerInterface $entityManager, $commentForm)
-    {
+    private function addDiscussionComment(
+        Discussion $discussion,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        $commentForm
+    ) {
 
-        /**@var Comments $comments */
+        /**
+         * @var Comments $comments
+         */
         $comments = $commentForm->getData();
 
         $files = $request->files->get('comment_form')['images'];
 
         if (!empty($files)) {
-
             foreach ($files as $file) {
                 $uploads_directory = $this->getParameter('uploads_directory');
                 $filename = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move(
                     $uploads_directory,
                     $filename
-
                 );
                 $images[] = $filename;
             }
             $comments->setImages($images);
-
         }
         $comments->setUser($this->getUser());
         $comments->setDiscussion($discussion);
@@ -94,8 +117,13 @@ class DiscussionController extends AbstractController
         $entityManager->flush();
     }
 
-    private function convertToTask(Discussion $discussion, Request $request, EntityManagerInterface $entityManager, $taskForm, SubscriptionsRepository $subscriptionsRepository, CommentsRepository $commentsRepository)
-    {
+    private function convertToTask(
+        Discussion $discussion,
+        EntityManagerInterface $entityManager,
+        $taskForm,
+        SubscriptionsRepository $subscriptionsRepository,
+        CommentsRepository $commentsRepository
+    ) {
         $subs = $subscriptionsRepository->findByDiscussion($discussion->getId());
         $comments = $commentsRepository->findCommentsByDiscussion($discussion);
 
@@ -107,20 +135,17 @@ class DiscussionController extends AbstractController
         $task->setCompleted(false);
 
 
-
         $entityManager->persist($task);
         $entityManager->flush();
 
-        foreach ($subs as $sub)
-        {
+        foreach ($subs as $sub) {
             $sub->setDiscussionId(null);
             $sub->setTaskId($task->getId());
             $entityManager->persist($sub);
             $entityManager->flush();
         }
 
-        foreach ($comments as $comment)
-        {
+        foreach ($comments as $comment) {
             $comment->setTask($task);
             $discussion->removeComment($comment);
 
@@ -134,52 +159,59 @@ class DiscussionController extends AbstractController
 
     /**
      * @Route("/project_discussions/{id}", name="project_discussions", methods={"POST", "GET"})
-     * @param Project $project
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @return Response
+     * @param                              Project $project
+     * @param                              Request $request
+     * @param                              EntityManagerInterface $entityManager
+     * @return                             Response
      */
-    public function showDiscussions(Project $project, Request $request, EntityManagerInterface $entityManager)
-    {
+    public function showDiscussions(
+        Project $project,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ) {
         $discussionForm = $this->createForm(DiscussionFormType::class);
 
         $discussionForm->handleRequest($request);
         if ($this->isGranted('ROLE_MANAGER') && $discussionForm->isSubmitted() && $discussionForm->isValid()) {
-            $this->newDiscussion( $entityManager, $project, $discussionForm);
+            $this->newDiscussion($entityManager, $project, $discussionForm);
             return $this->redirect($request->getUri());
-
         }
 
-        return $this->render('project/project_discussions.html.twig', [
-            'project' => $project,
-            'user' => $this->getUser(),
-            'discussionForm' => $discussionForm->createView(),
+        return $this->render(
+            'project/project_discussions.html.twig',
+            [
+                'project' => $project,
+                'user' => $this->getUser(),
+                'discussionForm' => $discussionForm->createView(),
 
-        ]);
+            ]
+        );
     }
 
-    private function newDiscussion(EntityManagerInterface $entityManager, Project $project, $discussionForm)
-    {
+    private function newDiscussion(
+        EntityManagerInterface $entityManager,
+        Project $project,
+        $discussionForm
+    ) {
         $discussion = $discussionForm->getData();
         $discussion->setProject($project);
         $discussion->setCreatedBy($this->getUser()->getFullName());
 
         $entityManager->persist($discussion);
         $entityManager->flush();
-
     }
 
 
     /**
      * @Route("/subscribe_to_discussion{id}", name="subscribe_to_discussion")
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @param SubscriptionsRepository $subscriptionsRepository
-     * @param Discussion $discussion
-     * @return Response
+     * @param                                 EntityManagerInterface $entityManager
+     * @param                                 Discussion $discussion
+     * @return                                Response
      */
-    public function subscribeToDiscussion(Discussion $discussion, EntityManagerInterface $entityManager, Request $request, SubscriptionsRepository $subscriptionsRepository)
-    {
+    public function subscribeToDiscussion(
+        Discussion $discussion,
+        EntityManagerInterface $entityManager
+    ) {
         $subscription = new Subscriptions();
         $email = $this->getUser()->getEmail();
         $projectId = $discussion->getProject()->getId();
@@ -190,7 +222,6 @@ class DiscussionController extends AbstractController
             $entityManager->persist($subscription);
             $entityManager->flush();
         } catch (ConstraintViolationException $constraintViolationException) {
-
         }
 
 
@@ -199,29 +230,33 @@ class DiscussionController extends AbstractController
 
     /**
      * @Route("/project_discussion/{id}/delete", name="discussion_delete", methods={"POST", "GET"})
-     * @param Discussion $discussion
-     * @param EntityManagerInterface $entityManager
-     * @return JsonResponse
+     * @param                                    Discussion $discussion
+     * @param                                    EntityManagerInterface $entityManager
+     * @return                                   JsonResponse
      */
-    public function deleteDiscussion(Discussion $discussion, EntityManagerInterface $entityManager)
-    {
+    public function deleteDiscussion(
+        Discussion $discussion,
+        EntityManagerInterface $entityManager
+    ) {
 
         $discussionId = $discussion->getId();
 
         if (!$discussion) {
-            return new JsonResponse([
-                'msg' => 'Unable to delete'
-            ]);
+            return new JsonResponse(
+                [
+                    'msg' => 'Unable to delete'
+                ]
+            );
         }
 
         $entityManager->remove($discussion);
         $entityManager->flush();
 
 
-        return new JsonResponse([
-            'deletedDiscussion' => $discussionId
-        ]);
+        return new JsonResponse(
+            [
+                'deletedDiscussion' => $discussionId
+            ]
+        );
     }
-
-
 }

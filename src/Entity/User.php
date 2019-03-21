@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"email"},                              message="There is already an account with this email")
  * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
@@ -33,7 +33,7 @@ class User implements UserInterface
     private $roles = [];
 
     /**
-     * @var string The hashed password
+     * @var                       string The hashed password
      * @ORM\Column(type="string")
      */
     private $password;
@@ -94,7 +94,6 @@ class User implements UserInterface
     private $collaboration;
 
 
-
     public function __construct()
     {
         $this->project = new ArrayCollection();
@@ -127,16 +126,17 @@ class User implements UserInterface
     {
         $this->createdAt = new \DateTime();
     }
+
     /**
      * @ORM\PrePersist
      */
     public function setRolesValue()
     {
-        if (!$this->roles){
-            $this->roles =['ROLE_MANAGER'];
+        if (!$this->roles) {
+            $this->roles = ['ROLE_MANAGER'];
         }
-
     }
+
     /**
      * @ORM\PrePersist
      */
@@ -153,7 +153,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -178,7 +178,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self
@@ -407,6 +407,4 @@ class User implements UserInterface
 
         return $this;
     }
-
-
 }

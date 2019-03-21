@@ -31,8 +31,7 @@ class CommentsRepository extends ServiceEntityRepository
             ->orderBy('c.id', 'ASC')
             ->setMaxResults(50)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
     /*
