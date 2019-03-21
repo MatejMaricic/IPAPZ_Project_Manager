@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
+{% block adminSidebar %}
 
+    <li><i class="fa fa-folder"></i><a href="{{ path('invoice') }}" >Invoice</a></li>
+
+{% endblock %}
 {% block title %}
     Admin page
 {% endblock %}
