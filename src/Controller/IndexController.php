@@ -82,6 +82,17 @@ class IndexController extends AbstractController
                         'amount' => $fetcher->subscriptionAmount($this->getUser()->getCollaboration(), $userRepository)
                     ]
                 );
+            } elseif ($this->isGranted('ROLE_ADMIN')) {
+                return $this->render(
+                    'admin.html.twig',
+                    [
+                        'projects' => $projectRepository->findAll(),
+                        'user' => $this->getUser(),
+                        'users' => $userRepository->findAllManagersArray(),
+
+
+                    ]
+                );
             }
 
 
