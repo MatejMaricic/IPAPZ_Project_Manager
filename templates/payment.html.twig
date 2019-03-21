@@ -17,6 +17,7 @@
 
             <header>
                 <h2>Your subscription has not been paid, please make a payment in order to use this app</h2>
+                <h3>You have to pay {{ amount }} euros</h3>
             </header>
 
             <form method="post" id="payment-form" action="{{ path('checkout', {'id': collab.id}) }}">

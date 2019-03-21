@@ -2,97 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a514df7d-3dc8-424a-b05f-18139b802102" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/grumphp.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/phpcs.xml.dist" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Command/CheckSubscriptionDate.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Services/Fetcher.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Command/CronOnSubscribers.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Command/CronOnSubscribers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grumphp.yml" beforeDir="false" afterPath="$PROJECT_DIR$/grumphp.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/CollabController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/CollabController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/DiscussionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/DiscussionController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/EmailController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/EmailController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/IndexController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/IndexController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ProjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProjectController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/RegistrationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RegistrationController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/TaskController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/TaskController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Collaboration.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Collaboration.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/HoursOnTask.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/HoursOnTask.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Project.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Project.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/ProjectStatus.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/ProjectStatus.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Subscriptions.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Subscriptions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Task.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Task.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/AddHoursFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/AddHoursFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/AssignDevFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/AssignDevFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/CommentFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/CommentFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/DatePickerFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/DatePickerFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/DiscussionFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/DiscussionFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/ProjectFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/ProjectFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/ProjectStatusFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/ProjectStatusFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/RegistrationFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/RegistrationFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/SearchHoursFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/SearchHoursFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/TaskConvertFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/TaskConvertFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/TaskFormType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/TaskFormType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Kernel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190216135216.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190216135216.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190216141759.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190216141759.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190217121955.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190217121955.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190219180017.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190219180017.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190219180206.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190219180206.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190220100804.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190220100804.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190220101000.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190220101000.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190220104855.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190220104855.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190220153000.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190220153000.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190220171243.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190220171243.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190220173309.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190220173309.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190221084227.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190221084227.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190221084313.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190221084313.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190221093504.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190221093504.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190221095649.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190221095649.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190221095940.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190221095940.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190221102223.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190221102223.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190221164031.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190221164031.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190221164140.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190221164140.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190222110420.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190222110420.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190223214009.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190223214009.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190223214221.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190223214221.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190224120828.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190224120828.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190312133340.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190312133340.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190313073644.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190313073644.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190313120154.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190313120154.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190314062516.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190314062516.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190314065308.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190314065308.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190314092146.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190314092146.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190314092245.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190314092245.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190314093130.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190314093130.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190314104610.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190314104610.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190315062739.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190315062739.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190315071031.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190315071031.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190315072444.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190315072444.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190315081718.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190315081718.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190315084418.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190315084418.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190315121239.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190315121239.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190315121425.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190315121425.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190318094736.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190318094736.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190319120038.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190319120038.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190319120253.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190319120253.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190319122928.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190319122928.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190320081728.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190320081728.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190320081816.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190320081816.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190320081934.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190320081934.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190320131127.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190320131127.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Migrations/Version20190320133151.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Migrations/Version20190320133151.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/CollaborationRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/CollaborationRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/CommentsRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/CommentsRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/HoursOnTaskRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/HoursOnTaskRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/ProjectRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ProjectRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/ProjectStatusRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ProjectStatusRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/SubscriptionsRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/SubscriptionsRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/UserRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Security/UserAuthenticator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Security/UserAuthenticator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/payment.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/payment.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -136,13 +56,80 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="383">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Controller/IndexController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3345">
-              <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
+            <state relative-caret-position="456">
+              <caret line="88" column="34" lean-forward="true" selection-start-line="88" selection-start-column="34" selection-end-line="88" selection-end-column="34" />
               <folding>
                 <element signature="e#115#142#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Services/Fetcher.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="465">
+              <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+              <folding>
+                <element signature="e#115#144#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Controller/TaskController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="495">
+              <caret line="82" column="37" selection-start-line="82" selection-start-column="37" selection-end-line="82" selection-end-column="37" />
+              <folding>
+                <element signature="e#116#140#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/payment.html.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="100">
+              <caret line="19" column="54" selection-start-line="19" selection-start-column="54" selection-end-line="19" selection-end-column="54" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Controller/EmailController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="25" column="7" selection-start-line="25" selection-start-column="7" selection-end-line="25" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Controller/ProjectController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="219" column="5" selection-start-line="219" selection-start-column="5" selection-end-line="219" selection-end-column="5" />
+              <folding>
+                <element signature="e#6#86#0#PHP" expanded="true" />
+                <element signature="e#115#138#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Controller/CollabController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="231">
+              <caret line="64" column="17" lean-forward="true" selection-start-line="64" selection-start-column="17" selection-end-line="64" selection-end-column="17" />
+              <folding>
+                <element signature="e#115#144#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -175,9 +162,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/Repository/CommentsRepository.php" />
-        <option value="$PROJECT_DIR$/src/Entity/Comments.php" />
-        <option value="$PROJECT_DIR$/src/Entity/Discussion.php" />
         <option value="$PROJECT_DIR$/templates/project/task_edit.html.twig" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/src/Form/TaskFormType.php" />
@@ -193,7 +177,6 @@
         <option value="$PROJECT_DIR$/src/Entity/Task.php" />
         <option value="$PROJECT_DIR$/config/packages/swiftmailer.yaml" />
         <option value="$PROJECT_DIR$/config/packages/dev/web_profiler.yaml" />
-        <option value="$PROJECT_DIR$/src/Command/CronOnSubscribers.php" />
         <option value="$PROJECT_DIR$/templates/project/project.html.twig" />
         <option value="$PROJECT_DIR$/templates/project/project_discussions.html.twig" />
         <option value="$PROJECT_DIR$/templates/project/single_discussion.html.twig" />
@@ -215,17 +198,21 @@
         <option value="$PROJECT_DIR$/src/Repository/UserRepository.php" />
         <option value="$PROJECT_DIR$/src/Entity/Transactions.php" />
         <option value="$PROJECT_DIR$/config/routes.yaml" />
-        <option value="$PROJECT_DIR$/src/Command/CheckSubscriptionDate.php" />
         <option value="$PROJECT_DIR$/templates/index.html.twig" />
-        <option value="$PROJECT_DIR$/templates/payment.html.twig" />
-        <option value="$PROJECT_DIR$/grumphp.yml" />
         <option value="$PROJECT_DIR$/src/Entity/Subscriptions.php" />
+        <option value="$PROJECT_DIR$/src/Command/CheckSubscriptionDate.php" />
+        <option value="$PROJECT_DIR$/src/Command/CronOnSubscribers.php" />
+        <option value="$PROJECT_DIR$/grumphp.yml" />
+        <option value="$PROJECT_DIR$/src/Security/UserAuthenticator.php" />
+        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/Controller/TaskController.php" />
-        <option value="$PROJECT_DIR$/src/Controller/ProjectController.php" />
-        <option value="$PROJECT_DIR$/src/Controller/IndexController.php" />
-        <option value="$PROJECT_DIR$/src/Controller/EmailController.php" />
-        <option value="$PROJECT_DIR$/src/Controller/CollabController.php" />
         <option value="$PROJECT_DIR$/src/Controller/DiscussionController.php" />
+        <option value="$PROJECT_DIR$/src/Controller/EmailController.php" />
+        <option value="$PROJECT_DIR$/src/Controller/ProjectController.php" />
+        <option value="$PROJECT_DIR$/src/Controller/CollabController.php" />
+        <option value="$PROJECT_DIR$/src/Services/Fetcher.php" />
+        <option value="$PROJECT_DIR$/src/Controller/IndexController.php" />
+        <option value="$PROJECT_DIR$/templates/payment.html.twig" />
       </list>
     </option>
   </component>
@@ -371,6 +358,11 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Controller" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="IPAPZ_Project_Manager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="IPAPZ_Project_Manager" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -455,12 +447,12 @@
       <workItem from="1552898258445" duration="16490000" />
       <workItem from="1552976364685" duration="20715000" />
       <workItem from="1553062630988" duration="22464000" />
-      <workItem from="1553149901201" duration="7977000" />
+      <workItem from="1553149901201" duration="12421000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="387223000" />
+    <option name="totallyTimeSpent" value="391667000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -482,7 +474,7 @@
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3286026" />
       <window_info anchor="bottom" id="Run" order="3" />
-      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.4991699" weight="0.33296943" />
+      <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.4991699" visible="true" weight="0.33296943" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" sideWeight="0.49893278" weight="0.32969433" />
@@ -490,7 +482,7 @@
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5010672" side_tool="true" weight="0.32969433" />
-      <window_info anchor="bottom" x="1230" y="171" width="677" height="538" id="Terminal" order="12" sideWeight="0.4986165" visible="true" weight="0.3930131" />
+      <window_info anchor="bottom" x="1230" y="171" width="677" height="538" id="Terminal" order="12" sideWeight="0.4986165" weight="0.20742358" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -523,33 +515,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Form/SearchHoursFormType.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="46" selection-start-line="46" selection-end-line="46" />
-          <folding>
-            <element signature="e#110#133#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/UserController.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/symfony/security-core/Encoder/UserPasswordEncoderInterface.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="17" column="2" selection-start-line="17" selection-start-column="2" selection-end-line="17" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/user_hours.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="83" column="63" selection-start-line="83" selection-start-column="63" selection-end-line="83" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
     <entry file="das://51f72ea5-9203-44a9-bfea-ee415d803ffd/schema/zavrsni/table/project">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
@@ -622,16 +587,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="535">
           <caret line="135" selection-start-line="135" selection-end-line="135" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/RegistrationController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="580">
-          <caret line="48" selection-start-line="48" selection-end-line="48" />
-          <folding>
-            <element signature="e#34#63#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -774,40 +729,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/symfony/http-kernel/HttpKernel.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="152" selection-start-line="152" selection-end-line="152" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Command/CronOnSubscribers.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="686">
-          <caret line="53" selection-start-line="53" selection-end-line="53" />
-          <folding>
-            <element signature="e#32#67#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Command/CheckSubscriptionDate.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="52" column="111" selection-start-line="52" selection-start-column="111" selection-end-line="52" selection-end-column="111" />
-          <folding>
-            <element signature="e#113#149#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://51f72ea5-9203-44a9-bfea-ee415d803ffd/schema/zavrsni/table/collaboration">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/services.yaml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -815,13 +736,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="19" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/payment.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="18" column="108" selection-start-line="18" selection-start-column="108" selection-end-line="18" selection-end-column="108" />
         </state>
       </provider>
     </entry>
@@ -842,48 +756,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grumphp.yml">
+    <entry file="file://$PROJECT_DIR$/src/Controller/RegistrationController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        <state relative-caret-position="-499">
+          <caret line="22" column="54" lean-forward="true" selection-start-line="22" selection-start-column="54" selection-end-line="22" selection-end-column="54" />
+          <folding>
+            <element signature="e#34#63#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/TaskController.php">
+    <entry file="file://$PROJECT_DIR$/src/Command/CheckSubscriptionDate.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4039">
-          <caret line="94" column="5" selection-start-line="94" selection-start-column="5" selection-end-line="94" selection-end-column="5" />
+        <state relative-caret-position="-135">
+          <caret line="31" column="7" selection-start-line="31" selection-start-column="7" selection-end-line="31" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Security/UserAuthenticator.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="35" column="6" selection-start-line="35" selection-start-column="6" selection-end-line="35" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grumphp.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="39" selection-start-line="17" selection-start-column="39" selection-end-line="17" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Command/CronOnSubscribers.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="56" column="32" selection-start-line="56" selection-start-column="32" selection-end-line="56" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/packages/security.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="457">
+          <caret line="31" column="9" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://51f72ea5-9203-44a9-bfea-ee415d803ffd/schema/zavrsni/table/collaboration">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/symfony/http-kernel/HttpKernel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="68" selection-start-line="68" selection-end-line="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/DiscussionController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-414">
+          <caret line="170" column="59" selection-start-line="170" selection-start-column="59" selection-end-line="170" selection-end-column="59" />
           <folding>
             <element signature="e#116#140#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/ProjectController.php">
+    <entry file="file://$PROJECT_DIR$/src/Controller/TaskController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-724">
-          <caret line="152" column="45" lean-forward="true" selection-start-line="152" selection-start-column="45" selection-end-line="152" selection-end-column="45" />
-          <folding>
-            <element signature="e#6#86#0#PHP" expanded="true" />
-            <element signature="e#115#138#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/CollabController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="127" lean-forward="true" selection-start-line="127" selection-end-line="127" />
-          <folding>
-            <element signature="e#115#144#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/DiscussionController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2591">
-          <caret line="187" column="10" lean-forward="true" selection-start-line="187" selection-start-column="10" selection-end-line="187" selection-end-column="10" />
+        <state relative-caret-position="495">
+          <caret line="82" column="37" selection-start-line="82" selection-start-column="37" selection-end-line="82" selection-end-column="37" />
           <folding>
             <element signature="e#116#140#0#PHP" expanded="true" />
           </folding>
@@ -892,18 +844,56 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Controller/EmailController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-64">
-          <caret line="36" column="57" lean-forward="true" selection-start-line="36" selection-start-column="57" selection-end-line="36" selection-end-column="57" />
+        <state relative-caret-position="225">
+          <caret line="25" column="7" selection-start-line="25" selection-start-column="7" selection-end-line="25" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/ProjectController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="219" column="5" selection-start-line="219" selection-start-column="5" selection-end-line="219" selection-end-column="5" />
+          <folding>
+            <element signature="e#6#86#0#PHP" expanded="true" />
+            <element signature="e#115#138#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Services/Fetcher.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+          <folding>
+            <element signature="e#115#144#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/CollabController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="64" column="17" lean-forward="true" selection-start-line="64" selection-start-column="17" selection-end-line="64" selection-end-column="17" />
+          <folding>
+            <element signature="e#115#144#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Controller/IndexController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3345">
-          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
+        <state relative-caret-position="456">
+          <caret line="88" column="34" lean-forward="true" selection-start-line="88" selection-start-column="34" selection-end-line="88" selection-end-column="34" />
           <folding>
             <element signature="e#115#142#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/payment.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="19" column="54" selection-start-line="19" selection-start-column="54" selection-end-line="19" selection-end-column="54" />
         </state>
       </provider>
     </entry>

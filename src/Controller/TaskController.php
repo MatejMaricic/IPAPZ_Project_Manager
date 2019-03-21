@@ -26,6 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Services\Fetcher;
 
 class TaskController extends AbstractController
 {
@@ -37,6 +38,7 @@ class TaskController extends AbstractController
      * @param               ProjectRepository $projectRepository
      * @param               SubscriptionsRepository $subscriptionsRepository
      * @param               Task $task
+     * @param               Fetcher $fetcher
      * @return              Response
      */
     public function taskView(
@@ -44,7 +46,8 @@ class TaskController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         ProjectRepository $projectRepository,
-        SubscriptionsRepository $subscriptionsRepository
+        SubscriptionsRepository $subscriptionsRepository,
+        Fetcher $fetcher
     ) {
 
         $id = $task->getProject()->getId();
@@ -70,6 +73,12 @@ class TaskController extends AbstractController
                     $this->addHoursToTask($task, $entityManager, $addHoursForm);
                     return $this->redirect($request->getUri());
                 }
+
+
+                if ($fetcher->checkSubscription() == 0) {
+                    return $this->redirectToRoute('index_page');
+                }
+
 
                 return $this->render(
                     'project/task.html.twig',

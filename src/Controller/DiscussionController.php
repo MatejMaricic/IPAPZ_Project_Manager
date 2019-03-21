@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\DiscussionFormType;
+use App\Services\Fetcher;
 
 class DiscussionController extends AbstractController
 {
@@ -35,6 +36,7 @@ class DiscussionController extends AbstractController
      * @param                            Discussion $discussion
      * @param                            SubscriptionsRepository $subscriptionsRepository
      * @param                            CommentsRepository $commentsRepository
+     * @param                            Fetcher $fetcher
      * @return                           Response
      */
     public function singleDiscussionView(
@@ -42,7 +44,8 @@ class DiscussionController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         SubscriptionsRepository $subscriptionsRepository,
-        CommentsRepository $commentsRepository
+        CommentsRepository $commentsRepository,
+        Fetcher $fetcher
     ) {
         $projectId = $discussion->getProject()->getId();
 
@@ -63,7 +66,6 @@ class DiscussionController extends AbstractController
             if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
                 $this->convertToTask(
                     $discussion,
-                    $request,
                     $entityManager,
                     $taskForm,
                     $subscriptionsRepository,
@@ -71,6 +73,10 @@ class DiscussionController extends AbstractController
                 );
                 return $this->redirectToRoute('project_tasks', array('id' => $projectId));
             }
+        }
+
+        if ($fetcher->checkSubscription() == 0) {
+            return $this->redirectToRoute('index_page');
         }
 
         return $this->render(
@@ -162,12 +168,14 @@ class DiscussionController extends AbstractController
      * @param                              Project $project
      * @param                              Request $request
      * @param                              EntityManagerInterface $entityManager
+     * @param                              Fetcher $fetcher
      * @return                             Response
      */
     public function showDiscussions(
         Project $project,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        Fetcher $fetcher
     ) {
         $discussionForm = $this->createForm(DiscussionFormType::class);
 
@@ -175,6 +183,10 @@ class DiscussionController extends AbstractController
         if ($this->isGranted('ROLE_MANAGER') && $discussionForm->isSubmitted() && $discussionForm->isValid()) {
             $this->newDiscussion($entityManager, $project, $discussionForm);
             return $this->redirect($request->getUri());
+        }
+
+        if ($fetcher->checkSubscription() == 0) {
+            return $this->redirectToRoute('index_page');
         }
 
         return $this->render(

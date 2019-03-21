@@ -12,6 +12,7 @@ use App\Entity\Collaboration;
 use App\Entity\Transactions;
 use App\Repository\CollaborationRepository;
 use App\Repository\UserRepository;
+use App\Services\Fetcher;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,16 +43,18 @@ class CollabController extends AbstractController
      * @param                  Collaboration $collaboration
      * @param                  EntityManagerInterface $entityManager
      * @param                  UserRepository $userRepository
+     * @param                  Fetcher $fetcher
      * @throws
      * @return                 Response
      */
     public function checkout(
         Collaboration $collaboration,
         EntityManagerInterface $entityManager,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        Fetcher $fetcher
     ) {
 
-        $amount = $this->subscriptionAmount($collaboration, $userRepository);
+        $amount = $fetcher->subscriptionAmount($collaboration, $userRepository);
         $nonce = $_POST["payment_method_nonce"];
         $result = $this->gateway()->transaction()->sale(
             [
@@ -87,17 +90,6 @@ class CollabController extends AbstractController
             $_SESSION["errors"] = $errorString;
             return $this->redirectToRoute('index_page');
         }
-    }
-
-    public function subscriptionAmount(
-        Collaboration $collaboration,
-        UserRepository $userRepository
-    ) {
-        $user = $collaboration->getUser();
-        $devs = $userRepository->findAllDevelopersForManagerArray($user->getId());
-        $numOfDevs = count($devs);
-
-        return $amount = ($numOfDevs * 5) + 5;
     }
 
 

@@ -17,6 +17,7 @@ use App\Form\ProjectStatusFormType;
 use App\Form\TaskFormType;
 use App\Repository\ProjectStatusRepository;
 use App\Repository\UserRepository;
+use App\Services\Fetcher;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,13 +35,15 @@ class ProjectController extends AbstractController
      * @param                  Request $request
      * @param                  EntityManagerInterface $entityManager
      * @param                  UserRepository $userRepository
+     * @param                  Fetcher $fetcher
      * @return                 Response
      */
     public function projectHandler(
         Project $project,
         Request $request,
         EntityManagerInterface $entityManager,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        Fetcher $fetcher
     ) {
         $devs = $userRepository->devsOnProject($project->getId());
 
@@ -50,6 +53,10 @@ class ProjectController extends AbstractController
         if ($this->isGranted('ROLE_MANAGER') && $devForm->isSubmitted() && $devForm->isValid()) {
             $this->assignDev($project, $entityManager, $devForm);
             return $this->redirect($request->getUri());
+        }
+
+        if ($fetcher->checkSubscription() == 0) {
+            return $this->redirectToRoute('index_page');
         }
 
         return $this->render(
@@ -137,12 +144,14 @@ class ProjectController extends AbstractController
      * @param                       Request $request
      * @param                       EntityManagerInterface $entityManager
      * @param                       Project $project
+     * @param                       Fetcher $fetcher
      * @return                      Response
      */
     public function projectEditor(
         Request $request,
         EntityManagerInterface $entityManager,
-        Project $project
+        Project $project,
+        Fetcher $fetcher
     ) {
         $projectForm = $this->createForm(ProjectFormType::class, $project);
         $projectForm->handleRequest($request);
@@ -151,6 +160,10 @@ class ProjectController extends AbstractController
             return $this->redirectToRoute('index_page');
         }
 
+
+        if ($fetcher->checkSubscription() == 0) {
+            return $this->redirectToRoute('index_page');
+        }
 
         return $this->render(
             'project/project_edit.html.twig',

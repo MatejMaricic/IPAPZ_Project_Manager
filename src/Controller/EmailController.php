@@ -24,7 +24,6 @@ class EmailController extends AbstractController
 {
 
     /**
-     * @Route("/email", name="email")
      * @param           EntityManagerInterface $entityManager
      * @param           \Swift_Mailer $mailer
      * @param           TaskRepository $taskRepository

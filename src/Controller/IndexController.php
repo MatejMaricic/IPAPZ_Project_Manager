@@ -28,6 +28,7 @@ use App\Form\RegistrationFormType;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Braintree_Gateway;
+use App\Services\Fetcher;
 
 class IndexController extends AbstractController
 {
@@ -39,6 +40,7 @@ class IndexController extends AbstractController
      * @param      ProjectRepository $projectRepository
      * @param      UserRepository $userRepository
      * @param      UserPasswordEncoderInterface $passwordEncoder
+     * @param      Fetcher $fetcher
      * @return     Response
      */
     public function indexHandler(
@@ -46,7 +48,8 @@ class IndexController extends AbstractController
         EntityManagerInterface $entityManager,
         ProjectRepository $projectRepository,
         UserRepository $userRepository,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        Fetcher $fetcher
     ) {
 
 
@@ -65,23 +68,22 @@ class IndexController extends AbstractController
                 return $this->redirect($request->getUri());
             }
 
-            if ($this->isGranted('ROLE_MANAGER')) {
-                $collab = $this->getUser()->getCollaboration()->getSubscribed();
 
-                if ($collab == 0) {
-                    $gateway = $this->gateway()->ClientToken()->generate();
+            if ($fetcher->checkSubscription() == 0) {
+                $gateway = $this->gateway()->ClientToken()->generate();
 
 
-                    return $this->render(
-                        'payment.html.twig',
-                        [
-                            'user' => $this->getUser(),
-                            'collab' => $this->getUser()->getCollaboration(),
-                            'gateway' => $gateway
-                        ]
-                    );
-                }
+                return $this->render(
+                    'payment.html.twig',
+                    [
+                        'user' => $this->getUser(),
+                        'collab' => $this->getUser()->getCollaboration(),
+                        'gateway' => $gateway,
+                        'amount' => $fetcher->subscriptionAmount($this->getUser()->getCollaboration(), $userRepository)
+                    ]
+                );
             }
+
 
             return $this->render(
                 'index.html.twig',
@@ -91,7 +93,6 @@ class IndexController extends AbstractController
                     'user' => $this->getUser(),
                     'users' => $userRepository->findAllDevelopersArray(),
                     'form' => $devForm->createView(),
-
 
                 ]
             );
