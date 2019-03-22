@@ -155,25 +155,32 @@ class IndexController extends AbstractController
         $user = $form->getData();
         $file = $request->files->get('registration_form')['avatar'];
 
-        if (isset($file)) {
-            $uploads_directory = $this->getParameter('uploads_directory');
-            $filename = md5(uniqid()) . '.' . $file->guessExtension();
-            $file->move(
-                $uploads_directory,
-                $filename
+        try {
+
+            if (isset($file)) {
+                $uploads_directory = $this->getParameter('uploads_directory');
+                $filename = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move(
+                    $uploads_directory,
+                    $filename
+                );
+                $user->setAvatar($filename);
+            }
+            $user->setAddedBy($this->getUser()->getId());
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
             );
-            $user->setAvatar($filename);
+            $user->setRoles(array('ROLE_USER'));
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+        }catch (\Exception $exception)
+        {
+
         }
-        $user->setAddedBy($this->getUser()->getId());
-        $user->setPassword(
-            $passwordEncoder->encodePassword(
-                $user,
-                $form->get('plainPassword')->getData()
-            )
-        );
-        $user->setRoles(array('ROLE_USER'));
-        $entityManager->persist($user);
-        $entityManager->flush();
     }
 
 

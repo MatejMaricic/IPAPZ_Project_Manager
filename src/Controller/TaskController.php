@@ -20,8 +20,10 @@ use App\Form\TaskFormType;
 use App\Repository\ProjectRepository;
 use App\Repository\SubscriptionsRepository;
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\ConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +50,8 @@ class TaskController extends AbstractController
         ProjectRepository $projectRepository,
         SubscriptionsRepository $subscriptionsRepository,
         Fetcher $fetcher
-    ) {
+    )
+    {
 
         $id = $task->getProject()->getId();
         $project = $projectRepository->find($id);
@@ -99,10 +102,15 @@ class TaskController extends AbstractController
     private function editTask(
         EntityManagerInterface $entityManager,
         $taskForm
-    ) {
-        $task = $taskForm->getData();
-        $entityManager->persist($task);
-        $entityManager->flush();
+    )
+    {
+        try {
+            $task = $taskForm->getData();
+            $entityManager->persist($task);
+            $entityManager->flush();
+        } catch (\Exception $exception) {
+            $this->addFlash('warning', 'All Fields Are Required');
+        }
     }
 
     private function addComment(
@@ -110,7 +118,8 @@ class TaskController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         $commentForm
-    ) {
+    )
+    {
         /**
          * @var Comments $comments
          */
@@ -130,12 +139,18 @@ class TaskController extends AbstractController
             }
             $comments->setImages($images);
         }
-        $task->setUpdated(true);
-        $comments->setUser($this->getUser());
-        $comments->setTask($task);
-        $entityManager->persist($comments);
-        $entityManager->persist($task);
-        $entityManager->flush();
+
+        try {
+            $task->setUpdated(true);
+            $comments->setUser($this->getUser());
+            $comments->setTask($task);
+            $entityManager->persist($comments);
+            $entityManager->persist($task);
+            $entityManager->flush();
+        } catch (\Exception $exception) {
+            $this->addFlash('warning', 'You have to add comment before posting');
+        }
+
     }
 
     private function assignDevToTask(
@@ -143,7 +158,8 @@ class TaskController extends AbstractController
         EntityManagerInterface $entityManager,
         $devForm,
         SubscriptionsRepository $subscriptionsRepository
-    ) {
+    )
+    {
 
 
         $user = $devForm->getData();
@@ -169,7 +185,8 @@ class TaskController extends AbstractController
         Task $task,
         EntityManagerInterface $entityManager,
         $addHoursForm
-    ) {
+    )
+    {
         $hoursOnTask = $addHoursForm->getData();
         $hoursOnTask->setTask($task);
         $hoursOnTask->setUser($this->getUser());
@@ -191,7 +208,8 @@ class TaskController extends AbstractController
     public function taskCompleted(
         Task $task,
         EntityManagerInterface $entityManager
-    ) {
+    )
+    {
         $id = $task->getProject()->getId();
         $task->setCompleted(true);
 
@@ -211,7 +229,8 @@ class TaskController extends AbstractController
     public function taskReopen(
         Task $task,
         EntityManagerInterface $entityManager
-    ) {
+    )
+    {
 
         $projectId = $task->getProject()->getId();
         $task->setCompleted(false);
@@ -231,7 +250,8 @@ class TaskController extends AbstractController
     public function subscribeToTask(
         Task $task,
         EntityManagerInterface $entityManager
-    ) {
+    )
+    {
         $subscription = new Subscriptions();
         $email = $this->getUser()->getEmail();
         $projectId = $task->getProject()->getId();
@@ -280,7 +300,8 @@ class TaskController extends AbstractController
         UserRepository $userRepository,
         Request $request,
         EntityManagerInterface $entityManager
-    ) {
+    )
+    {
 
         $devs = $userRepository->devsOnProject($project->getId());
         $taskForm = $this->createForm(TaskFormType::class, $data = null, array("project_id" => $project->getId()));
@@ -316,7 +337,8 @@ class TaskController extends AbstractController
         EntityManagerInterface $entityManager,
         Project $project,
         $taskForm
-    ) {
+    )
+    {
 
         /**
          * @var Task $task
@@ -336,18 +358,22 @@ class TaskController extends AbstractController
             }
             $task->setImages($images);
         }
-
-        $task->setProject($project);
-        $task->setCompleted(false);
-        $entityManager->persist($task);
-        $entityManager->flush();
+        try {
+            $task->setProject($project);
+            $task->setCompleted(false);
+            $entityManager->persist($task);
+            $entityManager->flush();
+        } catch (\Exception $exception) {
+            $this->addFlash('warning', 'All Fields Are Required');
+        }
     }
 
     private function newStatus(
         EntityManagerInterface $entityManager,
         Project $project,
         $statusForm
-    ) {
+    )
+    {
         $status = $statusForm->getData();
         $project->addProjectStatus($status);
         $entityManager->persist($project);
@@ -365,13 +391,20 @@ class TaskController extends AbstractController
         Task $task,
         Request $request,
         EntityManagerInterface $entityManager
-    ) {
+    )
+    {
         $taskForm = $this->createForm(TaskFormType::class, $task, array('project_id' => $task->getProject()->getId()));
-        $taskForm->handleRequest($request);
-        if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
-            $this->editTask($entityManager, $task, $taskForm);
-            return $this->redirectToRoute('project_tasks', array('id' => $task->getProject()->getId()));
+        try {
+            $taskForm->handleRequest($request);
+            if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
+                $this->editTask($entityManager, $taskForm);
+                return $this->redirectToRoute('project_tasks', array('id' => $task->getProject()->getId()));
+            }
+        } catch (\Exception $exception) {
+            $this->addFlash('warning', 'All Fields Are Required');
         }
+
+
 
 
         return $this->render(
