@@ -117,10 +117,16 @@ class DiscussionController extends AbstractController
             }
             $comments->setImages($images);
         }
-        $comments->setUser($this->getUser());
-        $comments->setDiscussion($discussion);
-        $entityManager->persist($comments);
-        $entityManager->flush();
+        try {
+
+            $comments->setUser($this->getUser());
+            $comments->setDiscussion($discussion);
+            $entityManager->persist($comments);
+            $entityManager->flush();
+        } catch (\Exception $exception)
+        {
+            $this->addFlash('warning', 'Please add content before submitting');
+        }
     }
 
     private function convertToTask(
@@ -133,34 +139,39 @@ class DiscussionController extends AbstractController
         $subs = $subscriptionsRepository->findByDiscussion($discussion->getId());
         $comments = $commentsRepository->findCommentsByDiscussion($discussion);
 
-        $task = new Task();
-        $task = $taskForm->getData();
-        $task->setProject($discussion->getProject());
-        $task->setContent($discussion->getContent());
-        $task->setName($discussion->getName());
-        $task->setCompleted(false);
+        try {
+            $task = new Task();
+            $task = $taskForm->getData();
+            $task->setProject($discussion->getProject());
+            $task->setContent($discussion->getContent());
+            $task->setName($discussion->getName());
+            $task->setCompleted(false);
 
 
-        $entityManager->persist($task);
-        $entityManager->flush();
-
-        foreach ($subs as $sub) {
-            $sub->setDiscussionId(null);
-            $sub->setTaskId($task->getId());
-            $entityManager->persist($sub);
+            $entityManager->persist($task);
             $entityManager->flush();
-        }
 
-        foreach ($comments as $comment) {
-            $comment->setTask($task);
-            $discussion->removeComment($comment);
+            foreach ($subs as $sub) {
+                $sub->setDiscussionId(null);
+                $sub->setTaskId($task->getId());
+                $entityManager->persist($sub);
+                $entityManager->flush();
+            }
 
-            $entityManager->persist($comment);
-            $entityManager->persist($discussion);
+            foreach ($comments as $comment) {
+                $comment->setTask($task);
+                $discussion->removeComment($comment);
+
+                $entityManager->persist($comment);
+                $entityManager->persist($discussion);
+                $entityManager->flush();
+            }
+            $entityManager->remove($discussion);
             $entityManager->flush();
+
+        } catch (\Exception $exception){
+            $this->addFlash('warning', 'All Fields Are Required');
         }
-        $entityManager->remove($discussion);
-        $entityManager->flush();
     }
 
     /**
