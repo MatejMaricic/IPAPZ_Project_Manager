@@ -17,6 +17,7 @@ use App\Form\ProjectFormType;
 use App\Form\SearchHoursFormType;
 use App\Repository\HoursOnTaskRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\TransactionsRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -443,5 +444,22 @@ class IndexController extends AbstractController
                 'editHoursForm' => $editHoursForm->createView()
             ]
         );
+    }
+
+    /**
+     * @Route("my_payments", name="my_payments")
+     * @param                TransactionsRepository $transactionsRepository
+     * @return               Response
+     */
+    public function myPayments(TransactionsRepository $transactionsRepository)
+    {
+        $transactions = $transactionsRepository->findByBuyerEmail($this->getUser()->getEmail());
+
+        if ($this->isGranted('ROLE_MANAGERg')) {
+            return $this->render('invoice.html.twig', [
+                'user' => $this->getUser(),
+                'transactions' => $transactions
+            ]);
+        }
     }
 }

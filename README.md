@@ -65,5 +65,5 @@ sa biranjem vremenskog okvira i specificiranjem projekta/za sve projekte.
 približili aplikaciju. Slobodno dodati nove funkcionalnosti. Postojeće funkcionalnosti ukratko dokumentirati u Features/ {određeni entity}.md k
 kako bi aplikacija bila preglednija i lakša za upoznavanje.
 
-test
+testing branches
 
