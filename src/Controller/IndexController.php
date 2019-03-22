@@ -455,7 +455,7 @@ class IndexController extends AbstractController
     {
         $transactions = $transactionsRepository->findByBuyerEmail($this->getUser()->getEmail());
 
-        if ($this->isGranted('ROLE_MANAGERg')) {
+        if ($this->isGranted('ROLE_MANAGER')) {
             return $this->render('invoice.html.twig', [
                 'user' => $this->getUser(),
                 'transactions' => $transactions
