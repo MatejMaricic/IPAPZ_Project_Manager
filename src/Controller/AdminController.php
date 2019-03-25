@@ -25,10 +25,13 @@ class AdminController extends AbstractController
         $transactions = $transactionsRepository->findAll();
 
         if ($this->isGranted('ROLE_ADMIN')) {
-            return $this->render('invoice.html.twig', [
+            return $this->render(
+                'invoice.html.twig',
+                [
                 'user' => $this->getUser(),
                 'transactions' => $transactions
-            ]);
+                ]
+            );
         }
     }
 }

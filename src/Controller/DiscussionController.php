@@ -107,24 +107,24 @@ class DiscussionController extends AbstractController
 
         if (!empty($files)) {
             foreach ($files as $file) {
-                $uploads_directory = $this->getParameter('uploads_directory');
+                $uploadDirectory = $this->getParameter('uploads_directory');
                 $filename = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move(
-                    $uploads_directory,
+                    $uploadDirectory,
                     $filename
                 );
                 $images[] = $filename;
             }
+
             $comments->setImages($images);
         }
-        try {
 
+        try {
             $comments->setUser($this->getUser());
             $comments->setDiscussion($discussion);
             $entityManager->persist($comments);
             $entityManager->flush();
-        } catch (\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             $this->addFlash('warning', 'Please add content before submitting');
         }
     }
@@ -166,10 +166,10 @@ class DiscussionController extends AbstractController
                 $entityManager->persist($discussion);
                 $entityManager->flush();
             }
+
             $entityManager->remove($discussion);
             $entityManager->flush();
-
-        } catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $this->addFlash('warning', 'All Fields Are Required');
         }
     }

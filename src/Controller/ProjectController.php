@@ -257,7 +257,7 @@ class ProjectController extends AbstractController
 
         $projectId = $project->getId();
 
-        if (!$project) {
+        if (!$projectId) {
             return new JsonResponse(
                 [
                     'msg' => 'Unable to delete'
