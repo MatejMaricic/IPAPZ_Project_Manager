@@ -14,7 +14,7 @@ class UserController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->isGranted("IS_AUTHENTICATED_FULLY")) {
-           return $this->redirectToRoute('index_page');
+            return $this->redirectToRoute('index_page');
         }
 
         // get the login error if there is one

@@ -58,13 +58,13 @@ class IndexController extends AbstractController
         $devForm = $this->createForm(RegistrationFormType::class);
 
         $projectForm->handleRequest($request);
-        if ($this->isGranted('ROLE_MANAGER') && $projectForm->isSubmitted() && $projectForm->isValid()) {
+        if ($projectForm->isSubmitted() && $projectForm->isValid()) {
             $this->newProject($entityManager, $projectForm);
             $this->addFlash('success', 'New project created!');
             return $this->redirect($request->getUri());
         } else {
             $devForm->handleRequest($request);
-            if ($this->isGranted('ROLE_MANAGER') && $devForm->isSubmitted() && $devForm->isValid()) {
+            if ($devForm->isSubmitted() && $devForm->isValid()) {
                 $this->addDeveloper($request, $entityManager, $passwordEncoder, $devForm);
                 return $this->redirect($request->getUri());
             }
@@ -89,7 +89,6 @@ class IndexController extends AbstractController
 
         if ($fetcher->checkSubscription() == 0) {
             $gateway = $this->gateway()->ClientToken()->generate();
-
 
             return $this->render(
                 'payment.html.twig',
@@ -292,7 +291,6 @@ class IndexController extends AbstractController
                     'projects' => $projects
                 ]
             );
-
     }
 
     /**
