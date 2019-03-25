@@ -37,14 +37,15 @@ class RegistrationController extends AbstractController
             $file = $request->files->get('registration_form')['avatar'];
 
             if (isset($file)) {
-                $uploads_directory = $this->getParameter('uploads_directory');
+                $uploadDirectory = $this->getParameter('uploads_directory');
                 $filename = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move(
-                    $uploads_directory,
+                    $uploadDirectory,
                     $filename
                 );
                 $user->setAvatar($filename);
             }
+
             $collaboration = new Collaboration();
             $collaboration->setUser($user);
             $collaboration->setCreatedAt(new \DateTime('now'));

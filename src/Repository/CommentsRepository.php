@@ -33,16 +33,4 @@ class CommentsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    /*
-    public function findOneBySomeField($value): ?Comments
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

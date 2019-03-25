@@ -88,17 +88,4 @@ class HoursOnTaskRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-
-    /*
-    public function findOneBySomeField($value): ?HoursOnTask
-    {
-        return $this->createQueryBuilder('h')
-            ->andWhere('h.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
