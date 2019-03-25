@@ -9,8 +9,14 @@
 namespace App\Controller;
 
 use App\Repository\TransactionsRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class AdminController
+ * @package App\Controller
+ * @IsGranted("ROLE_ADMIN")
+ */
 class AdminController extends AbstractController
 {
     /**
@@ -22,7 +28,6 @@ class AdminController extends AbstractController
     {
         $transactions = $transactionsRepository->findAll();
 
-        if ($this->isGranted('ROLE_ADMIN')) {
             return $this->render(
                 'invoice.html.twig',
                 [
@@ -30,6 +35,5 @@ class AdminController extends AbstractController
                     'transactions' => $transactions
                 ]
             );
-        }
     }
 }
