@@ -49,8 +49,7 @@ class IndexController extends AbstractController
         UserRepository $userRepository,
         UserPasswordEncoderInterface $passwordEncoder,
         Fetcher $fetcher
-    )
-    {
+    ) {
 
 
         $projectForm = $this->createForm(ProjectFormType::class);
@@ -128,8 +127,7 @@ class IndexController extends AbstractController
     private function newProject(
         EntityManagerInterface $entityManager,
         $projectForm
-    )
-    {
+    ) {
 
 
         /**
@@ -148,8 +146,7 @@ class IndexController extends AbstractController
         EntityManagerInterface $entityManager,
         UserPasswordEncoderInterface $passwordEncoder,
         $form
-    )
-    {
+    ) {
         /**
          * @var User $user
          */
@@ -195,8 +192,7 @@ class IndexController extends AbstractController
         EntityManagerInterface $entityManager,
         User $user,
         UserPasswordEncoderInterface $passwordEncoder
-    )
-    {
+    ) {
 
         $updateForm = $this->createForm(RegistrationFormType::class, $user);
 
@@ -230,8 +226,7 @@ class IndexController extends AbstractController
         EntityManagerInterface $entityManager,
         $updateForm,
         $passwordEncoder
-    )
-    {
+    ) {
         $user = $updateForm->getData();
         $file = $request->files->get('registration_form')['avatar'];
 
@@ -273,8 +268,7 @@ class IndexController extends AbstractController
     public function hoursManagementView(
         ProjectRepository $projectRepository,
         UserRepository $userRepository
-    )
-    {
+    ) {
         $projects = $projectRepository->findAll();
         $developers = $userRepository->findAllDevelopersArray();
 
@@ -310,8 +304,7 @@ class IndexController extends AbstractController
         HoursOnTaskRepository $hoursOnTaskRepository,
         Project $project,
         Request $request
-    )
-    {
+    ) {
         $total = 0;
         $id = $project->getId();
         $hoursOnProject = $hoursOnTaskRepository->findHoursByProject($id);
@@ -402,8 +395,7 @@ class IndexController extends AbstractController
         HoursOnTaskRepository $hoursOnTaskRepository,
         User $user,
         Request $request
-    )
-    {
+    ) {
         $total = 0;
         $id = $user->getId();
         $hoursForUser = $hoursOnTaskRepository->findHoursByUser($id);
@@ -446,8 +438,7 @@ class IndexController extends AbstractController
         HoursOnTask $hoursOnTask,
         Request $request,
         EntityManagerInterface $entityManager
-    )
-    {
+    ) {
         $editHoursForm = $this->createForm(AddHoursFormType::class, $hoursOnTask);
         $id = $hoursOnTask->getUser()->getId();
 

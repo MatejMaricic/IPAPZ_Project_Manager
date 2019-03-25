@@ -26,8 +26,7 @@ class Fetcher extends AbstractController
     public function subscriptionAmount(
         Collaboration $collaboration,
         UserRepository $userRepository
-    )
-    {
+    ) {
         $user = $collaboration->getUser();
         $devs = $userRepository->findAllDevelopersForManagerArray($user->getId());
         $numOfDevs = count($devs);

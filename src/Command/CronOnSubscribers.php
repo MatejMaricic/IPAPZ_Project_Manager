@@ -27,8 +27,7 @@ class CronOnSubscribers extends Command
         TaskRepository $taskRepository,
         SubscriptionsRepository $subscriptionsRepository,
         EntityManagerInterface $entityManager
-    )
-    {
+    ) {
         $this->emailController = $emailController;
         $this->mailer = $mailer;
         $this->taskRepository = $taskRepository;

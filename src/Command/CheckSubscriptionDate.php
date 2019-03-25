@@ -29,8 +29,7 @@ class CheckSubscriptionDate extends Command
         CollabController $collabController,
         CollaborationRepository $collaborationRepository,
         EntityManagerInterface $entityManager
-    )
-    {
+    ) {
         $this->collabController = $collabController;
         $this->collaborationRepository = $collaborationRepository;
         $this->entityManager = $entityManager;

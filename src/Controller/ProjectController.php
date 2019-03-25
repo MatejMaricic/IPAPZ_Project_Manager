@@ -39,8 +39,7 @@ class ProjectController extends AbstractController
         EntityManagerInterface $entityManager,
         UserRepository $userRepository,
         Fetcher $fetcher
-    )
-    {
+    ) {
         $devs = $userRepository->devsOnProject($project->getId());
 
         $devForm = $this->createForm(AssignDevFormType::class, $data = null, array("id" => $this->getUser()->getId()));
@@ -69,8 +68,7 @@ class ProjectController extends AbstractController
     private function editProject(
         EntityManagerInterface $entityManager,
         $projectForm
-    )
-    {
+    ) {
         $project = $projectForm->getData();
         $entityManager->persist($project);
         $entityManager->flush();
@@ -81,8 +79,7 @@ class ProjectController extends AbstractController
         Project $project,
         EntityManagerInterface $entityManager,
         $devForm
-    )
-    {
+    ) {
         $user = $devForm->getData();
         foreach ($user as $singleuser) {
             foreach ($singleuser as $item) {
@@ -112,8 +109,7 @@ class ProjectController extends AbstractController
         ProjectStatusRepository $projectStatusRepository,
         EntityManagerInterface $entityManager,
         Request $request
-    )
-    {
+    ) {
 
         $statusId = $request->get('status_id');
 
@@ -156,8 +152,7 @@ class ProjectController extends AbstractController
         EntityManagerInterface $entityManager,
         Project $project,
         Fetcher $fetcher
-    )
-    {
+    ) {
         $projectForm = $this->createForm(ProjectFormType::class, $project);
         $projectForm->handleRequest($request);
         if ($this->isGranted('ROLE_MANAGER') && $projectForm->isSubmitted() && $projectForm->isValid()) {
@@ -189,8 +184,7 @@ class ProjectController extends AbstractController
     public function completeProject(
         Project $project,
         EntityManagerInterface $entityManager
-    )
-    {
+    ) {
         $project->setCompleted(true);
         $entityManager->persist($project);
         $entityManager->flush();
@@ -207,8 +201,7 @@ class ProjectController extends AbstractController
     public function projectReopen(
         Project $project,
         EntityManagerInterface $entityManager
-    )
-    {
+    ) {
 
         $project->setCompleted(false);
 
@@ -260,8 +253,7 @@ class ProjectController extends AbstractController
     public function deleteProject(
         Project $project,
         EntityManagerInterface $entityManager
-    )
-    {
+    ) {
 
         $projectId = $project->getId();
 

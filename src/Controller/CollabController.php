@@ -51,8 +51,7 @@ class CollabController extends AbstractController
         EntityManagerInterface $entityManager,
         UserRepository $userRepository,
         Fetcher $fetcher
-    )
-    {
+    ) {
 
         $amount = $fetcher->subscriptionAmount($collaboration, $userRepository);
         $nonce = $_POST["payment_method_nonce"];
@@ -105,8 +104,7 @@ class CollabController extends AbstractController
     public function checkSubscriptionDate(
         CollaborationRepository $collaborationRepository,
         EntityManagerInterface $entityManager
-    )
-    {
+    ) {
         $subscriptions = $collaborationRepository->findAll();
         $today = new \DateTime('now');
 
