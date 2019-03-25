@@ -12,8 +12,6 @@ use App\Repository\SubscriptionsRepository;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class EmailController
@@ -28,7 +26,7 @@ class EmailController extends AbstractController
      * @param           \Swift_Mailer $mailer
      * @param           TaskRepository $taskRepository
      * @param           SubscriptionsRepository $subscriptionsRepository
-     * @return          Response
+     * @return          \Symfony\Component\HttpFoundation\Response
      */
     public function mail(
         \Swift_Mailer $mailer,

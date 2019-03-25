@@ -4,49 +4,48 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\DiscussionRepository")
- * @ORM\HasLifecycleCallbacks()
+ * @Doctrine\ORM\Mapping\Entity(repositoryClass="App\Repository\DiscussionRepository")
+ * @Doctrine\ORM\Mapping\HasLifecycleCallbacks()
  */
 class Discussion
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @Doctrine\ORM\Mapping\Id()
+     * @Doctrine\ORM\Mapping\GeneratedValue()
+     * @Doctrine\ORM\Mapping\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Doctrine\ORM\Mapping\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="discussions")
-     * @ORM\JoinColumn(nullable=false)
+     * @Doctrine\ORM\Mapping\ManyToOne(targetEntity="App\Entity\Project", inversedBy="discussions")
+     * @Doctrine\ORM\Mapping\JoinColumn(nullable=false)
      */
     private $project;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @Doctrine\ORM\Mapping\Column(type="datetime")
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Doctrine\ORM\Mapping\Column(type="string", length=255)
      */
     private $createdBy;
 
     /**
-     * @ORM\Column(type="text")
+     * @Doctrine\ORM\Mapping\Column(type="text")
      */
     private $content;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comments", mappedBy="discussion", orphanRemoval=false)
+     * @Doctrine\ORM\Mapping\OneToMany(targetEntity="App\Entity\Comments", mappedBy="discussion", orphanRemoval=false)
      */
     private $comments;
 
@@ -56,7 +55,7 @@ class Discussion
     }
 
     /**
-     * @ORM\PrePersist()
+     * @Doctrine\ORM\Mapping\PrePersist()
      */
     public function onPrePersist()
     {
@@ -80,12 +79,12 @@ class Discussion
         return $this;
     }
 
-    public function getProject(): ?Project
+    public function getProject()
     {
         return $this->project;
     }
 
-    public function setProject(?Project $project): self
+    public function setProject(\App\Entity\Project $project): self
     {
         $this->project = $project;
 
@@ -136,7 +135,7 @@ class Discussion
         return $this->comments;
     }
 
-    public function addComment(Comments $comment): self
+    public function addComment(\App\Entity\Comments $comment): self
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
@@ -146,7 +145,7 @@ class Discussion
         return $this;
     }
 
-    public function removeComment(Comments $comment): self
+    public function removeComment(\App\Entity\Comments $comment): self
     {
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);

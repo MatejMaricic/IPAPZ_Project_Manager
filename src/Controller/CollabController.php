@@ -15,9 +15,7 @@ use App\Repository\UserRepository;
 use App\Services\Fetcher;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Routing\Annotation\Route;
 use Braintree_Gateway;
 
 class CollabController extends AbstractController
@@ -40,13 +38,13 @@ class CollabController extends AbstractController
 
 
     /**
-     * @Route("checkout/{id}", name = "checkout")
+     * @Symfony\Component\Routing\Annotation\Route("checkout/{id}", name = "checkout")
      * @param                  Collaboration $collaboration
      * @param                  EntityManagerInterface $entityManager
      * @param                  UserRepository $userRepository
      * @param                  Fetcher $fetcher
      * @throws
-     * @return                 Response
+     * @return                 \Symfony\Component\HttpFoundation\Response
      */
     public function checkout(
         Collaboration $collaboration,
@@ -100,7 +98,7 @@ class CollabController extends AbstractController
     /**
      * @param  CollaborationRepository $collaborationRepository
      * @param  EntityManagerInterface $entityManager
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      * @throws
      */
     public function checkSubscriptionDate(

@@ -22,8 +22,6 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\RegistrationFormType;
 use Dompdf\Dompdf;
@@ -36,13 +34,13 @@ class IndexController extends AbstractController
 
     /**
      * @param      Request $request
-     * @Route("/", name="index_page")
+     * @Symfony\Component\Routing\Annotation\Route("/", name="index_page")
      * @param      EntityManagerInterface $entityManager
      * @param      ProjectRepository $projectRepository
      * @param      UserRepository $userRepository
      * @param      UserPasswordEncoderInterface $passwordEncoder
      * @param      Fetcher $fetcher
-     * @return     Response
+     * @return     \Symfony\Component\HttpFoundation\Response
      */
     public function indexHandler(
         Request $request,
@@ -182,12 +180,12 @@ class IndexController extends AbstractController
 
 
     /**
-     * @Route("/profile/{id}", name="profile_view")
+     * @Symfony\Component\Routing\Annotation\Route("/profile/{id}", name="profile_view")
      * @param                  Request $request
      * @param                  EntityManagerInterface $entityManager
      * @param                  UserPasswordEncoderInterface $passwordEncoder
      * @param                  User $user
-     * @return                 Response
+     * @return                 \Symfony\Component\HttpFoundation\Response
      */
     public function showProfile(
         Request $request,
@@ -261,10 +259,10 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/hours_management", name="hours_management")
+     * @Symfony\Component\Routing\Annotation\Route("/hours_management", name="hours_management")
      * @param                      ProjectRepository $projectRepository
      * @param                      UserRepository $userRepository
-     * @return                     Response $response
+     * @return                     \Symfony\Component\HttpFoundation\Response $response
      */
 
     public function hoursManagementView(
@@ -289,11 +287,17 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/project_hours/{id}/{value}", defaults={"value" = 0}, name="project_hours", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route
+     * (
+     *     "/project_hours/{id}/{value}",
+     *     defaults={"value" = 0},
+     *     name="project_hours",
+     *     methods={"POST", "GET"}
+     * )
      * @param                                HoursOnTaskRepository $hoursOnTaskRepository
      * @param                                Project $project
      * @param                                Request $request
-     * @return                               Response $response
+     * @return                               \Symfony\Component\HttpFoundation\Response $response
      */
 
     public function projectHoursManagement(
@@ -381,11 +385,11 @@ class IndexController extends AbstractController
 
 
     /**
-     * @Route("/user_hours/{id}", name="user_hours")
+     * @Symfony\Component\Routing\Annotation\Route("/user_hours/{id}", name="user_hours")
      * @param                     HoursOnTaskRepository $hoursOnTaskRepository
      * @param                     User $user
      * @param                     Request $request
-     * @return                    Response $response
+     * @return                    \Symfony\Component\HttpFoundation\Response $\Symfony\Component\HttpFoundation\Response
      */
     public function userHoursManagement(
         HoursOnTaskRepository $hoursOnTaskRepository,
@@ -420,11 +424,15 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/edit_user_hours/{id}", name="edit_user_hours")
+     * @Symfony\Component\Routing\Annotation\Route
+     * (
+     *     "/edit_user_hours/{id}",
+     *     name="edit_user_hours"
+     * )
      * @param                          HoursOnTask $hoursOnTask
      * @param                          EntityManagerInterface $entityManager
      * @param                          Request $request
-     * @return                         Response $response
+     * @return                         \Symfony\Component\HttpFoundation\Response $response
      */
     public function editUserHours(
         HoursOnTask $hoursOnTask,
@@ -453,9 +461,9 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("my_payments", name="my_payments")
+     * @Symfony\Component\Routing\Annotation\Route("my_payments", name="my_payments")
      * @param                TransactionsRepository $transactionsRepository
-     * @return               Response
+     * @return               \Symfony\Component\HttpFoundation\Response
      */
     public function myPayments(TransactionsRepository $transactionsRepository)
     {

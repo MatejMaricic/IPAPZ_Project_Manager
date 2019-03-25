@@ -8,7 +8,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Comments;
 use App\Entity\Discussion;
 use App\Entity\Project;
 use App\Entity\Subscriptions;
@@ -22,22 +21,25 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Form\DiscussionFormType;
 use App\Services\Fetcher;
 
 class DiscussionController extends AbstractController
 {
     /**
-     * @Route("/single_discussion/{id}", name="discussion_view", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route
+     * (
+     *     "/single_discussion/{id}",
+     *     name="discussion_view",
+     *     methods={"POST", "GET"}
+     * )
      * @param                            EntityManagerInterface $entityManager
      * @param                            Request $request
      * @param                            Discussion $discussion
      * @param                            SubscriptionsRepository $subscriptionsRepository
      * @param                            CommentsRepository $commentsRepository
      * @param                            Fetcher $fetcher
-     * @return                           Response
+     * @return                           \Symfony\Component\HttpFoundation\Response
      */
     public function singleDiscussionView(
         Discussion $discussion,
@@ -99,7 +101,7 @@ class DiscussionController extends AbstractController
     ) {
 
         /**
-         * @var Comments $comments
+         * @var \App\Entity\Comments $comments
          */
         $comments = $commentForm->getData();
 
@@ -175,12 +177,17 @@ class DiscussionController extends AbstractController
     }
 
     /**
-     * @Route("/project_discussions/{id}", name="project_discussions", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route
+     * (
+     *     "/project_discussions/{id}",
+     *      name="project_discussions",
+     *     methods={"POST", "GET"}
+     * )
      * @param                              Project $project
      * @param                              Request $request
      * @param                              EntityManagerInterface $entityManager
      * @param                              Fetcher $fetcher
-     * @return                             Response
+     * @return                             \Symfony\Component\HttpFoundation\Response
      */
     public function showDiscussions(
         Project $project,
@@ -226,10 +233,10 @@ class DiscussionController extends AbstractController
 
 
     /**
-     * @Route("/subscribe_to_discussion{id}", name="subscribe_to_discussion")
+     * @Symfony\Component\Routing\Annotation\Route("/subscribe_to_discussion{id}", name="subscribe_to_discussion")
      * @param                                 EntityManagerInterface $entityManager
      * @param                                 Discussion $discussion
-     * @return                                Response
+     * @return                                \Symfony\Component\HttpFoundation\Response
      */
     public function subscribeToDiscussion(
         Discussion $discussion,
@@ -252,7 +259,12 @@ class DiscussionController extends AbstractController
     }
 
     /**
-     * @Route("/project_discussion/{id}/delete", name="discussion_delete", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route
+     * (
+     *     "/project_discussion/{id}/delete",
+     *     name="discussion_delete",
+     *     methods={"POST", "GET"}
+     * )
      * @param                                    Discussion $discussion
      * @param                                    EntityManagerInterface $entityManager
      * @return                                   JsonResponse

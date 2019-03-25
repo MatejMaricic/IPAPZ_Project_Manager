@@ -4,38 +4,41 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ProjectStatusRepository")
- * @ORM\HasLifecycleCallbacks()
+ * @Doctrine\ORM\Mapping\Entity(repositoryClass="App\Repository\ProjectStatusRepository")
+ * @Doctrine\ORM\Mapping\HasLifecycleCallbacks()
  */
 class ProjectStatus
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @Doctrine\ORM\Mapping\Id()
+     * @Doctrine\ORM\Mapping\GeneratedValue()
+     * @Doctrine\ORM\Mapping\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\project", mappedBy="projectStatus", cascade={"persist"})
+     * @Doctrine\ORM\Mapping\ManyToMany(
+     *     targetEntity="App\Entity\project",
+     *     mappedBy="projectStatus",
+     *     cascade={"persist"}
+     *     )
      */
     private $projects;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Doctrine\ORM\Mapping\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @Doctrine\ORM\Mapping\Column(type="datetime")
      */
     private $createdat;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="status")
+     * @Doctrine\ORM\Mapping\OneToMany(targetEntity="App\Entity\Task", mappedBy="status")
      */
     private $tasks;
 
@@ -53,7 +56,7 @@ class ProjectStatus
 
 
     /**
-     * @ORM\PrePersist()
+     * @Doctrine\ORM\Mapping\PrePersist()
      */
     public function onPrePersist()
     {
@@ -68,7 +71,7 @@ class ProjectStatus
         return $this->projects;
     }
 
-    public function addProject(Project $project): self
+    public function addProject(\App\Entity\Project $project): self
     {
         if (!$this->projects->contains($project)) {
             $this->projects[] = $project;
@@ -78,7 +81,7 @@ class ProjectStatus
         return $this;
     }
 
-    public function removeProject(Project $project): self
+    public function removeProject(\App\Entity\Project $project): self
     {
         if ($this->projects->contains($project)) {
             $this->projects->removeElement($project);
@@ -120,7 +123,7 @@ class ProjectStatus
         return $this->tasks;
     }
 
-    public function addTask(Task $task): self
+    public function addTask(\App\Entity\Task $task): self
     {
         if (!$this->tasks->contains($task)) {
             $this->tasks[] = $task;
@@ -130,7 +133,7 @@ class ProjectStatus
         return $this;
     }
 
-    public function removeTask(Task $task): self
+    public function removeTask(\App\Entity\Task $task): self
     {
         if ($this->tasks->contains($task)) {
             $this->tasks->removeElement($task);

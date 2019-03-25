@@ -2,45 +2,43 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CommentsRepository")
+ * @Doctrine\ORM\Mapping\Entity(repositoryClass="App\Repository\CommentsRepository")
  */
 class Comments
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @Doctrine\ORM\Mapping\Id()
+     * @Doctrine\ORM\Mapping\GeneratedValue()
+     * @Doctrine\ORM\Mapping\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Task", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=true)
+     * @Doctrine\ORM\Mapping\ManyToOne(targetEntity="App\Entity\Task", inversedBy="comments")
+     * @Doctrine\ORM\Mapping\JoinColumn(nullable=true)
      */
     private $task;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
+     * @Doctrine\ORM\Mapping\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
+     * @Doctrine\ORM\Mapping\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\Column(type="text")
+     * @Doctrine\ORM\Mapping\Column(type="text")
      */
     private $content;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @Doctrine\ORM\Mapping\Column(type="array", nullable=true)
      */
     private $images = [];
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Discussion", inversedBy="comments", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true)
+     * @Doctrine\ORM\Mapping\ManyToOne(targetEntity="App\Entity\Discussion", inversedBy="comments", cascade={"persist"})
+     * @Doctrine\ORM\Mapping\JoinColumn(nullable=true)
      */
     private $discussion;
 
@@ -49,24 +47,24 @@ class Comments
         return $this->id;
     }
 
-    public function getTask(): ?Task
+    public function getTask()
     {
         return $this->task;
     }
 
-    public function setTask(?Task $task): self
+    public function setTask(\App\Entity\Task $task): self
     {
         $this->task = $task;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser()
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(\App\Entity\User $user): self
     {
         $this->user = $user;
 
@@ -97,12 +95,12 @@ class Comments
         return $this;
     }
 
-    public function getDiscussion(): ?Discussion
+    public function getDiscussion()
     {
         return $this->discussion;
     }
 
-    public function setDiscussion(?Discussion $discussion): self
+    public function setDiscussion(\App\Entity\Discussion $discussion): self
     {
         $this->discussion = $discussion;
 

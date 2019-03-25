@@ -8,7 +8,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Comments;
 use App\Entity\Project;
 use App\Entity\Subscriptions;
 use App\Entity\Task;
@@ -20,28 +19,24 @@ use App\Form\TaskFormType;
 use App\Repository\ProjectRepository;
 use App\Repository\SubscriptionsRepository;
 use App\Repository\UserRepository;
-use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\Exception\ConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
-use Dompdf\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Services\Fetcher;
 
 class TaskController extends AbstractController
 {
 
     /**
-     * @Route("/task/{id}", name="task_view")
+     * @Symfony\Component\Routing\Annotation\Route("/task/{id}", name="task_view")
      * @param               Request $request
      * @param               EntityManagerInterface $entityManager
      * @param               ProjectRepository $projectRepository
      * @param               SubscriptionsRepository $subscriptionsRepository
      * @param               Task $task
      * @param               Fetcher $fetcher
-     * @return              Response
+     * @return              \Symfony\Component\HttpFoundation\Response
      */
     public function taskView(
         Task $task,
@@ -118,7 +113,7 @@ class TaskController extends AbstractController
         $commentForm
     ) {
         /**
-         * @var Comments $comments
+         * @var \App\Entity\Comments $comments
          */
         $comments = $commentForm->getData();
 
@@ -196,10 +191,14 @@ class TaskController extends AbstractController
 
 
     /**
-     * @Route("/project/{id}/complete", name="task_completed", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route(
+     *     "/project/{id}/complete",
+     *     name="task_completed",
+     *     methods={"POST", "GET"}
+     *     )
      * @param                           Task $task
      * @param                           EntityManagerInterface $entityManager
-     * @return                          Response
+     * @return                          \Symfony\Component\HttpFoundation\Response
      */
     public function taskCompleted(
         Task $task,
@@ -215,10 +214,10 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/project/{id}/reopen", name="task_reopen", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route("/project/{id}/reopen", name="task_reopen", methods={"POST", "GET"})
      * @param                         Task $task
      * @param                         EntityManagerInterface $entityManager
-     * @return                        Response
+     * @return                        \Symfony\Component\HttpFoundation\Response
      */
 
     public function taskReopen(
@@ -236,10 +235,10 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/subscribe_to_task/{id}", name="subscribe_to_task")
+     * @Symfony\Component\Routing\Annotation\Route("/subscribe_to_task/{id}", name="subscribe_to_task")
      * @param                            EntityManagerInterface $entityManager
      * @param                            Task $task
-     * @return                           Response
+     * @return                           \Symfony\Component\HttpFoundation\Response
      */
     public function subscribeToTask(
         Task $task,
@@ -263,9 +262,9 @@ class TaskController extends AbstractController
 
 
     /**
-     * @Route("/completed_tasks/{id}", name="completed_tasks")
+     * @Symfony\Component\Routing\Annotation\Route("/completed_tasks/{id}", name="completed_tasks")
      * @param                          Project $project
-     * @return                         Response
+     * @return                         \Symfony\Component\HttpFoundation\Response
      */
     public function completedTaskView(Project $project)
     {
@@ -281,12 +280,12 @@ class TaskController extends AbstractController
 
 
     /**
-     * @Route("/project_tasks/{id}", name="project_tasks", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route("/project_tasks/{id}", name="project_tasks", methods={"POST", "GET"})
      * @param                        Project $project
      * @param                        UserRepository $userRepository
      * @param                        Request $request
      * @param                        EntityManagerInterface $entityManager
-     * @return                       Response
+     * @return                       \Symfony\Component\HttpFoundation\Response
      */
     public function showTasks(
         Project $project,
@@ -373,11 +372,11 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/task_edit/{id}", name="task_edit", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route("/task_edit/{id}", name="task_edit", methods={"POST", "GET"})
      * @param                    Task $task
      * @param                    EntityManagerInterface $entityManager
      * @param                    Request $request
-     * @return                   Response
+     * @return                   \Symfony\Component\HttpFoundation\Response
      */
     public function taskEditor(
         Task $task,
@@ -408,11 +407,15 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/developer_tasks/{id}/{dev_id}", name="developer_tasks", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route(
+     *     "/developer_tasks/{id}/{dev_id}",
+     *     name="developer_tasks",
+     *     methods={"POST", "GET"}
+     *     )
      * @param                                   UserRepository $userRepository
      * @param                                   Project $project
      * @param                                   Request $request
-     * @return                                  Response
+     * @return                                  \Symfony\Component\HttpFoundation\Response
      */
     public function developerTasks(
         Project $project,
@@ -434,9 +437,9 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/my_tasks/{id}", name="my_tasks")
+     * @Symfony\Component\Routing\Annotation\Route("/my_tasks/{id}", name="my_tasks")
      * @param                   Project $project
-     * @return                  Response
+     * @return                  \Symfony\Component\HttpFoundation\Response
      */
     public function myTasks(Project $project)
     {

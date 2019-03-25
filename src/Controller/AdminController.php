@@ -10,15 +10,13 @@ namespace App\Controller;
 
 use App\Repository\TransactionsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/invoice", name="invoice")
+     * @Symfony\Component\Routing\Annotation\Route("/invoice", name="invoice")
      * @param             TransactionsRepository $transactionsRepository
-     * @return            Response
+     * @return            \Symfony\Component\HttpFoundation\Response
      */
     public function showInvoice(TransactionsRepository $transactionsRepository)
     {

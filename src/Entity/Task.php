@@ -4,96 +4,99 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
- * @ORM\HasLifecycleCallbacks()
+ * @Doctrine\ORM\Mapping\Entity(repositoryClass="App\Repository\TaskRepository")
+ * @Doctrine\ORM\Mapping\HasLifecycleCallbacks()
  */
 class Task
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @Doctrine\ORM\Mapping\Id()
+     * @Doctrine\ORM\Mapping\GeneratedValue()
+     * @Doctrine\ORM\Mapping\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="task")
-     * @ORM\JoinColumn(nullable=false)
+     * @Doctrine\ORM\Mapping\ManyToOne(targetEntity="App\Entity\Project", inversedBy="task")
+     * @Doctrine\ORM\Mapping\JoinColumn(nullable=false)
      */
     private $project;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Doctrine\ORM\Mapping\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @Doctrine\ORM\Mapping\Column(type="datetime")
      */
     private $createdat;
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="task")
+     * @Doctrine\ORM\Mapping\ManyToMany(targetEntity="App\Entity\User", mappedBy="task")
      */
     private $users;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProjectStatus", inversedBy="tasks")
-     * @ORM\JoinColumn(nullable=false)
+     * @Doctrine\ORM\Mapping\ManyToOne(targetEntity="App\Entity\ProjectStatus", inversedBy="tasks")
+     * @Doctrine\ORM\Mapping\JoinColumn(nullable=false)
      */
     private $status;
 
     /**
-     * @ORM\Column(type="text")
+     * @Doctrine\ORM\Mapping\Column(type="text")
      */
     private $content;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @Doctrine\ORM\Mapping\Column(type="array", nullable=true)
      */
     private $images = [];
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comments", mappedBy="task", orphanRemoval=true, cascade={"persist"})
+     * @Doctrine\ORM\Mapping\OneToMany(
+     *     targetEntity="App\Entity\Comments",
+     *     mappedBy="task", orphanRemoval=true,
+     *     cascade={"persist"}
+     *     )
      */
     private $comments;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Doctrine\ORM\Mapping\Column(type="string", length=255)
      */
     private $priority;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @Doctrine\ORM\Mapping\Column(type="boolean")
      */
     private $completed;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @Doctrine\ORM\Mapping\Column(type="array", nullable=true)
      */
     private $subscribed = [];
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @Doctrine\ORM\Mapping\Column(type="integer", nullable=true)
      */
     private $estimate;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\HoursOnTask", mappedBy="Task")
+     * @Doctrine\ORM\Mapping\OneToMany(targetEntity="App\Entity\HoursOnTask", mappedBy="Task")
      */
     private $hoursOnTask;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @Doctrine\ORM\Mapping\Column(type="integer", nullable=true)
      */
     private $totalHours;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @Doctrine\ORM\Mapping\Column(type="boolean", nullable=true)
      */
     private $updated;
 
@@ -109,7 +112,7 @@ class Task
 
 
     /**
-     * @ORM\PrePersist()
+     * @Doctrine\ORM\Mapping\PrePersist()
      */
     public function onPrePersist()
     {
@@ -121,12 +124,12 @@ class Task
         return $this->id;
     }
 
-    public function getProject(): ?Project
+    public function getProject()
     {
         return $this->project;
     }
 
-    public function setProject(?Project $project): self
+    public function setProject(\App\Entity\Project $project): self
     {
         $this->project = $project;
 
@@ -166,7 +169,7 @@ class Task
         return $this->users;
     }
 
-    public function addUser(User $user): self
+    public function addUser(\App\Entity\User $user): self
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
@@ -176,7 +179,7 @@ class Task
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeUser(\App\Entity\User $user): self
     {
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
@@ -194,7 +197,7 @@ class Task
         return $this->projectStatuses;
     }
 
-    public function addProjectStatus(ProjectStatus $projectStatus): self
+    public function addProjectStatus(\App\Entity\ProjectStatus $projectStatus): self
     {
         if (!$this->projectStatuses->contains($projectStatus)) {
             $this->projectStatuses[] = $projectStatus;
@@ -203,7 +206,7 @@ class Task
         return $this;
     }
 
-    public function removeProjectStatus(ProjectStatus $projectStatus): self
+    public function removeProjectStatus(\App\Entity\ProjectStatus $projectStatus): self
     {
         if ($this->projectStatuses->contains($projectStatus)) {
             $this->projectStatuses->removeElement($projectStatus);
@@ -212,12 +215,12 @@ class Task
         return $this;
     }
 
-    public function getStatus(): ?ProjectStatus
+    public function getStatus()
     {
         return $this->status;
     }
 
-    public function setStatus(?ProjectStatus $status): self
+    public function setStatus(\App\Entity\ProjectStatus $status): self
     {
         $this->status = $status;
 
@@ -256,7 +259,7 @@ class Task
         return $this->comments;
     }
 
-    public function addComment(Comments $comment): self
+    public function addComment(\App\Entity\Comments $comment): self
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
@@ -266,7 +269,7 @@ class Task
         return $this;
     }
 
-    public function removeComment(Comments $comment): self
+    public function removeComment(\App\Entity\Comments $comment): self
     {
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
@@ -342,7 +345,7 @@ class Task
         return $this->hoursOnTask;
     }
 
-    public function addHoursOnTask(HoursOnTask $hoursOnTask): self
+    public function addHoursOnTask(\App\Entity\HoursOnTask $hoursOnTask): self
     {
         if (!$this->hoursOnTask->contains($hoursOnTask)) {
             $this->hoursOnTask[] = $hoursOnTask;
@@ -352,7 +355,7 @@ class Task
         return $this;
     }
 
-    public function removeHoursOnTask(HoursOnTask $hoursOnTask): self
+    public function removeHoursOnTask(\App\Entity\HoursOnTask $hoursOnTask): self
     {
         if ($this->hoursOnTask->contains($hoursOnTask)) {
             $this->hoursOnTask->removeElement($hoursOnTask);

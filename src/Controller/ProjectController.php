@@ -11,10 +11,7 @@ namespace App\Controller;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Form\AssignDevFormType;
-use App\Form\DiscussionFormType;
 use App\Form\ProjectFormType;
-use App\Form\ProjectStatusFormType;
-use App\Form\TaskFormType;
 use App\Repository\ProjectStatusRepository;
 use App\Repository\UserRepository;
 use App\Services\Fetcher;
@@ -22,21 +19,19 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 class ProjectController extends AbstractController
 {
 
 
     /**
-     * @Route("/project/{id}", name="project_view")
+     * @Symfony\Component\Routing\Annotation\Route("/project/{id}", name="project_view")
      * @param                  Project $project
      * @param                  Request $request
      * @param                  EntityManagerInterface $entityManager
      * @param                  UserRepository $userRepository
      * @param                  Fetcher $fetcher
-     * @return                 Response
+     * @return                 \Symfony\Component\HttpFoundation\Response
      */
     public function projectHandler(
         Project $project,
@@ -98,7 +93,11 @@ class ProjectController extends AbstractController
 
 
     /**
-     * @Route("/status_change/{id}/{status_id}", name="status_change", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route(
+     *     "/status_change/{id}/{status_id}",
+     *     name="status_change",
+     *     methods={"POST", "GET"}
+     *     )
      * @param                                    Task $task
      * @param                                    ProjectStatusRepository $projectStatusRepository
      * @param                                    EntityManagerInterface $entityManager
@@ -141,12 +140,12 @@ class ProjectController extends AbstractController
 
 
     /**
-     * @Route("/project_edit/{id}", name="project_edit")
+     * @Symfony\Component\Routing\Annotation\Route("/project_edit/{id}", name="project_edit")
      * @param                       Request $request
      * @param                       EntityManagerInterface $entityManager
      * @param                       Project $project
      * @param                       Fetcher $fetcher
-     * @return                      Response
+     * @return                      \Symfony\Component\HttpFoundation\Response
      */
     public function projectEditor(
         Request $request,
@@ -177,10 +176,10 @@ class ProjectController extends AbstractController
 
 
     /**
-     * @Route("/{id}/complete", name="project_complete", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route("/{id}/complete", name="project_complete", methods={"POST", "GET"})
      * @param                   Project $project
      * @param                   EntityManagerInterface $entityManager
-     * @return                  Response
+     * @return                  \Symfony\Component\HttpFoundation\Response
      */
     public function completeProject(
         Project $project,
@@ -194,10 +193,10 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/reopen", name="project_reopen", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route("/{id}/reopen", name="project_reopen", methods={"POST", "GET"})
      * @param                 Project $project
      * @param                 EntityManagerInterface $entityManager
-     * @return                Response
+     * @return                \Symfony\Component\HttpFoundation\Response
      */
     public function projectReopen(
         Project $project,
@@ -213,8 +212,8 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/completed_projects/", name="completed_projects")
-     * @return                        Response
+     * @Symfony\Component\Routing\Annotation\Route("/completed_projects/", name="completed_projects")
+     * @return                        \Symfony\Component\HttpFoundation\Response
      */
 
     public function completedProjectsView()
@@ -229,9 +228,9 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/single_project/{id}", name="single_project")
+     * @Symfony\Component\Routing\Annotation\Route("/single_project/{id}", name="single_project")
      * @param                         Project $project
-     * @return                        Response
+     * @return                        \Symfony\Component\HttpFoundation\Response
      */
     public function completedSingleProjectView(Project $project)
     {
@@ -246,7 +245,7 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete", name="project_delete", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route("/{id}/delete", name="project_delete", methods={"POST", "GET"})
      * @param                 Project $project
      * @param                 EntityManagerInterface $entityManager
      * @return                JsonResponse

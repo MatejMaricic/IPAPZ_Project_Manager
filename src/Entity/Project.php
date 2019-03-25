@@ -4,71 +4,73 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\DependencyInjection\Tests\A;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
- * @ORM\HasLifecycleCallbacks()
+ * @Doctrine\ORM\Mapping\Entity(repositoryClass="App\Repository\ProjectRepository")
+ * @Doctrine\ORM\Mapping\HasLifecycleCallbacks()
  */
 class Project
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @Doctrine\ORM\Mapping\Id()
+     * @Doctrine\ORM\Mapping\GeneratedValue()
+     * @Doctrine\ORM\Mapping\Column(type="integer")
      */
     private $id;
 
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Doctrine\ORM\Mapping\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @Doctrine\ORM\Mapping\Column(type="datetime")
      */
     private $createdat;
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ProjectStatus", inversedBy="projects", cascade={"persist"})
+     * @Doctrine\ORM\Mapping\ManyToMany(
+     *     targetEntity="App\Entity\ProjectStatus",
+     *     inversedBy="projects",
+     *     cascade={"persist"}
+     *     )
      */
     private $projectStatus;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="project", orphanRemoval=true)
+     * @Doctrine\ORM\Mapping\OneToMany(targetEntity="App\Entity\Task", mappedBy="project", orphanRemoval=true)
      */
     private $task;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="project")
+     * @Doctrine\ORM\Mapping\ManyToMany(targetEntity="App\Entity\User", mappedBy="project")
      */
     private $users;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @Doctrine\ORM\Mapping\Column(type="datetime")
      */
     private $deadline;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @Doctrine\ORM\Mapping\Column(type="boolean", nullable=true)
      */
     private $completed;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Discussion", mappedBy="project", orphanRemoval=true)
+     * @Doctrine\ORM\Mapping\OneToMany(targetEntity="App\Entity\Discussion", mappedBy="project", orphanRemoval=true)
      */
     private $discussions;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\HoursOnTask", mappedBy="project")
+     * @Doctrine\ORM\Mapping\OneToMany(targetEntity="App\Entity\HoursOnTask", mappedBy="project")
      */
     private $hoursOnTasks;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Collaboration", inversedBy="projects")
+     * @Doctrine\ORM\Mapping\ManyToOne(targetEntity="App\Entity\Collaboration", inversedBy="projects")
      */
     private $collaboration;
 
@@ -90,7 +92,7 @@ class Project
     }
 
     /**
-     * @ORM\PrePersist()
+     * @Doctrine\ORM\Mapping\PrePersist()
      */
     public function onPrePersist()
     {
@@ -128,7 +130,7 @@ class Project
         return $this->projectStatus;
     }
 
-    public function addProjectStatus(ProjectStatus $projectStatus): self
+    public function addProjectStatus(\App\Entity\ProjectStatus $projectStatus): self
     {
         if (!$this->projectStatus->contains($projectStatus)) {
             $this->projectStatus[] = $projectStatus;
@@ -137,7 +139,7 @@ class Project
         return $this;
     }
 
-    public function removeProjectStatus(ProjectStatus $projectStatus): self
+    public function removeProjectStatus(\App\Entity\ProjectStatus $projectStatus): self
     {
         if ($this->projectStatus->contains($projectStatus)) {
             $this->projectStatus->removeElement($projectStatus);
@@ -162,7 +164,7 @@ class Project
         return $this->task;
     }
 
-    public function addTask(Task $task): self
+    public function addTask(\App\Entity\Task $task): self
     {
         if (!$this->task->contains($task)) {
             $this->task[] = $task;
@@ -172,7 +174,7 @@ class Project
         return $this;
     }
 
-    public function removeTask(Task $task): self
+    public function removeTask(\App\Entity\Task $task): self
     {
         if ($this->task->contains($task)) {
             $this->task->removeElement($task);
@@ -193,7 +195,7 @@ class Project
         return $this->users;
     }
 
-    public function addUser(User $user): self
+    public function addUser(\App\Entity\User $user): self
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
@@ -203,7 +205,7 @@ class Project
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeUser(\App\Entity\User $user): self
     {
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
@@ -245,7 +247,7 @@ class Project
         return $this->discussions;
     }
 
-    public function addDiscussion(Discussion $discussion): self
+    public function addDiscussion(\App\Entity\Discussion $discussion): self
     {
         if (!$this->discussions->contains($discussion)) {
             $this->discussions[] = $discussion;
@@ -255,7 +257,7 @@ class Project
         return $this;
     }
 
-    public function removeDiscussion(Discussion $discussion): self
+    public function removeDiscussion(\App\Entity\Discussion $discussion): self
     {
         if ($this->discussions->contains($discussion)) {
             $this->discussions->removeElement($discussion);
@@ -276,7 +278,7 @@ class Project
         return $this->hoursOnTasks;
     }
 
-    public function addHoursOnTask(HoursOnTask $hoursOnTask): self
+    public function addHoursOnTask(\App\Entity\HoursOnTask $hoursOnTask): self
     {
         if (!$this->hoursOnTasks->contains($hoursOnTask)) {
             $this->hoursOnTasks[] = $hoursOnTask;
@@ -286,7 +288,7 @@ class Project
         return $this;
     }
 
-    public function removeHoursOnTask(HoursOnTask $hoursOnTask): self
+    public function removeHoursOnTask(\App\Entity\HoursOnTask $hoursOnTask): self
     {
         if ($this->hoursOnTasks->contains($hoursOnTask)) {
             $this->hoursOnTasks->removeElement($hoursOnTask);
@@ -299,12 +301,12 @@ class Project
         return $this;
     }
 
-    public function getCollaboration(): ?Collaboration
+    public function getCollaboration()
     {
         return $this->collaboration;
     }
 
-    public function setCollaboration(?Collaboration $collaboration): self
+    public function setCollaboration(\App\Entity\Collaboration $collaboration): self
     {
         $this->collaboration = $collaboration;
 

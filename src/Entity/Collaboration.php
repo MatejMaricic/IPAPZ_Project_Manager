@@ -4,43 +4,46 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CollaborationRepository")
+ * @Doctrine\ORM\Mapping\Entity(repositoryClass="App\Repository\CollaborationRepository")
  */
 class Collaboration
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @Doctrine\ORM\Mapping\Id()
+     * @Doctrine\ORM\Mapping\GeneratedValue()
+     * @Doctrine\ORM\Mapping\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="collaboration", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @Doctrine\ORM\Mapping\OneToOne(
+     *     targetEntity="App\Entity\User",
+     *     inversedBy="collaboration",
+     *     cascade={"persist", "remove"}
+     *     )
+     * @Doctrine\ORM\Mapping\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @Doctrine\ORM\Mapping\Column(type="datetime")
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @Doctrine\ORM\Mapping\Column(type="boolean")
      */
     private $subscribed;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @Doctrine\ORM\Mapping\Column(type="datetime")
      */
     private $subscribedUntil;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="collaboration")
+     * @Doctrine\ORM\Mapping\OneToMany(targetEntity="App\Entity\Project", mappedBy="collaboration")
      */
     private $projects;
 
@@ -55,12 +58,12 @@ class Collaboration
         return $this->id;
     }
 
-    public function getUser(): ?User
+    public function getUser()
     {
         return $this->user;
     }
 
-    public function setUser(User $user): self
+    public function setUser(\App\Entity\User $user): self
     {
         $this->user = $user;
 
@@ -111,7 +114,7 @@ class Collaboration
         return $this->projects;
     }
 
-    public function addProject(Project $project): self
+    public function addProject(\App\Entity\Project $project): self
     {
         if (!$this->projects->contains($project)) {
             $this->projects[] = $project;
@@ -121,7 +124,7 @@ class Collaboration
         return $this;
     }
 
-    public function removeProject(Project $project): self
+    public function removeProject(\App\Entity\Project $project): self
     {
         if ($this->projects->contains($project)) {
             $this->projects->removeElement($project);
