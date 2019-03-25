@@ -9,13 +9,12 @@
 namespace App\Controller;
 
 use App\Repository\TransactionsRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Class AdminController
  * @package App\Controller
- * @IsGranted("ROLE_ADMIN")
+ * @Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted("ROLE_ADMIN")
  */
 class AdminController extends AbstractController
 {
