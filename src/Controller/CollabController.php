@@ -88,6 +88,7 @@ class CollabController extends AbstractController
             foreach ($result->errors->deepAll() as $error) {
                 $errorString .= 'Error: ' . $error->code . ": " . $error->message . "\n";
             }
+
             $session = new Session();
             $session->start();
             $session->set('errors', $errorString);
@@ -117,6 +118,7 @@ class CollabController extends AbstractController
                 $entityManager->flush();
             }
         }
+
         return $this->redirectToRoute('index_page');
     }
 }

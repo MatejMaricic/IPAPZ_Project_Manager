@@ -57,7 +57,7 @@
                 <div class="wrapper">
                     <div class="card text-white bg-dark">
                         {% if app.user.avatar is not empty %}
-                        <img width=100% height="200"  src="{{ asset('uploads/')~app.user.avatar }}">
+                        <img width=100% height="200"  src="{{ asset('uploads/')~user.avatar }}">
                         {% else %}
                             <span class="user-icon text-center"><i class="fa fa-user"></i></span>
                         {% endif %}
