@@ -75,7 +75,7 @@ class Task
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $Subscribed = [];
+    private $subscribed = [];
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -305,19 +305,19 @@ class Task
 
     public function getSubscribed(): ?array
     {
-        return $this->Subscribed;
+        return $this->subscribed;
     }
 
-    public function setSubscribed(?array $Subscribed): self
+    public function setSubscribed(?array $subscribed): self
     {
-        $this->Subscribed = $Subscribed;
+        $this->subscribed = $subscribed;
 
         return $this;
     }
 
-    public function addSubscribed(?array $Subscribed): self
+    public function addSubscribed(?array $subscribed): self
     {
-        $this->Subscribed[] = $Subscribed;
+        $this->subscribed[] = $subscribed;
 
         return $this;
     }

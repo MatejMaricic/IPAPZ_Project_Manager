@@ -50,34 +50,21 @@ class SubscriptionsRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param  $task_id
-     * @param  $user_email
+     * @param  $taskId
+     * @param  $userEmail
      * @return Subscriptions
      */
 
-    public function checkSubscriber($task_id, $user_email)
+    public function checkSubscriber($taskId, $userEmail)
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.taskId = :task_id')
             ->andWhere('s.userEmail = :user_email')
-            ->setParameter('task_id', $task_id)
-            ->setParameter('user_email', $user_email)
+            ->setParameter('task_id', $taskId)
+            ->setParameter('user_email', $userEmail)
             ->orderBy('s.id', 'ASC')
             ->setMaxResults(50)
             ->getQuery()
             ->getResult();
     }
-
-
-    /*
-    public function findOneBySomeField($value): ?Subscriptions
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

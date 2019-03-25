@@ -25,7 +25,7 @@ class HoursOnTask
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Task", inversedBy="hoursOnTask")
      */
-    private $Task;
+    private $task;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -80,12 +80,12 @@ class HoursOnTask
 
     public function getTask(): ?Task
     {
-        return $this->Task;
+        return $this->task;
     }
 
-    public function setTask(?Task $Task): self
+    public function setTask(?Task $task): self
     {
-        $this->Task = $Task;
+        $this->task = $task;
 
         return $this;
     }

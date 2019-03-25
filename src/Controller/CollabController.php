@@ -16,6 +16,7 @@ use App\Services\Fetcher;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Braintree_Gateway;
 
@@ -87,7 +88,10 @@ class CollabController extends AbstractController
             foreach ($result->errors->deepAll() as $error) {
                 $errorString .= 'Error: ' . $error->code . ": " . $error->message . "\n";
             }
-            $_SESSION["errors"] = $errorString;
+
+            $session = new Session();
+            $session->start();
+            $session->set('errors', $errorString);
             return $this->redirectToRoute('index_page');
         }
     }
@@ -114,6 +118,7 @@ class CollabController extends AbstractController
                 $entityManager->flush();
             }
         }
+
         return $this->redirectToRoute('index_page');
     }
 }

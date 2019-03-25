@@ -18,17 +18,4 @@ class CollaborationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Collaboration::class);
     }
-
-
-    /*
-    public function findOneBySomeField($value): ?Collaboration
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

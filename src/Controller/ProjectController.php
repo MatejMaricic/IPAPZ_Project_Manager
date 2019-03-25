@@ -91,6 +91,7 @@ class ProjectController extends AbstractController
                 $project->addUser($item);
             }
         }
+
         $entityManager->persist($project);
         $entityManager->flush();
     }
@@ -99,21 +100,21 @@ class ProjectController extends AbstractController
     /**
      * @Route("/status_change/{id}/{status_id}", name="status_change", methods={"POST", "GET"})
      * @param                                    Task $task
-     * @param                                    ProjectStatusRepository $project_status_repository
+     * @param                                    ProjectStatusRepository $projectStatusRepository
      * @param                                    EntityManagerInterface $entityManager
      * @param                                    Request $request
      * @return                                   JsonResponse
      */
     public function statusChange(
         Task $task,
-        ProjectStatusRepository $project_status_repository,
+        ProjectStatusRepository $projectStatusRepository,
         EntityManagerInterface $entityManager,
         Request $request
     ) {
 
         $statusId = $request->get('status_id');
 
-        $newStatus = $project_status_repository->find($statusId);
+        $newStatus = $projectStatusRepository->find($statusId);
 
         $oldStatusID = $task->getStatus();
         $task->setStatus($newStatus);
@@ -257,13 +258,14 @@ class ProjectController extends AbstractController
 
         $projectId = $project->getId();
 
-        if (!$project) {
+        if (!$projectId) {
             return new JsonResponse(
                 [
                     'msg' => 'Unable to delete'
                 ]
             );
         }
+
         $entityManager->remove($project);
         $entityManager->flush();
 
