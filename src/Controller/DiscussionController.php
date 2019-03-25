@@ -118,13 +118,11 @@ class DiscussionController extends AbstractController
             $comments->setImages($images);
         }
         try {
-
             $comments->setUser($this->getUser());
             $comments->setDiscussion($discussion);
             $entityManager->persist($comments);
             $entityManager->flush();
-        } catch (\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             $this->addFlash('warning', 'Please add content before submitting');
         }
     }
@@ -168,8 +166,7 @@ class DiscussionController extends AbstractController
             }
             $entityManager->remove($discussion);
             $entityManager->flush();
-
-        } catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $this->addFlash('warning', 'All Fields Are Required');
         }
     }

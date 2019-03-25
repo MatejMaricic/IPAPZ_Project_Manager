@@ -156,7 +156,6 @@ class IndexController extends AbstractController
         $file = $request->files->get('registration_form')['avatar'];
 
         try {
-
             if (isset($file)) {
                 $uploads_directory = $this->getParameter('uploads_directory');
                 $filename = md5(uniqid()) . '.' . $file->guessExtension();
@@ -176,10 +175,7 @@ class IndexController extends AbstractController
             $user->setRoles(array('ROLE_USER'));
             $entityManager->persist($user);
             $entityManager->flush();
-
-        }catch (\Exception $exception)
-        {
-
+        } catch (\Exception $exception) {
         }
     }
 
