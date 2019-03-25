@@ -86,7 +86,7 @@ class Task
     private $estimate;
 
     /**
-     * @Doctrine\ORM\Mapping\OneToMany(targetEntity="App\Entity\HoursOnTask", mappedBy="Task")
+     * @Doctrine\ORM\Mapping\OneToMany(targetEntity="App\Entity\HoursOnTask", mappedBy="task")
      */
     private $hoursOnTask;
 

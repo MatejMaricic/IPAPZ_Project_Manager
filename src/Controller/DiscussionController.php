@@ -11,7 +11,6 @@ namespace App\Controller;
 use App\Entity\Discussion;
 use App\Entity\Project;
 use App\Entity\Subscriptions;
-use App\Entity\Task;
 use App\Form\CommentFormType;
 use App\Form\TaskConvertFormType;
 use App\Repository\CommentsRepository;
@@ -142,7 +141,6 @@ class DiscussionController extends AbstractController
         $comments = $commentsRepository->findCommentsByDiscussion($discussion);
 
         try {
-            $task = new Task();
             $task = $taskForm->getData();
             $task->setProject($discussion->getProject());
             $task->setContent($discussion->getContent());
@@ -179,7 +177,7 @@ class DiscussionController extends AbstractController
     /**
      * @Symfony\Component\Routing\Annotation\Route
      * (
-     *     "/project_discussions/{id}",
+     *     "/manager/project_discussions/{id}",
      *      name="project_discussions",
      *     methods={"POST", "GET"}
      * )
@@ -198,7 +196,7 @@ class DiscussionController extends AbstractController
         $discussionForm = $this->createForm(DiscussionFormType::class);
 
         $discussionForm->handleRequest($request);
-        if ($this->isGranted('ROLE_MANAGER') && $discussionForm->isSubmitted() && $discussionForm->isValid()) {
+        if ($discussionForm->isSubmitted() && $discussionForm->isValid()) {
             $this->newDiscussion($entityManager, $project, $discussionForm);
             return $this->redirect($request->getUri());
         }
@@ -261,7 +259,7 @@ class DiscussionController extends AbstractController
     /**
      * @Symfony\Component\Routing\Annotation\Route
      * (
-     *     "/project_discussion/{id}/delete",
+     *     "/manager/project_discussion/{id}/delete",
      *     name="discussion_delete",
      *     methods={"POST", "GET"}
      * )

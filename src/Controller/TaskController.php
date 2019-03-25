@@ -192,7 +192,7 @@ class TaskController extends AbstractController
 
     /**
      * @Symfony\Component\Routing\Annotation\Route(
-     *     "/project/{id}/complete",
+     *     "/manager/project/{id}/complete",
      *     name="task_completed",
      *     methods={"POST", "GET"}
      *     )
@@ -214,7 +214,12 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("/project/{id}/reopen", name="task_reopen", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route
+     * (
+     *     "/manager/project/{id}/reopen",
+     *     name="task_reopen",
+     *      methods={"POST", "GET"}
+     * )
      * @param                         Task $task
      * @param                         EntityManagerInterface $entityManager
      * @return                        \Symfony\Component\HttpFoundation\Response
@@ -372,7 +377,7 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("/task_edit/{id}", name="task_edit", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route("/manager/task_edit/{id}", name="task_edit", methods={"POST", "GET"})
      * @param                    Task $task
      * @param                    EntityManagerInterface $entityManager
      * @param                    Request $request
@@ -386,7 +391,7 @@ class TaskController extends AbstractController
         $taskForm = $this->createForm(TaskFormType::class, $task, array('project_id' => $task->getProject()->getId()));
         try {
             $taskForm->handleRequest($request);
-            if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
+            if ($taskForm->isSubmitted() && $taskForm->isValid()) {
                 $this->editTask($entityManager, $taskForm);
                 return $this->redirectToRoute('project_tasks', array('id' => $task->getProject()->getId()));
             }

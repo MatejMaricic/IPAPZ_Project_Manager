@@ -94,7 +94,7 @@ class ProjectController extends AbstractController
 
     /**
      * @Symfony\Component\Routing\Annotation\Route(
-     *     "/status_change/{id}/{status_id}",
+     *     "/manager/status_change/{id}/{status_id}",
      *     name="status_change",
      *     methods={"POST", "GET"}
      *     )
@@ -140,7 +140,7 @@ class ProjectController extends AbstractController
 
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("/project_edit/{id}", name="project_edit")
+     * @Symfony\Component\Routing\Annotation\Route("/manager/project_edit/{id}", name="project_edit")
      * @param                       Request $request
      * @param                       EntityManagerInterface $entityManager
      * @param                       Project $project
@@ -155,7 +155,7 @@ class ProjectController extends AbstractController
     ) {
         $projectForm = $this->createForm(ProjectFormType::class, $project);
         $projectForm->handleRequest($request);
-        if ($this->isGranted('ROLE_MANAGER') && $projectForm->isSubmitted() && $projectForm->isValid()) {
+        if ($projectForm->isSubmitted() && $projectForm->isValid()) {
             $this->editProject($entityManager, $projectForm);
             return $this->redirectToRoute('index_page');
         }
@@ -176,7 +176,12 @@ class ProjectController extends AbstractController
 
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("/{id}/complete", name="project_complete", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route
+     * (
+     *     "/manager/{id}/complete",
+     *     name="project_complete",
+     *     methods={"POST", "GET"}
+     * )
      * @param                   Project $project
      * @param                   EntityManagerInterface $entityManager
      * @return                  \Symfony\Component\HttpFoundation\Response
@@ -193,7 +198,12 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("/{id}/reopen", name="project_reopen", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route
+     * (
+     *     "/manager/{id}/reopen",
+     *     name="project_reopen",
+     *     methods={"POST", "GET"}
+     * )
      * @param                 Project $project
      * @param                 EntityManagerInterface $entityManager
      * @return                \Symfony\Component\HttpFoundation\Response
@@ -212,7 +222,7 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("/completed_projects/", name="completed_projects")
+     * @Symfony\Component\Routing\Annotation\Route("/manager/completed_projects/", name="completed_projects")
      * @return                        \Symfony\Component\HttpFoundation\Response
      */
 
@@ -228,7 +238,7 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("/single_project/{id}", name="single_project")
+     * @Symfony\Component\Routing\Annotation\Route("/manager/single_project/{id}", name="single_project")
      * @param                         Project $project
      * @return                        \Symfony\Component\HttpFoundation\Response
      */
@@ -245,7 +255,12 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("/{id}/delete", name="project_delete", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route
+     * (
+     *     "/manager/{id}/delete",
+     *     name="project_delete",
+     *     methods={"POST", "GET"}
+     * )
      * @param                 Project $project
      * @param                 EntityManagerInterface $entityManager
      * @return                JsonResponse

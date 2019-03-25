@@ -259,7 +259,7 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("/hours_management", name="hours_management")
+     * @Symfony\Component\Routing\Annotation\Route("/manager/hours_management", name="hours_management")
      * @param                      ProjectRepository $projectRepository
      * @param                      UserRepository $userRepository
      * @return                     \Symfony\Component\HttpFoundation\Response $response
@@ -272,7 +272,6 @@ class IndexController extends AbstractController
         $projects = $projectRepository->findAll();
         $developers = $userRepository->findAllDevelopersArray();
 
-        if ($this->isGranted('ROLE_MANAGER')) {
             return $this->render(
                 'hours_management.html.twig',
                 [
@@ -281,15 +280,13 @@ class IndexController extends AbstractController
                     'projects' => $projects
                 ]
             );
-        }
 
-        return $this->redirectToRoute('index_page');
     }
 
     /**
      * @Symfony\Component\Routing\Annotation\Route
      * (
-     *     "/project_hours/{id}/{value}",
+     *     "/manager/project_hours/{id}/{value}",
      *     defaults={"value" = 0},
      *     name="project_hours",
      *     methods={"POST", "GET"}
@@ -312,7 +309,7 @@ class IndexController extends AbstractController
         $dateForm = $this->createForm(DatePickerFormType::class);
 
         $dateForm->handleRequest($request);
-        if ($this->isGranted('ROLE_MANAGER') && $dateForm->isSubmitted() && $dateForm->isValid()) {
+        if ($dateForm->isSubmitted() && $dateForm->isValid()) {
             $hoursOnProject = $this->findHoursByDate($dateForm, $hoursOnTaskRepository, $project);
         }
 
@@ -385,7 +382,7 @@ class IndexController extends AbstractController
 
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("/user_hours/{id}", name="user_hours")
+     * @Symfony\Component\Routing\Annotation\Route("/manager/user_hours/{id}", name="user_hours")
      * @param                     HoursOnTaskRepository $hoursOnTaskRepository
      * @param                     User $user
      * @param                     Request $request
@@ -403,7 +400,7 @@ class IndexController extends AbstractController
 
 
         $searchForm->handleRequest($request);
-        if ($this->isGranted('ROLE_MANAGER') && $searchForm->isSubmitted() && $searchForm->isValid()) {
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $hoursForUser = $this->findHoursByCriteria($searchForm, $hoursOnTaskRepository);
         }
 
@@ -426,7 +423,7 @@ class IndexController extends AbstractController
     /**
      * @Symfony\Component\Routing\Annotation\Route
      * (
-     *     "/edit_user_hours/{id}",
+     *     "/manager/edit_user_hours/{id}",
      *     name="edit_user_hours"
      * )
      * @param                          HoursOnTask $hoursOnTask
@@ -443,7 +440,7 @@ class IndexController extends AbstractController
         $id = $hoursOnTask->getUser()->getId();
 
         $editHoursForm->handleRequest($request);
-        if ($this->isGranted('ROLE_MANAGER') && $editHoursForm->isSubmitted() && $editHoursForm->isValid()) {
+        if ($editHoursForm->isSubmitted() && $editHoursForm->isValid()) {
             $hoursOnTask = $editHoursForm->getData();
             $entityManager->persist($hoursOnTask);
             $entityManager->flush();
@@ -461,7 +458,7 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("my_payments", name="my_payments")
+     * @Symfony\Component\Routing\Annotation\Route("/manager/my_payments", name="my_payments")
      * @param                TransactionsRepository $transactionsRepository
      * @return               \Symfony\Component\HttpFoundation\Response
      */
@@ -471,7 +468,6 @@ class IndexController extends AbstractController
             $this->getUser()->getEmail()
         );
 
-        if ($this->isGranted('ROLE_MANAGER')) {
             return $this->render(
                 'invoice.html.twig',
                 [
@@ -479,6 +475,5 @@ class IndexController extends AbstractController
                     'transactions' => $transactions
                 ]
             );
-        }
     }
 }

@@ -15,6 +15,7 @@ use App\Repository\UserRepository;
 use App\Services\Fetcher;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Braintree_Gateway;
 
@@ -38,11 +39,12 @@ class CollabController extends AbstractController
 
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("checkout/{id}", name = "checkout")
+     * @Symfony\Component\Routing\Annotation\Route("/manager/checkout/{id}", name = "checkout")
      * @param                  Collaboration $collaboration
      * @param                  EntityManagerInterface $entityManager
      * @param                  UserRepository $userRepository
      * @param                  Fetcher $fetcher
+     * @param                  Request $request
      * @throws
      * @return                 \Symfony\Component\HttpFoundation\Response
      */
@@ -50,11 +52,12 @@ class CollabController extends AbstractController
         Collaboration $collaboration,
         EntityManagerInterface $entityManager,
         UserRepository $userRepository,
-        Fetcher $fetcher
+        Fetcher $fetcher,
+        Request $request
     ) {
 
         $amount = $fetcher->subscriptionAmount($collaboration, $userRepository);
-        $nonce = $_POST["payment_method_nonce"];
+        $nonce = $request->get("payment_method_nonce");
         $result = $this->gateway()->transaction()->sale(
             [
                 'amount' => $amount,
