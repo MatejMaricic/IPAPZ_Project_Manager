@@ -107,16 +107,18 @@ class DiscussionController extends AbstractController
 
         if (!empty($files)) {
             foreach ($files as $file) {
-                $uploads_directory = $this->getParameter('uploads_directory');
+                $uploadDirectory = $this->getParameter('uploads_directory');
                 $filename = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move(
-                    $uploads_directory,
+                    $uploadDirectory,
                     $filename
                 );
                 $images[] = $filename;
             }
+
             $comments->setImages($images);
         }
+
         try {
             $comments->setUser($this->getUser());
             $comments->setDiscussion($discussion);
@@ -164,6 +166,7 @@ class DiscussionController extends AbstractController
                 $entityManager->persist($discussion);
                 $entityManager->flush();
             }
+
             $entityManager->remove($discussion);
             $entityManager->flush();
         } catch (\Exception $exception) {

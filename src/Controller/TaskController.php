@@ -126,14 +126,15 @@ class TaskController extends AbstractController
 
         if (!empty($files)) {
             foreach ($files as $file) {
-                $uploads_directory = $this->getParameter('uploads_directory');
+                $uploadDirectory = $this->getParameter('uploads_directory');
                 $filename = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move(
-                    $uploads_directory,
+                    $uploadDirectory,
                     $filename
                 );
                 $images[] = $filename;
             }
+
             $comments->setImages($images);
         }
 
@@ -172,6 +173,7 @@ class TaskController extends AbstractController
                 }
             }
         }
+
         $entityManager->persist($task);
         $entityManager->flush();
     }
@@ -337,16 +339,18 @@ class TaskController extends AbstractController
 
         if (!empty($files)) {
             foreach ($files as $file) {
-                $uploads_directory = $this->getParameter('uploads_directory');
+                $uploadDirectory = $this->getParameter('uploads_directory');
                 $filename = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move(
-                    $uploads_directory,
+                    $uploadDirectory,
                     $filename
                 );
                 $images[] = $filename;
             }
+
             $task->setImages($images);
         }
+
         try {
             $task->setProject($project);
             $task->setCompleted(false);

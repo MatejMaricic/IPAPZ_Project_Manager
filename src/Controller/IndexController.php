@@ -157,14 +157,15 @@ class IndexController extends AbstractController
 
         try {
             if (isset($file)) {
-                $uploads_directory = $this->getParameter('uploads_directory');
+                $uploadDirectory = $this->getParameter('uploads_directory');
                 $filename = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move(
-                    $uploads_directory,
+                    $uploadDirectory,
                     $filename
                 );
                 $user->setAvatar($filename);
             }
+
             $user->setAddedBy($this->getUser()->getId());
             $user->setPassword(
                 $passwordEncoder->encodePassword(
@@ -232,14 +233,15 @@ class IndexController extends AbstractController
         $file = $request->files->get('registration_form')['avatar'];
 
         if (isset($file)) {
-            $uploads_directory = $this->getParameter('uploads_directory');
+            $uploadDirectory = $this->getParameter('uploads_directory');
             $filename = md5(uniqid()) . '.' . $file->guessExtension();
             $file->move(
-                $uploads_directory,
+                $uploadDirectory,
                 $filename
             );
             $user->setAvatar($filename);
         }
+
         $user->setPassword(
             $passwordEncoder->encodePassword(
                 $user,
@@ -282,6 +284,7 @@ class IndexController extends AbstractController
                 ]
             );
         }
+
         return $this->redirectToRoute('index_page');
     }
 
@@ -456,13 +459,18 @@ class IndexController extends AbstractController
      */
     public function myPayments(TransactionsRepository $transactionsRepository)
     {
-        $transactions = $transactionsRepository->findByBuyerEmail($this->getUser()->getEmail());
+        $transactions = $transactionsRepository->findByBuyerEmail(
+            $this->getUser()->getEmail()
+        );
 
         if ($this->isGranted('ROLE_MANAGER')) {
-            return $this->render('invoice.html.twig', [
+            return $this->render(
+                'invoice.html.twig',
+                [
                 'user' => $this->getUser(),
                 'transactions' => $transactions
-            ]);
+                ]
+            );
         }
     }
 }
