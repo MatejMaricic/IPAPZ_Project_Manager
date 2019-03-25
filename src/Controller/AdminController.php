@@ -26,8 +26,8 @@ class AdminController extends AbstractController
             return $this->render(
                 'invoice.html.twig',
                 [
-                'user' => $this->getUser(),
-                'transactions' => $transactions
+                    'user' => $this->getUser(),
+                    'transactions' => $transactions
                 ]
             );
         }

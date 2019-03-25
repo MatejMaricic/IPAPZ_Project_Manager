@@ -11,7 +11,6 @@ namespace App\Entity;
  *     name="subscriptions",
  *      columns={"user_email", "task_id"}
  *     )})
-
  * @Doctrine\ORM\Mapping\Table(
  *     name="subscriptions",uniqueConstraints={@Doctrine\ORM\Mapping\UniqueConstraint(
  *     name="subscriptions",

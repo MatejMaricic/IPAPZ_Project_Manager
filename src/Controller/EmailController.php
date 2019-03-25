@@ -33,7 +33,8 @@ class EmailController extends AbstractController
         TaskRepository $taskRepository,
         SubscriptionsRepository $subscriptionsRepository,
         EntityManagerInterface $entityManager
-    ) {
+    )
+    {
         $tasks = $taskRepository->findAll();
 
         foreach ($tasks as $task) {

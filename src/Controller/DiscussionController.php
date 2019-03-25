@@ -48,7 +48,8 @@ class DiscussionController extends AbstractController
         SubscriptionsRepository $subscriptionsRepository,
         CommentsRepository $commentsRepository,
         Fetcher $fetcher
-    ) {
+    )
+    {
         $projectId = $discussion->getProject()->getId();
 
         $commentForm = $this->createForm(CommentFormType::class);
@@ -98,7 +99,8 @@ class DiscussionController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         $commentForm
-    ) {
+    )
+    {
 
         /**
          * @var \App\Entity\Comments $comments
@@ -137,7 +139,8 @@ class DiscussionController extends AbstractController
         $taskForm,
         SubscriptionsRepository $subscriptionsRepository,
         CommentsRepository $commentsRepository
-    ) {
+    )
+    {
         $subs = $subscriptionsRepository->findByDiscussion($discussion->getId());
         $comments = $commentsRepository->findCommentsByDiscussion($discussion);
 
@@ -194,7 +197,8 @@ class DiscussionController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         Fetcher $fetcher
-    ) {
+    )
+    {
         $discussionForm = $this->createForm(DiscussionFormType::class);
 
         $discussionForm->handleRequest($request);
@@ -222,7 +226,8 @@ class DiscussionController extends AbstractController
         EntityManagerInterface $entityManager,
         Project $project,
         $discussionForm
-    ) {
+    )
+    {
         $discussion = $discussionForm->getData();
         $discussion->setProject($project);
         $discussion->setCreatedBy($this->getUser()->getFullName());
@@ -241,7 +246,8 @@ class DiscussionController extends AbstractController
     public function subscribeToDiscussion(
         Discussion $discussion,
         EntityManagerInterface $entityManager
-    ) {
+    )
+    {
         $subscription = new Subscriptions();
         $email = $this->getUser()->getEmail();
         $projectId = $discussion->getProject()->getId();
@@ -272,7 +278,8 @@ class DiscussionController extends AbstractController
     public function deleteDiscussion(
         Discussion $discussion,
         EntityManagerInterface $entityManager
-    ) {
+    )
+    {
 
         $discussionId = $discussion->getId();
 
