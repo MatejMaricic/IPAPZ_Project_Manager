@@ -50,7 +50,9 @@ class IndexController extends AbstractController
         UserPasswordEncoderInterface $passwordEncoder,
         Fetcher $fetcher
     ) {
-
+        if ($this->roleChecker($fetcher, $userRepository, $projectRepository) !== true) {
+            return $this->roleChecker($fetcher, $userRepository, $projectRepository);
+        }
 
         $projectForm = $this->createForm(ProjectFormType::class);
         $devForm = $this->createForm(RegistrationFormType::class);
@@ -68,33 +70,6 @@ class IndexController extends AbstractController
             }
 
 
-            if ($fetcher->checkSubscription() == 0) {
-                $gateway = $this->gateway()->ClientToken()->generate();
-
-
-                return $this->render(
-                    'payment.html.twig',
-                    [
-                        'user' => $this->getUser(),
-                        'collab' => $this->getUser()->getCollaboration(),
-                        'gateway' => $gateway,
-                        'amount' => $fetcher->subscriptionAmount($this->getUser()->getCollaboration(), $userRepository)
-                    ]
-                );
-            } elseif ($this->isGranted('ROLE_ADMIN')) {
-                return $this->render(
-                    'admin.html.twig',
-                    [
-                        'projects' => $projectRepository->findAll(),
-                        'user' => $this->getUser(),
-                        'users' => $userRepository->findAllManagersArray(),
-
-
-                    ]
-                );
-            }
-
-
             return $this->render(
                 'index.html.twig',
                 [
@@ -107,6 +82,43 @@ class IndexController extends AbstractController
                 ]
             );
         }
+    }
+
+    private function roleChecker(Fetcher $fetcher, UserRepository $userRepository, ProjectRepository $projectRepository)
+    {
+
+        if ($fetcher->checkSubscription() == 0) {
+            $gateway = $this->gateway()->ClientToken()->generate();
+
+
+            return $this->render(
+                'payment.html.twig',
+                [
+                    'user' => $this->getUser(),
+                    'collab' => $this->getUser()->getCollaboration(),
+                    'gateway' => $gateway,
+                    'amount' => $fetcher->subscriptionAmount($this->getUser()->getCollaboration(), $userRepository)
+                ]
+            );
+        } elseif ($this->isGranted('ROLE_ADMIN')) {
+            return $this->render(
+                'admin.html.twig',
+                [
+                    'projects' => $projectRepository->findAll(),
+                    'user' => $this->getUser(),
+                    'users' => $userRepository->findAllManagersArray(),
+                ]
+            );
+        } elseif ($this->isGranted('ROLE_USER')) {
+            return $this->render(
+                'user_index.html.twig',
+                [
+                    'user' => $this->getUser(),
+                ]
+            );
+        }
+
+            return $render = true;
     }
 
     private function gateway()
