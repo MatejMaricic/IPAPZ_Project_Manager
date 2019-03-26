@@ -26,7 +26,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\RegistrationFormType;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use Braintree_Gateway;
 use App\Services\Fetcher;
 
 class IndexController extends AbstractController
@@ -50,8 +49,21 @@ class IndexController extends AbstractController
         UserPasswordEncoderInterface $passwordEncoder,
         Fetcher $fetcher
     ) {
-        if ($this->roleChecker($fetcher, $userRepository, $projectRepository) !== true) {
-            return $this->roleChecker($fetcher, $userRepository, $projectRepository);
+        $route = '';
+        $name = 'index';
+        $userParam =
+            [
+                'user' => $this->getUser(),
+            ];
+        $adminParam =
+            [
+                'projects' => $projectRepository->findAll(),
+                'user' => $this->getUser(),
+                'users' => $userRepository->findAllManagersArray(),
+            ];
+
+        if ($fetcher->roleChecker($userRepository, $userParam, $adminParam, $route, $name) !== true) {
+            return $fetcher->roleChecker($userRepository, $userParam, $adminParam, $route, $name);
         }
 
         $projectForm = $this->createForm(ProjectFormType::class);
@@ -84,55 +96,6 @@ class IndexController extends AbstractController
         }
     }
 
-    private function roleChecker(Fetcher $fetcher, UserRepository $userRepository, ProjectRepository $projectRepository)
-    {
-
-        if ($fetcher->checkSubscription() == 0) {
-            $gateway = $this->gateway()->ClientToken()->generate();
-
-            return $this->render(
-                'payment.html.twig',
-                [
-                    'user' => $this->getUser(),
-                    'collab' => $this->getUser()->getCollaboration(),
-                    'gateway' => $gateway,
-                    'amount' => $fetcher->subscriptionAmount($this->getUser()->getCollaboration(), $userRepository)
-                ]
-            );
-        } elseif ($this->isGranted('ROLE_ADMIN')) {
-            return $this->render(
-                'admin.html.twig',
-                [
-                    'projects' => $projectRepository->findAll(),
-                    'user' => $this->getUser(),
-                    'users' => $userRepository->findAllManagersArray(),
-                ]
-            );
-        } elseif ($this->isGranted('ROLE_USER')) {
-            return $this->render(
-                'user_index.html.twig',
-                [
-                    'user' => $this->getUser(),
-                ]
-            );
-        }
-
-            return $render = true;
-    }
-
-    private function gateway()
-    {
-        $gateway = new Braintree_Gateway(
-            [
-                'environment' => 'sandbox',
-                'merchantId' => 'qmk79j9h7rxpjg8t',
-                'publicKey' => 'pnz7bb5774j2j3n4',
-                'privateKey' => '7c0e8443e507a26409dc23f6ca1afcb6'
-            ]
-        );
-
-        return $gateway;
-    }
 
 
     private function newProject(

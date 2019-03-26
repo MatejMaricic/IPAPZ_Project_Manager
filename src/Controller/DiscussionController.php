@@ -177,7 +177,7 @@ class DiscussionController extends AbstractController
     /**
      * @Symfony\Component\Routing\Annotation\Route
      * (
-     *     "/manager/project_discussions/{id}",
+     *     "/project_discussions/{id}",
      *      name="project_discussions",
      *     methods={"POST", "GET"}
      * )
