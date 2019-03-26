@@ -4,92 +4,97 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields={"email"},                              message="There is already an account with this email")
- * @ORM\HasLifecycleCallbacks()
+ * @Doctrine\ORM\Mapping\Entity(repositoryClass="App\Repository\UserRepository")
+ * @Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity
+ * (
+ *     fields={"email"}, message="There is already an account with this email"
+ * )
+ * @Doctrine\ORM\Mapping\HasLifecycleCallbacks()
  */
 class User implements UserInterface
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @Doctrine\ORM\Mapping\Id()
+     * @Doctrine\ORM\Mapping\GeneratedValue()
+     * @Doctrine\ORM\Mapping\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @Doctrine\ORM\Mapping\Column(type="string", length=180, unique=true)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="json")
+     * @Doctrine\ORM\Mapping\Column(type="json")
      */
     private $roles = [];
 
     /**
      * @var                       string The hashed password
-     * @ORM\Column(type="string")
+     * @Doctrine\ORM\Mapping\Column(type="string")
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Doctrine\ORM\Mapping\Column(type="string", length=255)
      */
     private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Doctrine\ORM\Mapping\Column(type="string", length=255)
      */
     private $lastName;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Project", inversedBy="users")
+     * @Doctrine\ORM\Mapping\ManyToMany(targetEntity="App\Entity\Project", inversedBy="users")
      */
     private $project;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Task", inversedBy="users")
+     * @Doctrine\ORM\Mapping\ManyToMany(targetEntity="App\Entity\Task", inversedBy="users")
      */
     private $task;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @Doctrine\ORM\Mapping\Column(type="datetime")
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Doctrine\ORM\Mapping\Column(type="string", length=255, nullable=true)
      */
     private $avatar;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comments", mappedBy="user", orphanRemoval=true)
+     * @Doctrine\ORM\Mapping\OneToMany(targetEntity="App\Entity\Comments", mappedBy="user", orphanRemoval=true)
      */
     private $comments;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Doctrine\ORM\Mapping\Column(type="string", length=255)
      */
     private $fullName;
 
     /**
-     * @ORM\Column(type="integer")
+     * @Doctrine\ORM\Mapping\Column(type="integer")
      */
     private $addedBy;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\HoursOnTask", mappedBy="user")
+     * @Doctrine\ORM\Mapping\OneToMany(targetEntity="App\Entity\HoursOnTask", mappedBy="user")
      */
     private $hoursOnTasks;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Collaboration", mappedBy="user", cascade={"persist", "remove"})
+     * @Doctrine\ORM\Mapping\OneToOne(
+     *     targetEntity="App\Entity\Collaboration",
+     *     mappedBy="user",
+     *     cascade={"persist", "remove"}
+     *     )
      */
     private $collaboration;
 
@@ -120,7 +125,7 @@ class User implements UserInterface
     }
 
     /**
-     * @ORM\PrePersist
+     * @Doctrine\ORM\Mapping\PrePersist
      */
     public function setCreatedAtValue()
     {
@@ -128,7 +133,7 @@ class User implements UserInterface
     }
 
     /**
-     * @ORM\PrePersist
+     * @Doctrine\ORM\Mapping\PrePersist
      */
     public function setRolesValue()
     {
@@ -138,7 +143,7 @@ class User implements UserInterface
     }
 
     /**
-     * @ORM\PrePersist
+     * @Doctrine\ORM\Mapping\PrePersist
      */
     public function setFullNameValue()
     {
@@ -237,7 +242,7 @@ class User implements UserInterface
         return $this->project;
     }
 
-    public function addProject(Project $project): self
+    public function addProject(\App\Entity\Project $project): self
     {
         if (!$this->project->contains($project)) {
             $this->project[] = $project;
@@ -246,7 +251,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeProject(Project $project): self
+    public function removeProject(\App\Entity\Project $project): self
     {
         if ($this->project->contains($project)) {
             $this->project->removeElement($project);
@@ -263,7 +268,7 @@ class User implements UserInterface
         return $this->task;
     }
 
-    public function addTask(Task $task): self
+    public function addTask(\App\Entity\Task $task): self
     {
         if (!$this->task->contains($task)) {
             $this->task[] = $task;
@@ -272,7 +277,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeTask(Task $task): self
+    public function removeTask(\App\Entity\Task $task): self
     {
         if ($this->task->contains($task)) {
             $this->task->removeElement($task);
@@ -313,7 +318,7 @@ class User implements UserInterface
         return $this->comments;
     }
 
-    public function addComment(Comments $comment): self
+    public function addComment(\App\Entity\Comments $comment): self
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
@@ -323,7 +328,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeComment(Comments $comment): self
+    public function removeComment(\App\Entity\Comments $comment): self
     {
         if ($this->comments->contains($comment)) {
             $this->comments->removeElement($comment);
@@ -368,7 +373,7 @@ class User implements UserInterface
         return $this->hoursOnTasks;
     }
 
-    public function addHoursOnTask(HoursOnTask $hoursOnTask): self
+    public function addHoursOnTask(\App\Entity\HoursOnTask $hoursOnTask): self
     {
         if (!$this->hoursOnTasks->contains($hoursOnTask)) {
             $this->hoursOnTasks[] = $hoursOnTask;
@@ -378,7 +383,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeHoursOnTask(HoursOnTask $hoursOnTask): self
+    public function removeHoursOnTask(\App\Entity\HoursOnTask $hoursOnTask): self
     {
         if ($this->hoursOnTasks->contains($hoursOnTask)) {
             $this->hoursOnTasks->removeElement($hoursOnTask);
@@ -391,12 +396,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCollaboration(): ?Collaboration
+    public function getCollaboration()
     {
         return $this->collaboration;
     }
 
-    public function setCollaboration(Collaboration $collaboration): self
+    public function setCollaboration(\App\Entity\Collaboration $collaboration): self
     {
         $this->collaboration = $collaboration;
 

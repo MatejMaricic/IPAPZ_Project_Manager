@@ -2,59 +2,57 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
- * @ORM\Entity(repositoryClass="App\Repository\HoursOnTaskRepository")
- * @ORM\HasLifecycleCallbacks()
+ * @Doctrine\ORM\Mapping\Entity(repositoryClass="App\Repository\HoursOnTaskRepository")
+ * @Doctrine\ORM\Mapping\HasLifecycleCallbacks()
  */
 class HoursOnTask
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @Doctrine\ORM\Mapping\Id()
+     * @Doctrine\ORM\Mapping\GeneratedValue()
+     * @Doctrine\ORM\Mapping\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="hoursOnTasks")
+     * @Doctrine\ORM\Mapping\ManyToOne(targetEntity="App\Entity\User", inversedBy="hoursOnTasks")
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Task", inversedBy="hoursOnTask")
+     * @Doctrine\ORM\Mapping\ManyToOne(targetEntity="App\Entity\Task", inversedBy="hoursOnTask")
      */
     private $task;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @Doctrine\ORM\Mapping\Column(type="text", nullable=true)
      */
     private $message;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @Doctrine\ORM\Mapping\Column(type="boolean", nullable=true)
      */
     private $billable;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @Doctrine\ORM\Mapping\Column(type="datetime")
      */
     private $addedAt;
 
     /**
-     * @ORM\Column(type="integer")
+     * @Doctrine\ORM\Mapping\Column(type="integer")
      */
     private $hours;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="hoursOnTasks")
+     * @Doctrine\ORM\Mapping\ManyToOne(targetEntity="App\Entity\Project", inversedBy="hoursOnTasks")
      */
     private $project;
 
 
     /**
-     * @ORM\PrePersist
+     * @Doctrine\ORM\Mapping\PrePersist
      */
     public function setAddedAtValue()
     {
@@ -66,24 +64,24 @@ class HoursOnTask
         return $this->id;
     }
 
-    public function getUser(): ?User
+    public function getUser()
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(\App\Entity\User $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getTask(): ?Task
+    public function getTask()
     {
         return $this->task;
     }
 
-    public function setTask(?Task $task): self
+    public function setTask(\App\Entity\Task $task): self
     {
         $this->task = $task;
 
@@ -138,12 +136,12 @@ class HoursOnTask
         return $this;
     }
 
-    public function getProject(): ?Project
+    public function getProject()
     {
         return $this->project;
     }
 
-    public function setProject(?Project $project): self
+    public function setProject(\App\Entity\Project $project): self
     {
         $this->project = $project;
 

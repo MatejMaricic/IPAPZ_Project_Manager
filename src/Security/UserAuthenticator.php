@@ -90,7 +90,6 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         return new RedirectResponse($this->urlGenerator->generate('index_page'));
-
     }
 
     protected function getLoginUrl()

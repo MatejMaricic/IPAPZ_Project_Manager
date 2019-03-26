@@ -10,28 +10,29 @@ namespace App\Controller;
 
 use App\Repository\TransactionsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class AdminController
+ * @package App\Controller
+ * @Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted("ROLE_ADMIN")
+ */
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/invoice", name="invoice")
+     * @Symfony\Component\Routing\Annotation\Route("/invoice", name="invoice")
      * @param             TransactionsRepository $transactionsRepository
-     * @return            Response
+     * @return            \Symfony\Component\HttpFoundation\Response
      */
     public function showInvoice(TransactionsRepository $transactionsRepository)
     {
         $transactions = $transactionsRepository->findAll();
 
-        if ($this->isGranted('ROLE_ADMIN')) {
             return $this->render(
                 'invoice.html.twig',
                 [
-                'user' => $this->getUser(),
-                'transactions' => $transactions
+                    'user' => $this->getUser(),
+                    'transactions' => $transactions
                 ]
             );
-        }
     }
 }
