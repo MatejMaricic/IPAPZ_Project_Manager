@@ -8,71 +8,57 @@
 
 namespace App\Controller;
 
-
-
 class WebHookController
 {
     /**
      * @Symfony\Component\Routing\Annotation\Route("/curl_test", name="curl_test")
      */
-    public function createBranch()
+    public function createBranch($id, $name)
     {
         $data = array(
-            'ref' => 'refs/heads/tests',
-            'sha' => '3381e2277eae1e7ab31371cf8c3efd88379112e1'
+            'ref' => 'refs/heads/feature/#'.$id. '-'.$name,
+            'sha' => 'a47689ec26234ae6a8ea53baf6e2333c3630c8f9'
         );
 
         $postData = json_encode($data);
 
-        $ch = curl_init("https://api.github.com/repos/MatejMaricic/TestRepo/git/refs");
+        $ch = curl_init("https://api.github.com/repos/MatejMaricic/IPAPZ_Project_Manager/git/refs");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt(
             $ch,
-            CURLOPT_HTTPHEADER, array
+            CURLOPT_HTTPHEADER,
+            array
             (
             'User-Agent:MatejMaricic',
-            'Authorization: Token githubpersonaltokenhere',
+            'Authorization: Token githubtokenhere',
             'Content-Type: application/json'
             )
         );
 
-
-
-    $result = curl_exec($ch);
-
-
-
-
-    die;
-
+        curl_exec($ch);
     }
     /**
      * @Symfony\Component\Routing\Annotation\Route("/curl_test_delete", name="curl_test_delete")
      */
-    public function deleteBranch()
+    public function deleteBranch($id, $name)
     {
-        $ch = curl_init("https://api.github.com/repos/MatejMaricic/TestRepo/git/refs/heads/tests");
+        $ch = curl_init(
+            'https://api.github.com/repos/MatejMaricic/IPAPZ_Project_Manager/git/refs/heads/feature/%23'.$id. '-'.$name
+        );
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt(
             $ch,
-            CURLOPT_HTTPHEADER, array
+            CURLOPT_HTTPHEADER,
+            array
             (
                 'User-Agent:MatejMaricic',
-                'Authorization: Token githubpersonaltokenhere',
+                'Authorization: Token githubtokenhere',
                 'Content-Type: application/json'
             )
         );
-
-
-
-        $result = curl_exec($ch);
-
-
-
-
-        die;
+        curl_exec($ch);
     }
 }
