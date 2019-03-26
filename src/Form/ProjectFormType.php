@@ -9,10 +9,6 @@
 namespace App\Form;
 
 use App\Entity\Project;
-use App\Entity\ProjectStatus;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use PhpParser\Node\Expr\Array_;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
@@ -46,7 +42,7 @@ class ProjectFormType extends AbstractType
                 CollectionType::class,
                 [
                     'label' => false,
-                    'entry_type' => ProjectStatusFormType::class,
+                    'entry_type' => \App\Form\ProjectStatusFormType::class,
                     'allow_add' => true,
                     'by_reference' => false,
                     'delete_empty' => true

@@ -33,4 +33,47 @@ class Fetcher extends AbstractController
 
         return $amount = ($numOfDevs * 5) + 5;
     }
+
+
+    public function roleChecker(UserRepository $userRepository, $userParam, $adminParam, $route, $name)
+    {
+
+        if ($this->checkSubscription() == 0) {
+            $gateway = $this->gateway()->ClientToken()->generate();
+
+            return $this->render(
+                'payment.html.twig',
+                [
+                    'user' => $this->getUser(),
+                    'collab' => $this->getUser()->getCollaboration(),
+                    'gateway' => $gateway,
+                    'amount' => $this->subscriptionAmount($this->getUser()->getCollaboration(), $userRepository)
+                ]
+            );
+        } elseif ($this->isGranted('ROLE_ADMIN')) {
+            return $this->render(
+                $route.'admin_'.$name.'.html.twig', $adminParam
+            );
+        } elseif ($this->isGranted('ROLE_USER')) {
+            return $this->render(
+                $route.'user_'.$name.'.html.twig', $userParam
+            );
+        }
+
+        return $render = true;
+    }
+
+    private function gateway()
+    {
+        $gateway = new \Braintree_Gateway(
+            [
+                'environment' => 'sandbox',
+                'merchantId' => 'qmk79j9h7rxpjg8t',
+                'publicKey' => 'pnz7bb5774j2j3n4',
+                'privateKey' => '7c0e8443e507a26409dc23f6ca1afcb6'
+            ]
+        );
+
+        return $gateway;
+    }
 }

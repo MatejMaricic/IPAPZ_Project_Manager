@@ -3,20 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Collaboration;
-use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\UserAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/register", name="app_register")
+     * @Symfony\Component\Routing\Annotation\Route("/register", name="app_register")
      */
     public function register(
         Request $request,
@@ -28,7 +26,7 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class);
         $form->handleRequest($request);
         /**
-         * @var User $user
+         * @var \App\Entity\User $user
          */
         $user = $form->getData();
         if ($form->isSubmitted() && $form->isValid()) {

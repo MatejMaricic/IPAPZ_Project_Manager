@@ -2,41 +2,42 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\UniqueConstraint;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\Table;
-
 /**
- * @ORM\Entity(repositoryClass="App\Repository\SubscriptionsRepository")
- * @Entity
- * @Table(name="subscriptions",uniqueConstraints={@UniqueConstraint(name="subscriptions",
- *      columns={"user_email", "task_id"})})
-
- * @Table(name="subscriptions",uniqueConstraints={@UniqueConstraint(name="subscriptions",
- *      columns={"user_email", "discussion_id"})})
+ * @Doctrine\ORM\Mapping\Entity(repositoryClass="App\Repository\SubscriptionsRepository")
+ * @Doctrine\ORM\Mapping\Entity
+ * @Doctrine\ORM\Mapping\Table(
+ *     name="subscriptions",
+ *     uniqueConstraints={@Doctrine\ORM\Mapping\UniqueConstraint(
+ *     name="subscriptions",
+ *      columns={"user_email", "task_id"}
+ *     )})
+ * @Doctrine\ORM\Mapping\Table(
+ *     name="subscriptions",uniqueConstraints={@Doctrine\ORM\Mapping\UniqueConstraint(
+ *     name="subscriptions",
+ *      columns={"user_email", "discussion_id"}
+ *     )})
  **/
 class Subscriptions
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @Doctrine\ORM\Mapping\Id()
+     * @Doctrine\ORM\Mapping\GeneratedValue()
+     * @Doctrine\ORM\Mapping\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Doctrine\ORM\Mapping\Column(type="string", length=255)
      */
     private $userEmail;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @Doctrine\ORM\Mapping\Column(type="integer", nullable=true)
      */
     private $taskId;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @Doctrine\ORM\Mapping\Column(type="integer", nullable=true)
      */
     private $discussionId;
 

@@ -22,13 +22,10 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\RegistrationFormType;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use Braintree_Gateway;
 use App\Services\Fetcher;
 
 class IndexController extends AbstractController
@@ -36,13 +33,13 @@ class IndexController extends AbstractController
 
     /**
      * @param      Request $request
-     * @Route("/", name="index_page")
+     * @Symfony\Component\Routing\Annotation\Route("/", name="index_page")
      * @param      EntityManagerInterface $entityManager
      * @param      ProjectRepository $projectRepository
      * @param      UserRepository $userRepository
      * @param      UserPasswordEncoderInterface $passwordEncoder
      * @param      Fetcher $fetcher
-     * @return     Response
+     * @return     \Symfony\Component\HttpFoundation\Response
      */
     public function indexHandler(
         Request $request,
@@ -52,48 +49,36 @@ class IndexController extends AbstractController
         UserPasswordEncoderInterface $passwordEncoder,
         Fetcher $fetcher
     ) {
+        $route = '';
+        $name = 'index';
+        $userParam =
+            [
+                'user' => $this->getUser(),
+            ];
+        $adminParam =
+            [
+                'projects' => $projectRepository->findAll(),
+                'user' => $this->getUser(),
+                'users' => $userRepository->findAllManagersArray(),
+            ];
 
+        if ($fetcher->roleChecker($userRepository, $userParam, $adminParam, $route, $name) !== true) {
+            return $fetcher->roleChecker($userRepository, $userParam, $adminParam, $route, $name);
+        }
 
         $projectForm = $this->createForm(ProjectFormType::class);
         $devForm = $this->createForm(RegistrationFormType::class);
 
         $projectForm->handleRequest($request);
-        if ($this->isGranted('ROLE_MANAGER') && $projectForm->isSubmitted() && $projectForm->isValid()) {
+        if ($projectForm->isSubmitted() && $projectForm->isValid()) {
             $this->newProject($entityManager, $projectForm);
             $this->addFlash('success', 'New project created!');
             return $this->redirect($request->getUri());
         } else {
             $devForm->handleRequest($request);
-            if ($this->isGranted('ROLE_MANAGER') && $devForm->isSubmitted() && $devForm->isValid()) {
+            if ($devForm->isSubmitted() && $devForm->isValid()) {
                 $this->addDeveloper($request, $entityManager, $passwordEncoder, $devForm);
                 return $this->redirect($request->getUri());
-            }
-
-
-            if ($fetcher->checkSubscription() == 0) {
-                $gateway = $this->gateway()->ClientToken()->generate();
-
-
-                return $this->render(
-                    'payment.html.twig',
-                    [
-                        'user' => $this->getUser(),
-                        'collab' => $this->getUser()->getCollaboration(),
-                        'gateway' => $gateway,
-                        'amount' => $fetcher->subscriptionAmount($this->getUser()->getCollaboration(), $userRepository)
-                    ]
-                );
-            } elseif ($this->isGranted('ROLE_ADMIN')) {
-                return $this->render(
-                    'admin.html.twig',
-                    [
-                        'projects' => $projectRepository->findAll(),
-                        'user' => $this->getUser(),
-                        'users' => $userRepository->findAllManagersArray(),
-
-
-                    ]
-                );
             }
 
 
@@ -111,19 +96,6 @@ class IndexController extends AbstractController
         }
     }
 
-    private function gateway()
-    {
-        $gateway = new Braintree_Gateway(
-            [
-                'environment' => 'sandbox',
-                'merchantId' => 'qmk79j9h7rxpjg8t',
-                'publicKey' => 'pnz7bb5774j2j3n4',
-                'privateKey' => '7c0e8443e507a26409dc23f6ca1afcb6'
-            ]
-        );
-
-        return $gateway;
-    }
 
 
     private function newProject(
@@ -182,12 +154,12 @@ class IndexController extends AbstractController
 
 
     /**
-     * @Route("/profile/{id}", name="profile_view")
+     * @Symfony\Component\Routing\Annotation\Route("/profile/{id}", name="profile_view")
      * @param                  Request $request
      * @param                  EntityManagerInterface $entityManager
      * @param                  UserPasswordEncoderInterface $passwordEncoder
      * @param                  User $user
-     * @return                 Response
+     * @return                 \Symfony\Component\HttpFoundation\Response
      */
     public function showProfile(
         Request $request,
@@ -261,10 +233,10 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/hours_management", name="hours_management")
+     * @Symfony\Component\Routing\Annotation\Route("/manager/hours_management", name="hours_management")
      * @param                      ProjectRepository $projectRepository
      * @param                      UserRepository $userRepository
-     * @return                     Response $response
+     * @return                     \Symfony\Component\HttpFoundation\Response $response
      */
 
     public function hoursManagementView(
@@ -274,7 +246,6 @@ class IndexController extends AbstractController
         $projects = $projectRepository->findAll();
         $developers = $userRepository->findAllDevelopersArray();
 
-        if ($this->isGranted('ROLE_MANAGER')) {
             return $this->render(
                 'hours_management.html.twig',
                 [
@@ -283,17 +254,20 @@ class IndexController extends AbstractController
                     'projects' => $projects
                 ]
             );
-        }
-
-        return $this->redirectToRoute('index_page');
     }
 
     /**
-     * @Route("/project_hours/{id}/{value}", defaults={"value" = 0}, name="project_hours", methods={"POST", "GET"})
+     * @Symfony\Component\Routing\Annotation\Route
+     * (
+     *     "/manager/project_hours/{id}/{value}",
+     *     defaults={"value" = 0},
+     *     name="project_hours",
+     *     methods={"POST", "GET"}
+     * )
      * @param                                HoursOnTaskRepository $hoursOnTaskRepository
      * @param                                Project $project
      * @param                                Request $request
-     * @return                               Response $response
+     * @return                               \Symfony\Component\HttpFoundation\Response $response
      */
 
     public function projectHoursManagement(
@@ -308,7 +282,7 @@ class IndexController extends AbstractController
         $dateForm = $this->createForm(DatePickerFormType::class);
 
         $dateForm->handleRequest($request);
-        if ($this->isGranted('ROLE_MANAGER') && $dateForm->isSubmitted() && $dateForm->isValid()) {
+        if ($dateForm->isSubmitted() && $dateForm->isValid()) {
             $hoursOnProject = $this->findHoursByDate($dateForm, $hoursOnTaskRepository, $project);
         }
 
@@ -381,11 +355,11 @@ class IndexController extends AbstractController
 
 
     /**
-     * @Route("/user_hours/{id}", name="user_hours")
+     * @Symfony\Component\Routing\Annotation\Route("/manager/user_hours/{id}", name="user_hours")
      * @param                     HoursOnTaskRepository $hoursOnTaskRepository
      * @param                     User $user
      * @param                     Request $request
-     * @return                    Response $response
+     * @return                    \Symfony\Component\HttpFoundation\Response $response
      */
     public function userHoursManagement(
         HoursOnTaskRepository $hoursOnTaskRepository,
@@ -399,7 +373,7 @@ class IndexController extends AbstractController
 
 
         $searchForm->handleRequest($request);
-        if ($this->isGranted('ROLE_MANAGER') && $searchForm->isSubmitted() && $searchForm->isValid()) {
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $hoursForUser = $this->findHoursByCriteria($searchForm, $hoursOnTaskRepository);
         }
 
@@ -420,11 +394,15 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/edit_user_hours/{id}", name="edit_user_hours")
+     * @Symfony\Component\Routing\Annotation\Route
+     * (
+     *     "/manager/edit_user_hours/{id}",
+     *     name="edit_user_hours"
+     * )
      * @param                          HoursOnTask $hoursOnTask
      * @param                          EntityManagerInterface $entityManager
      * @param                          Request $request
-     * @return                         Response $response
+     * @return                         \Symfony\Component\HttpFoundation\Response $response
      */
     public function editUserHours(
         HoursOnTask $hoursOnTask,
@@ -435,7 +413,7 @@ class IndexController extends AbstractController
         $id = $hoursOnTask->getUser()->getId();
 
         $editHoursForm->handleRequest($request);
-        if ($this->isGranted('ROLE_MANAGER') && $editHoursForm->isSubmitted() && $editHoursForm->isValid()) {
+        if ($editHoursForm->isSubmitted() && $editHoursForm->isValid()) {
             $hoursOnTask = $editHoursForm->getData();
             $entityManager->persist($hoursOnTask);
             $entityManager->flush();
@@ -453,9 +431,9 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("my_payments", name="my_payments")
+     * @Symfony\Component\Routing\Annotation\Route("/manager/my_payments", name="my_payments")
      * @param                TransactionsRepository $transactionsRepository
-     * @return               Response
+     * @return               \Symfony\Component\HttpFoundation\Response
      */
     public function myPayments(TransactionsRepository $transactionsRepository)
     {
@@ -463,14 +441,12 @@ class IndexController extends AbstractController
             $this->getUser()->getEmail()
         );
 
-        if ($this->isGranted('ROLE_MANAGER')) {
             return $this->render(
                 'invoice.html.twig',
                 [
-                'user' => $this->getUser(),
-                'transactions' => $transactions
+                    'user' => $this->getUser(),
+                    'transactions' => $transactions
                 ]
             );
-        }
     }
 }
