@@ -18,14 +18,10 @@ class WebHookController
     public function createBranch()
     {
         $data = array(
-            'ref' => 'refs/head/test',
-            'sha' => 'd779acb88bb32f904d6afd5a00cd3ca62321e2ae'
+            'ref' => 'refs/heads/tests',
+            'sha' => 'e843357eff86184e69ea1aac0a14dd12ef8f073d'
         );
 
-        $push = array(
-            'sha' => 'd779acb88bb32f904d6afd5a00cd3ca62321e2ae',
-            'force' => 'true'
-        );
         $postData = json_encode($data);
 
         $ch = curl_init("https://api.github.com/repos/MatejMaricic/TestRepo/git/refs");
@@ -37,7 +33,7 @@ class WebHookController
             CURLOPT_HTTPHEADER, array
             (
             'User-Agent:MatejMaricic',
-            'Authorization: Token c8955ea79daff0eb59faf984c7ec5364b6210d2f',
+            'Authorization: Token 12703651c3f1f43e7bff4f2f920e5bd25ec28ba2',
             'Content-Type: application/json'
             )
         );
@@ -46,9 +42,6 @@ class WebHookController
 
     $result = curl_exec($ch);
 
-
-
-    die;
 
     }
 }
