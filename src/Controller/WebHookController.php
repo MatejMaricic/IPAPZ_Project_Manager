@@ -19,7 +19,7 @@ class WebHookController
     {
         $data = array(
             'ref' => 'refs/heads/tests',
-            'sha' => 'e843357eff86184e69ea1aac0a14dd12ef8f073d'
+            'sha' => '3381e2277eae1e7ab31371cf8c3efd88379112e1'
         );
 
         $postData = json_encode($data);
@@ -33,7 +33,7 @@ class WebHookController
             CURLOPT_HTTPHEADER, array
             (
             'User-Agent:MatejMaricic',
-            'Authorization: Token 12703651c3f1f43e7bff4f2f920e5bd25ec28ba2',
+            'Authorization: Token githubpersonaltokenhere',
             'Content-Type: application/json'
             )
         );
@@ -43,5 +43,36 @@ class WebHookController
     $result = curl_exec($ch);
 
 
+
+
+    die;
+
+    }
+    /**
+     * @Symfony\Component\Routing\Annotation\Route("/curl_test_delete", name="curl_test_delete")
+     */
+    public function deleteBranch()
+    {
+        $ch = curl_init("https://api.github.com/repos/MatejMaricic/TestRepo/git/refs/heads/tests");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER, array
+            (
+                'User-Agent:MatejMaricic',
+                'Authorization: Token githubpersonaltokenhere',
+                'Content-Type: application/json'
+            )
+        );
+
+
+
+        $result = curl_exec($ch);
+
+
+
+
+        die;
     }
 }
