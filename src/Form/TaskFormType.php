@@ -67,6 +67,17 @@ class TaskFormType extends AbstractType
                 ]
             )
             ->add(
+                'type',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'BugFix' => 'bugfix',
+                        'Feature' => 'feature',
+
+                    ]
+                ]
+            )
+            ->add(
                 'estimate',
                 IntegerType::class,
                 [

@@ -215,8 +215,9 @@ class TaskController extends AbstractController
         $name = $task->getName();
         $taskId = $task->getId();
         $name = str_replace(' ', '_', $name);
+        $type = $task->getType();
 
-        $webHookController->deleteBranch($taskId, $name);
+        $webHookController->deleteBranch($taskId, $name, $type);
 
         return $this->redirectToRoute('completed_tasks', array('id' => $id));
     }
@@ -249,8 +250,9 @@ class TaskController extends AbstractController
         $name = $task->getName();
         $id = $task->getId();
         $name = str_replace(' ', '_', $name);
+        $type = $task->getType();
 
-        $webHookController->createBranch($id, $name);
+        $webHookController->createBranch($id, $name, $type);
 
         return $this->redirectToRoute('project_tasks', array('id' => $projectId));
     }
@@ -385,8 +387,9 @@ class TaskController extends AbstractController
         $name = $task->getName();
         $id = $task->getId();
         $name = str_replace(' ', '_', $name);
+        $type = $task->getType();
 
-        $webHookController->createBranch($id, $name);
+        $webHookController->createBranch($id, $name, $type);
     }
 
     private function newStatus(
