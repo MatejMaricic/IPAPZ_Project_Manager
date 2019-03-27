@@ -45,6 +45,17 @@ class TaskConvertFormType extends AbstractType
                 ]
             )
             ->add(
+                'type',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'BugFix' => 'bugfix',
+                        'Feature' => 'feature',
+
+                    ]
+                ]
+            )
+            ->add(
                 'priority',
                 ChoiceType::class,
                 [

@@ -15,7 +15,7 @@ class WebHookController
     /**
      * @Symfony\Component\Routing\Annotation\Route("/curl_test", name="curl_test")
      */
-    public function createBranch($id, $name)
+    public function createBranch($id, $name, $type)
     {
 
         $sha = shell_exec('git rev-parse development');
@@ -24,7 +24,7 @@ class WebHookController
 
 
         $data = array(
-            'ref' => 'refs/heads/feature/#'.$id. '-'.$name,
+            'ref' => 'refs/heads/'.$type.'/#'.$id. '-'.$name,
             'sha' => $sha
         );
 
@@ -46,17 +46,17 @@ class WebHookController
         );
 
         curl_exec($ch);
-        shell_exec('git branch feature/#' .$branchName. ' development');
+        shell_exec('git branch '.$type.'/#' .$branchName. ' development');
 
     }
     /**
      * @Symfony\Component\Routing\Annotation\Route("/curl_test_delete", name="curl_test_delete")
      */
-    public function deleteBranch($id, $name)
+    public function deleteBranch($id, $name, $type)
     {
         $branchName = $id.'-'.$name;
         $ch = curl_init(
-            'https://api.github.com/repos/MatejMaricic/IPAPZ_Project_Manager/git/refs/heads/feature/%23'.$id. '-'.$name
+            'https://api.github.com/repos/MatejMaricic/IPAPZ_Project_Manager/git/refs/heads/'.$type.'/%23'.$id.'-'.$name
         );
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -71,7 +71,7 @@ class WebHookController
             )
         );
         curl_exec($ch);
-        shell_exec('git branch -D feature/#' .$branchName. ' development');
+        shell_exec('git branch -D '.$type.'/#' .$branchName. ' development');
 
 
     }
