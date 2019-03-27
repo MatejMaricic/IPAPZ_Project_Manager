@@ -100,6 +100,11 @@ class Task
      */
     private $updated;
 
+    /**
+     * @Doctrine\ORM\Mapping\Column(type="string", length=255)
+     */
+    private $type;
+
 
     public function __construct()
     {
@@ -388,6 +393,18 @@ class Task
     public function setUpdated(?bool $updated): self
     {
         $this->updated = $updated;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
