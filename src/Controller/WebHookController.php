@@ -40,7 +40,7 @@ class WebHookController
             array
             (
                 'User-Agent:MatejMaricic',
-                'Authorization: Token c714ab967a3befd8981eaa6b4e21b194b35bf7f5',
+                'Authorization: Token tokengoeshere',
                 'Content-Type: application/json'
             )
         );
@@ -54,6 +54,7 @@ class WebHookController
      */
     public function deleteBranch($id, $name)
     {
+        $branchName = $id.'-'.$name;
         $ch = curl_init(
             'https://api.github.com/repos/MatejMaricic/IPAPZ_Project_Manager/git/refs/heads/feature/%23'.$id. '-'.$name
         );
@@ -65,10 +66,13 @@ class WebHookController
             array
             (
                 'User-Agent:MatejMaricic',
-                'Authorization: Token c714ab967a3befd8981eaa6b4e21b194b35bf7f5',
+                'Authorization: Token tokengoeshere',
                 'Content-Type: application/json'
             )
         );
         curl_exec($ch);
+        shell_exec('git branch -D feature/#' .$branchName. ' development');
+
+
     }
 }
