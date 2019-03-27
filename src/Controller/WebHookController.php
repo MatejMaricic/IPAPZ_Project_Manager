@@ -15,9 +15,13 @@ class WebHookController
      */
     public function createBranch($id, $name)
     {
+
+        $var = shell_exec('git rev-parse development');
+        $var = str_replace("\n", "", $var);
+
         $data = array(
             'ref' => 'refs/heads/feature/#'.$id. '-'.$name,
-            'sha' => 'a47689ec26234ae6a8ea53baf6e2333c3630c8f9'
+            'sha' => $var
         );
 
         $postData = json_encode($data);
@@ -31,9 +35,9 @@ class WebHookController
             CURLOPT_HTTPHEADER,
             array
             (
-            'User-Agent:MatejMaricic',
-            'Authorization: Token githubtokenhere',
-            'Content-Type: application/json'
+                'User-Agent:MatejMaricic',
+                'Authorization: Token githubpersonaltoken',
+                'Content-Type: application/json'
             )
         );
 
@@ -55,7 +59,7 @@ class WebHookController
             array
             (
                 'User-Agent:MatejMaricic',
-                'Authorization: Token githubtokenhere',
+                'Authorization: Token githubpersonaltoken',
                 'Content-Type: application/json'
             )
         );
