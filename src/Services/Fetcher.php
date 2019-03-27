@@ -52,11 +52,13 @@ class Fetcher extends AbstractController
             );
         } elseif ($this->isGranted('ROLE_ADMIN')) {
             return $this->render(
-                $route.'admin_'.$name.'.html.twig', $adminParam
+                $route.'admin_'.$name.'.html.twig',
+                $adminParam
             );
         } elseif ($this->isGranted('ROLE_USER')) {
             return $this->render(
-                $route.'user_'.$name.'.html.twig', $userParam
+                $route.'user_'.$name.'.html.twig',
+                $userParam
             );
         }
 

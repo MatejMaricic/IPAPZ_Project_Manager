@@ -23,7 +23,9 @@
         "symfony/validator": "4.2.*",
         "symfony/yaml": "4.2.*",
         "tinymce/tinymce": "4",
-        "braintree/braintree_php" : "3.39.0"
+        "braintree/braintree_php" : "3.39.0",
+        "ext-curl": "*",
+        "ext-json": "*"
     },
     "config": {
         "preferred-install": {

@@ -23,6 +23,7 @@ use Doctrine\DBAL\Exception\ConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use App\Controller\WebHookController;
 use App\Services\Fetcher;
 
 class TaskController extends AbstractController
@@ -202,13 +203,20 @@ class TaskController extends AbstractController
      */
     public function taskCompleted(
         Task $task,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        WebHookController $webHookController
     ) {
         $id = $task->getProject()->getId();
         $task->setCompleted(true);
 
         $entityManager->persist($task);
         $entityManager->flush();
+
+        $name = $task->getName();
+        $taskId = $task->getId();
+        $name = str_replace(' ', '_', $name);
+
+        $webHookController->deleteBranch($taskId, $name);
 
         return $this->redirectToRoute('completed_tasks', array('id' => $id));
     }
@@ -222,12 +230,14 @@ class TaskController extends AbstractController
      * )
      * @param                         Task $task
      * @param                         EntityManagerInterface $entityManager
+     * @param                         WebHookController $webHookController
      * @return                        \Symfony\Component\HttpFoundation\Response
      */
 
     public function taskReopen(
         Task $task,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        WebHookController $webHookController
     ) {
 
         $projectId = $task->getProject()->getId();
@@ -235,6 +245,12 @@ class TaskController extends AbstractController
 
         $entityManager->persist($task);
         $entityManager->flush();
+
+        $name = $task->getName();
+        $id = $task->getId();
+        $name = str_replace(' ', '_', $name);
+
+        $webHookController->createBranch($id, $name);
 
         return $this->redirectToRoute('project_tasks', array('id' => $projectId));
     }
@@ -296,7 +312,8 @@ class TaskController extends AbstractController
         Project $project,
         UserRepository $userRepository,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        WebHookController $webHookController
     ) {
 
         $devs = $userRepository->devsOnProject($project->getId());
@@ -305,7 +322,7 @@ class TaskController extends AbstractController
 
         $taskForm->handleRequest($request);
         if ($this->isGranted('ROLE_MANAGER') && $taskForm->isSubmitted() && $taskForm->isValid()) {
-            $this->addTask($request, $entityManager, $project, $taskForm);
+            $this->addTask($request, $entityManager, $project, $taskForm, $webHookController);
             return $this->redirect($request->getUri());
         } else {
             $statusForm->handleRequest($request);
@@ -332,7 +349,8 @@ class TaskController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         Project $project,
-        $taskForm
+        $taskForm,
+        WebHookController $webHookController
     ) {
 
         /**
@@ -363,6 +381,12 @@ class TaskController extends AbstractController
         } catch (\Exception $exception) {
             $this->addFlash('warning', 'All Fields Are Required');
         }
+
+        $name = $task->getName();
+        $id = $task->getId();
+        $name = str_replace(' ', '_', $name);
+
+        $webHookController->createBranch($id, $name);
     }
 
     private function newStatus(
