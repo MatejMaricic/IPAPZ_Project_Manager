@@ -230,12 +230,14 @@ class TaskController extends AbstractController
      * )
      * @param                         Task $task
      * @param                         EntityManagerInterface $entityManager
+     * @param                         WebHookController $webHookController
      * @return                        \Symfony\Component\HttpFoundation\Response
      */
 
     public function taskReopen(
         Task $task,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        WebHookController $webHookController
     ) {
 
         $projectId = $task->getProject()->getId();
@@ -243,6 +245,12 @@ class TaskController extends AbstractController
 
         $entityManager->persist($task);
         $entityManager->flush();
+
+        $name = $task->getName();
+        $id = $task->getId();
+        $name = str_replace(' ', '_', $name);
+
+        $webHookController->createBranch($id, $name);
 
         return $this->redirectToRoute('project_tasks', array('id' => $projectId));
     }

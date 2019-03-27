@@ -8,20 +8,24 @@
 
 namespace App\Controller;
 
+
 class WebHookController
 {
+
     /**
      * @Symfony\Component\Routing\Annotation\Route("/curl_test", name="curl_test")
      */
     public function createBranch($id, $name)
     {
 
-        $var = shell_exec('git rev-parse development');
-        $var = str_replace("\n", "", $var);
+        $sha = shell_exec('git rev-parse development');
+        $sha = str_replace("\n", "", $sha);
+        $branchName = $id.'-'.$name;
+
 
         $data = array(
             'ref' => 'refs/heads/feature/#'.$id. '-'.$name,
-            'sha' => $var
+            'sha' => $sha
         );
 
         $postData = json_encode($data);
@@ -36,12 +40,14 @@ class WebHookController
             array
             (
                 'User-Agent:MatejMaricic',
-                'Authorization: Token githubpersonaltoken',
+                'Authorization: Token c714ab967a3befd8981eaa6b4e21b194b35bf7f5',
                 'Content-Type: application/json'
             )
         );
 
         curl_exec($ch);
+        shell_exec('git branch feature/#' .$branchName. ' development');
+
     }
     /**
      * @Symfony\Component\Routing\Annotation\Route("/curl_test_delete", name="curl_test_delete")
@@ -59,7 +65,7 @@ class WebHookController
             array
             (
                 'User-Agent:MatejMaricic',
-                'Authorization: Token githubpersonaltoken',
+                'Authorization: Token c714ab967a3befd8981eaa6b4e21b194b35bf7f5',
                 'Content-Type: application/json'
             )
         );
