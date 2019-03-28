@@ -74,6 +74,11 @@ class Project
      */
     private $collaboration;
 
+    /**
+     * @Doctrine\ORM\Mapping\Column(type="integer")
+     */
+    private $addedBy;
+
 
     public function __construct()
     {
@@ -309,6 +314,18 @@ class Project
     public function setCollaboration(\App\Entity\Collaboration $collaboration): self
     {
         $this->collaboration = $collaboration;
+
+        return $this;
+    }
+
+    public function getAddedBy(): ?int
+    {
+        return $this->addedBy;
+    }
+
+    public function setAddedBy(int $addedBy): self
+    {
+        $this->addedBy = $addedBy;
 
         return $this;
     }

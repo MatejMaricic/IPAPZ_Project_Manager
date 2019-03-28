@@ -5,7 +5,7 @@
             <a href="{{ path('project_view', {'id': project.id}) }}" class="nav-link">Go To Project</a>
         </li>
         <li class="nav-item active">
-            <a href="{{ path('hours_management') }}" class="nav-link">Back To Management</a>
+            <a href="{{ path('hours_management', {'id':app.user.id}) }}" class="nav-link">Back To Management</a>
         </li>
     </ul>
 {% endblock %}
@@ -59,7 +59,7 @@ Project Hours Management
                                 </tbody>
                             </table>
                 <h4>Total Time Spent On This Project: {{ total }} Hours</h4>
-                <a href="{{ path('project_hours', {'id': project.id, 'value': 1}) }}">Export</a>
+                <a href="{{ path('project_hours', {'id': project.id, 'value': 1, 'user_id': project.addedBy}) }}">Export</a>
                         </div>
                     </div>
                     <hr>

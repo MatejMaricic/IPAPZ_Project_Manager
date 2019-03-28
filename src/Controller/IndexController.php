@@ -233,18 +233,29 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("/manager/hours_management", name="hours_management")
+     * @Symfony\Component\Routing\Annotation\Route("/manager/hours_management/{id}", name="hours_management")
      * @param                      ProjectRepository $projectRepository
      * @param                      UserRepository $userRepository
+     * @param                      Request $request
+     * @param                      Fetcher $fetcher
      * @return                     \Symfony\Component\HttpFoundation\Response $response
      */
 
     public function hoursManagementView(
         ProjectRepository $projectRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        Request $request,
+        Fetcher $fetcher
     ) {
-        $projects = $projectRepository->findAll();
-        $developers = $userRepository->findAllDevelopersArray();
+
+        $id = $request->get('id');
+
+        if ($fetcher->checkManager($id) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
+        $projects = $projectRepository->findByManagerId($id);
+        $developers = $userRepository->findAllDevelopersForManagerArray($id);
 
             return $this->render(
                 'hours_management.html.twig',
@@ -259,7 +270,7 @@ class IndexController extends AbstractController
     /**
      * @Symfony\Component\Routing\Annotation\Route
      * (
-     *     "/manager/project_hours/{id}/{value}",
+     *     "/manager/{user_id}/project_hours/{id}/{value}",
      *     defaults={"value" = 0},
      *     name="project_hours",
      *     methods={"POST", "GET"}
@@ -273,8 +284,16 @@ class IndexController extends AbstractController
     public function projectHoursManagement(
         HoursOnTaskRepository $hoursOnTaskRepository,
         Project $project,
-        Request $request
+        Request $request,
+        Fetcher $fetcher
     ) {
+
+        $managerId = $request->get('user_id');
+
+        if ($fetcher->checkManager($managerId) !== true) {
+            $this->redirectToRoute('index_page');
+        }
+
         $total = 0;
         $id = $project->getId();
         $hoursOnProject = $hoursOnTaskRepository->findHoursByProject($id);

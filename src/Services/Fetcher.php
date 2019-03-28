@@ -78,4 +78,13 @@ class Fetcher extends AbstractController
 
         return $gateway;
     }
+
+    public function checkManager($id)
+    {
+        $userId =$this->getUser()->getId();
+        if ($userId != $id) {
+            return false;
+        }
+        return true;
+    }
 }

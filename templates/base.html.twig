@@ -73,7 +73,7 @@
                                 {% block taskSidebar %}{% endblock %}
                                 {% block userHoursSidebar %}{% endblock %}
                                 {% block projectHoursSidebar %}{% endblock %}
-                                <li><i class="fa fa-folder"></i><a href="{{ path('hours_management')}}">Hours Management</a></li>
+
                             {% endif %}
                             {% if is_granted("ROLE_ADMIN") %}
                                 {% block adminSidebar %}{% endblock %}
