@@ -388,7 +388,6 @@ class TaskController extends AbstractController
         } catch (\Exception $exception) {
             $this->addFlash('warning', 'All Fields Are Required');
         }
-
     }
 
     private function newStatus(
