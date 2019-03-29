@@ -179,6 +179,48 @@ class TaskController extends AbstractController
         $entityManager->flush();
     }
 
+    /**
+     * @Symfony\Component\Routing\Annotation\Route(
+     *     "/manager/task/{id}/remove_dev/{dev_id}",
+     *     name="remove_dev",
+     *     methods={"POST", "GET"}
+     *     )
+     * @param                           Task $task
+     * @param                           Fetcher $fetcher
+     * @param                           Request $request
+     * @param                           UserRepository $userRepository
+     * @param                           EntityManagerInterface $entityManager
+     * @param                           SubscriptionsRepository $subscriptionsRepository
+     * @return                          \Symfony\Component\HttpFoundation\Response
+     */
+    public function removeDevFromTask(
+        Task $task,
+        Fetcher $fetcher,
+        EntityManagerInterface $entityManager,
+        Request $request,
+        UserRepository $userRepository,
+        SubscriptionsRepository $subscriptionsRepository
+    ) {
+        $managerId = $task->getProject()->getAddedBy();
+
+
+        if ($fetcher->checkManager($managerId) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
+        $devId = $request->get('dev_id');
+        $dev = $userRepository->find($devId);
+
+        $subscription = $subscriptionsRepository->checkSubscriber($task->getId(), $dev->getEmail());
+
+        $task->removeUser($dev);
+        $entityManager->persist($task);
+        $entityManager->remove($subscription[0]);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('task_view', array('id' => $task->getId()));
+    }
+
     private function addHoursToTask(
         Task $task,
         EntityManagerInterface $entityManager,
