@@ -110,6 +110,7 @@ class IndexController extends AbstractController
 
         $project = $projectForm->getData();
         $project->addUser($this->getUser());
+        $project->setAddedBy($this->getUser()->getId());
         $project->setCompleted(false);
         $entityManager->persist($project);
         $entityManager->flush();
@@ -270,7 +271,7 @@ class IndexController extends AbstractController
     /**
      * @Symfony\Component\Routing\Annotation\Route
      * (
-     *     "/manager/{user_id}/project_hours/{id}/{value}",
+     *     "/manager/project_hours/{id}/{value}",
      *     defaults={"value" = 0},
      *     name="project_hours",
      *     methods={"POST", "GET"}
@@ -278,6 +279,7 @@ class IndexController extends AbstractController
      * @param                                HoursOnTaskRepository $hoursOnTaskRepository
      * @param                                Project $project
      * @param                                Request $request
+     * @param                                Fetcher $fetcher
      * @return                               \Symfony\Component\HttpFoundation\Response $response
      */
 
@@ -288,10 +290,10 @@ class IndexController extends AbstractController
         Fetcher $fetcher
     ) {
 
-        $managerId = $request->get('user_id');
+        $managerId = $project->getAddedBy();
 
         if ($fetcher->checkManager($managerId) !== true) {
-            $this->redirectToRoute('index_page');
+            return $this->redirectToRoute('index_page');
         }
 
         $total = 0;
@@ -378,13 +380,22 @@ class IndexController extends AbstractController
      * @param                     HoursOnTaskRepository $hoursOnTaskRepository
      * @param                     User $user
      * @param                     Request $request
+     * @param                     Fetcher $fetcher
      * @return                    \Symfony\Component\HttpFoundation\Response $response
      */
     public function userHoursManagement(
         HoursOnTaskRepository $hoursOnTaskRepository,
         User $user,
-        Request $request
+        Request $request,
+        Fetcher $fetcher
     ) {
+
+        $managerId = $user->getAddedBy();
+
+        if ($fetcher->checkManager($managerId) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
         $total = 0;
         $id = $user->getId();
         $hoursForUser = $hoursOnTaskRepository->findHoursByUser($id);
