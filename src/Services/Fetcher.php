@@ -78,4 +78,26 @@ class Fetcher extends AbstractController
 
         return $gateway;
     }
+
+    public function checkManager($id)
+    {
+        $userId =$this->getUser()->getId();
+        if ($userId != $id) {
+            return false;
+        }
+        return true;
+    }
+
+    public function checkUsers($users)
+    {
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return true;
+        }
+        foreach ($users as $user) {
+            if ($user->getId() == $this->getUser()->getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

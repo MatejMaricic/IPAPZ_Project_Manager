@@ -110,6 +110,7 @@ class IndexController extends AbstractController
 
         $project = $projectForm->getData();
         $project->addUser($this->getUser());
+        $project->setAddedBy($this->getUser()->getId());
         $project->setCompleted(false);
         $entityManager->persist($project);
         $entityManager->flush();
@@ -233,18 +234,29 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("/manager/hours_management", name="hours_management")
+     * @Symfony\Component\Routing\Annotation\Route("/manager/hours_management/{id}", name="hours_management")
      * @param                      ProjectRepository $projectRepository
      * @param                      UserRepository $userRepository
+     * @param                      Request $request
+     * @param                      Fetcher $fetcher
      * @return                     \Symfony\Component\HttpFoundation\Response $response
      */
 
     public function hoursManagementView(
         ProjectRepository $projectRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        Request $request,
+        Fetcher $fetcher
     ) {
-        $projects = $projectRepository->findAll();
-        $developers = $userRepository->findAllDevelopersArray();
+
+        $id = $request->get('id');
+
+        if ($fetcher->checkManager($id) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
+        $projects = $projectRepository->findByManagerId($id);
+        $developers = $userRepository->findAllDevelopersForManagerArray($id);
 
             return $this->render(
                 'hours_management.html.twig',
@@ -267,14 +279,23 @@ class IndexController extends AbstractController
      * @param                                HoursOnTaskRepository $hoursOnTaskRepository
      * @param                                Project $project
      * @param                                Request $request
+     * @param                                Fetcher $fetcher
      * @return                               \Symfony\Component\HttpFoundation\Response $response
      */
 
     public function projectHoursManagement(
         HoursOnTaskRepository $hoursOnTaskRepository,
         Project $project,
-        Request $request
+        Request $request,
+        Fetcher $fetcher
     ) {
+
+        $managerId = $project->getAddedBy();
+
+        if ($fetcher->checkManager($managerId) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
         $total = 0;
         $id = $project->getId();
         $hoursOnProject = $hoursOnTaskRepository->findHoursByProject($id);
@@ -359,13 +380,22 @@ class IndexController extends AbstractController
      * @param                     HoursOnTaskRepository $hoursOnTaskRepository
      * @param                     User $user
      * @param                     Request $request
+     * @param                     Fetcher $fetcher
      * @return                    \Symfony\Component\HttpFoundation\Response $response
      */
     public function userHoursManagement(
         HoursOnTaskRepository $hoursOnTaskRepository,
         User $user,
-        Request $request
+        Request $request,
+        Fetcher $fetcher
     ) {
+
+        $managerId = $user->getAddedBy();
+
+        if ($fetcher->checkManager($managerId) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
         $total = 0;
         $id = $user->getId();
         $hoursForUser = $hoursOnTaskRepository->findHoursByUser($id);

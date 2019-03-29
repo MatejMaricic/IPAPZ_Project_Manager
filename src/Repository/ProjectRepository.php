@@ -31,6 +31,18 @@ class ProjectRepository extends ServiceEntityRepository
             ->setMaxResults(10);
     }
 
+    public function findByManagerId($id)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->andWhere('p.addedBy = :val')
+            ->setParameter('val', $id)
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findByUser($id)
     {
         return $this->createQueryBuilder('p')
