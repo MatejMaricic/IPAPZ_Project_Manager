@@ -8,7 +8,6 @@
 
 namespace App\Controller;
 
-
 class WebHookController
 {
 
@@ -47,7 +46,6 @@ class WebHookController
 
         curl_exec($ch);
         shell_exec('git branch '.$type.'/#' .$branchName. ' development');
-
     }
     /**
      * @Symfony\Component\Routing\Annotation\Route("/curl_test_delete", name="curl_test_delete")
@@ -72,7 +70,5 @@ class WebHookController
         );
         curl_exec($ch);
         shell_exec('git branch -D '.$type.'/#' .$branchName. ' development');
-
-
     }
 }

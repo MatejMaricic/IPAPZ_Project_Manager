@@ -40,6 +40,12 @@ class ProjectController extends AbstractController
         UserRepository $userRepository,
         Fetcher $fetcher
     ) {
+        $users = $project->getUsers();
+
+        if ($fetcher->checkUsers($users) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
         $devs = $userRepository->devsOnProject($project->getId());
 
         $devForm = $this->createForm(AssignDevFormType::class, $data = null, array("id" => $this->getUser()->getId()));
@@ -153,6 +159,13 @@ class ProjectController extends AbstractController
         Project $project,
         Fetcher $fetcher
     ) {
+
+        $managerId = $project->getAddedBy();
+
+        if ($fetcher->checkManager($managerId) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
         $projectForm = $this->createForm(ProjectFormType::class, $project);
         $projectForm->handleRequest($request);
         if ($projectForm->isSubmitted() && $projectForm->isValid()) {
@@ -183,13 +196,22 @@ class ProjectController extends AbstractController
      *     methods={"POST", "GET"}
      * )
      * @param                   Project $project
+     * @param                   Fetcher $fetcher
      * @param                   EntityManagerInterface $entityManager
      * @return                  \Symfony\Component\HttpFoundation\Response
      */
     public function completeProject(
         Project $project,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        Fetcher $fetcher
     ) {
+
+        $managerId = $project->getAddedBy();
+
+        if ($fetcher->checkManager($managerId) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
         $project->setCompleted(true);
         $entityManager->persist($project);
         $entityManager->flush();
@@ -206,12 +228,19 @@ class ProjectController extends AbstractController
      * )
      * @param                 Project $project
      * @param                 EntityManagerInterface $entityManager
+     * @param                 Fetcher $fetcher
      * @return                \Symfony\Component\HttpFoundation\Response
      */
     public function projectReopen(
         Project $project,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        Fetcher $fetcher
     ) {
+        $managerId = $project->getAddedBy();
+
+        if ($fetcher->checkManager($managerId) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
 
         $project->setCompleted(false);
 
@@ -240,10 +269,18 @@ class ProjectController extends AbstractController
     /**
      * @Symfony\Component\Routing\Annotation\Route("/manager/single_project/{id}", name="single_project")
      * @param                         Project $project
+     * @param                         Fetcher $fetcher
      * @return                        \Symfony\Component\HttpFoundation\Response
      */
-    public function completedSingleProjectView(Project $project)
+    public function completedSingleProjectView(Project $project, Fetcher $fetcher)
     {
+
+        $managerId = $project->getAddedBy();
+
+        if ($fetcher->checkManager($managerId) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
         return $this->render(
             'project/single_project.html.twig',
             [
@@ -269,6 +306,7 @@ class ProjectController extends AbstractController
         Project $project,
         EntityManagerInterface $entityManager
     ) {
+
 
         $projectId = $project->getId();
 
