@@ -77,7 +77,7 @@ class CollabController extends AbstractController
             $transactions->setTransactionId($transaction->id);
             $transactions->setBoughtAt(new \DateTime('now'));
             $transactions->setBuyerEmail($collaboration->getUser()->getEmail());
-            $transactions->setCurrency('€');
+            $transactions->setCurrency($transaction->currencyIsoCode);
 
             $entityManager->persist($transactions);
             $entityManager->persist($collaboration);
