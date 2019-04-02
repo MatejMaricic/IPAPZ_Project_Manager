@@ -61,6 +61,20 @@
                             {% endfor %}
 
                         </div>
+                        {% if task.completed != 1 %}
+                            {{ form_start(commentForm) }}
+                            <div class="card border-success">
+                                <div class="card-body">
+                                    {{ form_row(commentForm.content, {'attr':{class: 'comment'}}) }}
+                                    {{ form_row(commentForm.images, {'attr':{class: 'form-control'}}) }}
+                                </div>
+                                <div class="card-footer bg-transparent border-success">
+                                    <button type="submit" class="btn btn-primary">Add comment</button>
+                                </div>
+                            </div>
+                            {{ form_end(commentForm) }}
+
+                        {% endif %}
                     </div>
                 {% endif %}
             </div>
@@ -96,23 +110,7 @@
 
             </div>
         </div>
-        {% if task.completed != 1 %}
-        <div class="row">
-            <div class="col-9">
-                {{ form_start(commentForm) }}
-                <div class="card border-success">
-                    <div class="card-body">
-                        {{ form_row(commentForm.content, {'attr':{class: 'comment'}}) }}
-                        {{ form_row(commentForm.images, {'attr':{class: 'form-control'}}) }}
-                    </div>
-                    <div class="card-footer bg-transparent border-success">
-                        <button type="submit" class="btn btn-primary">Add comment</button>
-                    </div>
-                </div>
-                {{ form_end(commentForm) }}
-            </div>
-        </div>
-        {% endif %}
+
 
         <div class="modal fade" id="devForm" tabindex="-1" role="dialog" aria-labelledby="devFormTitle"
              aria-hidden="true">
