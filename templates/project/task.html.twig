@@ -61,21 +61,22 @@
                             {% endfor %}
 
                         </div>
-                        {% if task.completed != 1 %}
-                            {{ form_start(commentForm) }}
-                            <div class="card border-success">
-                                <div class="card-body">
-                                    {{ form_row(commentForm.content, {'attr':{class: 'comment'}}) }}
-                                    {{ form_row(commentForm.images, {'attr':{class: 'form-control'}}) }}
-                                </div>
-                                <div class="card-footer bg-transparent border-success">
-                                    <button type="submit" class="btn btn-primary">Add comment</button>
-                                </div>
-                            </div>
-                            {{ form_end(commentForm) }}
 
-                        {% endif %}
                     </div>
+                {% endif %}
+                {% if task.completed != 1 %}
+                    {{ form_start(commentForm) }}
+                    <div class="card border-success">
+                        <div class="card-body">
+                            {{ form_row(commentForm.content, {'attr':{class: 'comment'}}) }}
+                            {{ form_row(commentForm.images, {'attr':{class: 'form-control'}}) }}
+                        </div>
+                        <div class="card-footer bg-transparent border-success">
+                            <button type="submit" class="btn btn-primary">Add comment</button>
+                        </div>
+                    </div>
+                    {{ form_end(commentForm) }}
+
                 {% endif %}
             </div>
             <hr>
