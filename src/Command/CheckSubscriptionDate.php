@@ -54,7 +54,5 @@ class CheckSubscriptionDate extends Command
         $this->collabController->checkSubscriptionDate($this->collaborationRepository, $this->entityManager);
 
         $output->writeln('Date Checked!');
-
-
     }
 }

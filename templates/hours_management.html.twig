@@ -23,7 +23,7 @@
                {% for project in projects %}
                   <tr>
                <td>{{ project.id }}</td>
-               <td> <a href="{{ path('project_hours', {'id':project.id, 'user_id':project.addedBy}) }}"> {{ project.name }}</a></td>
+               <td> <a href="{{ path('project_hours', {'id':project.id}) }}"> {{ project.name }}</a></td>
                   <td>{{ project.createdAt|date }}</td>
                <td>{{ project.deadline|date }}</td>
                   </tr>

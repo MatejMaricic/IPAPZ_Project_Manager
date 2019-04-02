@@ -41,7 +41,6 @@ class ProjectRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
-
     }
 
     public function findByUser($id)

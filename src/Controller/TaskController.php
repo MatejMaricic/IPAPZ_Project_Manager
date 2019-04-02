@@ -47,6 +47,11 @@ class TaskController extends AbstractController
         SubscriptionsRepository $subscriptionsRepository,
         Fetcher $fetcher
     ) {
+        $users = $task->getProject()->getUsers();
+
+        if ($fetcher->checkUsers($users) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
 
         $id = $task->getProject()->getId();
         $project = $projectRepository->find($id);
@@ -174,6 +179,48 @@ class TaskController extends AbstractController
         $entityManager->flush();
     }
 
+    /**
+     * @Symfony\Component\Routing\Annotation\Route(
+     *     "/manager/task/{id}/remove_dev/{dev_id}",
+     *     name="remove_dev",
+     *     methods={"POST", "GET"}
+     *     )
+     * @param                           Task $task
+     * @param                           Fetcher $fetcher
+     * @param                           Request $request
+     * @param                           UserRepository $userRepository
+     * @param                           EntityManagerInterface $entityManager
+     * @param                           SubscriptionsRepository $subscriptionsRepository
+     * @return                          \Symfony\Component\HttpFoundation\Response
+     */
+    public function removeDevFromTask(
+        Task $task,
+        Fetcher $fetcher,
+        EntityManagerInterface $entityManager,
+        Request $request,
+        UserRepository $userRepository,
+        SubscriptionsRepository $subscriptionsRepository
+    ) {
+        $managerId = $task->getProject()->getAddedBy();
+
+
+        if ($fetcher->checkManager($managerId) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
+        $devId = $request->get('dev_id');
+        $dev = $userRepository->find($devId);
+
+        $subscription = $subscriptionsRepository->checkSubscriber($task->getId(), $dev->getEmail());
+
+        $task->removeUser($dev);
+        $entityManager->persist($task);
+        $entityManager->remove($subscription[0]);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('task_view', array('id' => $task->getId()));
+    }
+
     private function addHoursToTask(
         Task $task,
         EntityManagerInterface $entityManager,
@@ -198,14 +245,23 @@ class TaskController extends AbstractController
      *     methods={"POST", "GET"}
      *     )
      * @param                           Task $task
+     * @param                           Fetcher $fetcher
+     * @param                           WebHookController $webHookController
      * @param                           EntityManagerInterface $entityManager
      * @return                          \Symfony\Component\HttpFoundation\Response
      */
     public function taskCompleted(
         Task $task,
         EntityManagerInterface $entityManager,
-        WebHookController $webHookController
+        WebHookController $webHookController,
+        Fetcher $fetcher
     ) {
+        $managerId = $task->getProject()->getAddedBy();
+
+        if ($fetcher->checkManager($managerId) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
         $id = $task->getProject()->getId();
         $task->setCompleted(true);
 
@@ -232,14 +288,22 @@ class TaskController extends AbstractController
      * @param                         Task $task
      * @param                         EntityManagerInterface $entityManager
      * @param                         WebHookController $webHookController
+     * @param                         Fetcher $fetcher
      * @return                        \Symfony\Component\HttpFoundation\Response
      */
 
     public function taskReopen(
         Task $task,
         EntityManagerInterface $entityManager,
-        WebHookController $webHookController
+        WebHookController $webHookController,
+        Fetcher $fetcher
     ) {
+
+        $managerId = $task->getProject()->getAddedBy();
+
+        if ($fetcher->checkManager($managerId) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
 
         $projectId = $task->getProject()->getId();
         $task->setCompleted(false);
@@ -261,12 +325,21 @@ class TaskController extends AbstractController
      * @Symfony\Component\Routing\Annotation\Route("/subscribe_to_task/{id}", name="subscribe_to_task")
      * @param                            EntityManagerInterface $entityManager
      * @param                            Task $task
+     * @param                            Fetcher $fetcher
      * @return                           \Symfony\Component\HttpFoundation\Response
      */
     public function subscribeToTask(
         Task $task,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        Fetcher $fetcher
     ) {
+
+        $users = $task->getProject()->getUsers();
+
+        if ($fetcher->checkUsers($users) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
         $subscription = new Subscriptions();
         $email = $this->getUser()->getEmail();
         $projectId = $task->getProject()->getId();
@@ -285,12 +358,19 @@ class TaskController extends AbstractController
 
 
     /**
-     * @Symfony\Component\Routing\Annotation\Route("/completed_tasks/{id}", name="completed_tasks")
+     * @Symfony\Component\Routing\Annotation\Route("/manager/completed_tasks/{id}", name="completed_tasks")
      * @param                          Project $project
+     * @param                          Fetcher $fetcher
      * @return                         \Symfony\Component\HttpFoundation\Response
      */
-    public function completedTaskView(Project $project)
+    public function completedTaskView(Project $project, Fetcher $fetcher)
     {
+        $managerId = $project->getAddedBy();
+
+        if ($fetcher->checkManager($managerId) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
         return $this->render(
             'project/completed_tasks.html.twig',
             [
@@ -307,6 +387,8 @@ class TaskController extends AbstractController
      * @param                        Project $project
      * @param                        UserRepository $userRepository
      * @param                        Request $request
+     * @param                        Fetcher $fetcher
+     * @param                        WebHookController $webHookController
      * @param                        EntityManagerInterface $entityManager
      * @return                       \Symfony\Component\HttpFoundation\Response
      */
@@ -315,8 +397,15 @@ class TaskController extends AbstractController
         UserRepository $userRepository,
         Request $request,
         EntityManagerInterface $entityManager,
-        WebHookController $webHookController
+        WebHookController $webHookController,
+        Fetcher $fetcher
     ) {
+
+        $users = $project->getUsers();
+
+        if ($fetcher->checkUsers($users) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
 
         $devs = $userRepository->devsOnProject($project->getId());
         $taskForm = $this->createForm(TaskFormType::class, $data = null, array("project_id" => $project->getId()));
@@ -388,7 +477,6 @@ class TaskController extends AbstractController
         } catch (\Exception $exception) {
             $this->addFlash('warning', 'All Fields Are Required');
         }
-
     }
 
     private function newStatus(
@@ -407,13 +495,21 @@ class TaskController extends AbstractController
      * @param                    Task $task
      * @param                    EntityManagerInterface $entityManager
      * @param                    Request $request
+     * @param                    Fetcher $fetcher
      * @return                   \Symfony\Component\HttpFoundation\Response
      */
     public function taskEditor(
         Task $task,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        Fetcher $fetcher
     ) {
+        $managerId = $task->getProject()->getAddedBy();
+
+        if ($fetcher->checkManager($managerId) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
         $taskForm = $this->createForm(TaskFormType::class, $task, array('project_id' => $task->getProject()->getId()));
         try {
             $taskForm->handleRequest($request);

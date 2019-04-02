@@ -48,6 +48,12 @@ class DiscussionController extends AbstractController
         CommentsRepository $commentsRepository,
         Fetcher $fetcher
     ) {
+        $users = $discussion->getProject()->getUsers();
+
+        if ($fetcher->checkUsers($users) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
         $projectId = $discussion->getProject()->getId();
 
         $commentForm = $this->createForm(CommentFormType::class);
@@ -193,6 +199,12 @@ class DiscussionController extends AbstractController
         EntityManagerInterface $entityManager,
         Fetcher $fetcher
     ) {
+        $users = $project->getUsers();
+
+        if ($fetcher->checkUsers($users) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
         $discussionForm = $this->createForm(DiscussionFormType::class);
 
         $discussionForm->handleRequest($request);
@@ -234,12 +246,20 @@ class DiscussionController extends AbstractController
      * @Symfony\Component\Routing\Annotation\Route("/subscribe_to_discussion{id}", name="subscribe_to_discussion")
      * @param                                 EntityManagerInterface $entityManager
      * @param                                 Discussion $discussion
+     * @param                                 Fetcher $fetcher
      * @return                                \Symfony\Component\HttpFoundation\Response
      */
     public function subscribeToDiscussion(
         Discussion $discussion,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        Fetcher $fetcher
     ) {
+        $users = $discussion->getProject()->getUsers();
+
+        if ($fetcher->checkUsers($users) !== true) {
+            return $this->redirectToRoute('index_page');
+        }
+
         $subscription = new Subscriptions();
         $email = $this->getUser()->getEmail();
         $projectId = $discussion->getProject()->getId();
