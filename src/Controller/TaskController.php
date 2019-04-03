@@ -450,7 +450,6 @@ class TaskController extends AbstractController
         $task = $taskForm->getData();
         $files = $request->files->get('task_form')['images'];
         $name = $task->getName();
-        $id = $task->getId();
         $name = str_replace(' ', '_', $name);
         $type = $task->getType();
 
@@ -473,6 +472,7 @@ class TaskController extends AbstractController
             $task->setCompleted(false);
             $entityManager->persist($task);
             $entityManager->flush();
+            $id = $task->getId();
             $webHookController->createBranch($id, $name, $type);
         } catch (\Exception $exception) {
             $this->addFlash('warning', 'All Fields Are Required');
