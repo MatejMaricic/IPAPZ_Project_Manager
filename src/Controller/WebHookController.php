@@ -17,8 +17,8 @@ class WebHookController
     public function createBranch($id, $name, $type)
     {
         $token = getenv('GITHUB_ACCESS_TOKEN');
-        $sha = shell_exec('git rev-parse development');
-        $sha = str_replace("\n", "", $sha);
+        $sha = shell_exec('git ls-remote https://github.com/MatejMaricic/IPAPZ_Project_Manager.git development');
+        $sha = str_replace("\trefs/heads/development\n", "", $sha);
         $branchName = $id.'-'.$name;
 
 
