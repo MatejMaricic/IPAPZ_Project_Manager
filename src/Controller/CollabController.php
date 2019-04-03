@@ -27,10 +27,10 @@ class CollabController extends AbstractController
     {
         $gateway = new Braintree_Gateway(
             [
-                'environment' => 'sandbox',
-                'merchantId' => 'qmk79j9h7rxpjg8t',
-                'publicKey' => 'pnz7bb5774j2j3n4',
-                'privateKey' => '7c0e8443e507a26409dc23f6ca1afcb6'
+                'environment' => getenv('BT_ENVIRONMENT'),
+                'merchantId' => getenv('BT_MERCHANT_ID'),
+                'publicKey' => getenv('BT_PUBLIC_KEY'),
+                'privateKey' => getenv('BT_PRIVATE_KEY')
             ]
         );
 
