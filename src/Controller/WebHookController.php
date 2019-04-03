@@ -16,7 +16,7 @@ class WebHookController
      */
     public function createBranch($id, $name, $type)
     {
-
+        $token = getenv('GITHUB_ACCESS_TOKEN');
         $sha = shell_exec('git rev-parse development');
         $sha = str_replace("\n", "", $sha);
         $branchName = $id.'-'.$name;
@@ -39,7 +39,7 @@ class WebHookController
             array
             (
                 'User-Agent:MatejMaricic',
-                'Authorization: Token tokengoeshere',
+                'Authorization: Token '.$token,
                 'Content-Type: application/json'
             )
         );
@@ -52,6 +52,7 @@ class WebHookController
      */
     public function deleteBranch($id, $name, $type)
     {
+        $token = getenv('GITHUB_ACCESS_TOKEN');
         $branchName = $id.'-'.$name;
         $ch = curl_init(
             'https://api.github.com/repos/MatejMaricic/IPAPZ_Project_Manager/git/refs/heads/'.$type.'/%23'.$id.'-'.$name
@@ -64,7 +65,7 @@ class WebHookController
             array
             (
                 'User-Agent:MatejMaricic',
-                'Authorization: Token tokengoeshere',
+                'Authorization: Token '.$token,
                 'Content-Type: application/json'
             )
         );

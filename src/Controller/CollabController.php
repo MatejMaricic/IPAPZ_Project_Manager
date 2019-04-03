@@ -16,7 +16,6 @@ use App\Services\Fetcher;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Braintree_Gateway;
 
 class CollabController extends AbstractController
@@ -27,10 +26,10 @@ class CollabController extends AbstractController
     {
         $gateway = new Braintree_Gateway(
             [
-                'environment' => 'sandbox',
-                'merchantId' => 'qmk79j9h7rxpjg8t',
-                'publicKey' => 'pnz7bb5774j2j3n4',
-                'privateKey' => '7c0e8443e507a26409dc23f6ca1afcb6'
+                'environment' => getenv('BT_ENVIRONMENT'),
+                'merchantId' => getenv('BT_MERCHANT_ID'),
+                'publicKey' => getenv('BT_PUBLIC_KEY'),
+                'privateKey' => getenv('BT_PRIVATE_KEY')
             ]
         );
 
@@ -90,9 +89,6 @@ class CollabController extends AbstractController
                 $errorString .= 'Error: ' . $error->code . ": " . $error->message . "\n";
             }
 
-            $session = new Session();
-            $session->start();
-            $session->set('errors', $errorString);
             return $this->redirectToRoute('index_page');
         }
     }
